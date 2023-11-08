@@ -1,8 +1,14 @@
 import React from 'react'
 
-const Card = () => {
+interface CardProps {
+    children: React.ReactNode
+}
+
+const Card = ({children}: CardProps) => {
   return (
-    <div>Card</div>
+    <div className='p-3 rounded-md bg-card text-card-foreground shadow'>
+         {children}
+    </div>
   )
 }
 
