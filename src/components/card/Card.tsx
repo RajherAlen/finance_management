@@ -1,15 +1,38 @@
-import React from 'react'
+import { cva, type VariantProps } from "class-variance-authority";
+import React from "react";
+import { cn } from "src/lib/utils/cn";
 
-interface CardProps {
-    children: React.ReactNode
+const cardVariants = cva("rounded-md", {
+	variants: {
+		variant: {
+			default: "bg-card text-card-foreground shadow",
+			success: "bg-green-500 bg-opacity-10",
+			warning: "bg-red-500 bg-opacity-10",
+			info: "bg-sky-500 bg-opacity-10"
+		},
+		size: {
+			default: "p-3",
+			sml: "p-2",
+			med: "p-4"
+		}
+	},
+	defaultVariants: {
+		variant: "default",
+		size: "default"
+	}
+});
+
+interface CardProps extends VariantProps<typeof cardVariants> {
+	children: React.ReactNode;
+	className?: string;
 }
 
-const Card = ({children}: CardProps) => {
-  return (
-    <div className='p-3 rounded-md bg-card text-card-foreground shadow'>
-         {children}
-    </div>
-  )
-}
+const Card = ({ children, variant, size, className }: CardProps) => {
+	return (
+		<div className={cn(cardVariants({ variant, size, className }))}>
+			{children}
+		</div>
+	);
+};
 
-export default Card
+export default Card;
