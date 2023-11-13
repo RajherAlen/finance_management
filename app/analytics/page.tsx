@@ -1,9 +1,8 @@
-import React from 'react'
+import React from "react";
+import { AnalyticsListDisplay } from "src/features/analytics";
 
-const UsersPageDisplay = () => {
-  return (
-    <div>Analytics Page</div>
-  )
-}
+const Analytics = () => {
+	return <AnalyticsListDisplay />;
+};
 
-export default UsersPageDisplay;
+export default Analytics;

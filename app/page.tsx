@@ -1,5 +1,7 @@
 import TransactionListDisplay from "src/features/transactions/components/TransactionListDisplay";
 
-export default function Home() {
+const Dashboard = () => {
 	return <TransactionListDisplay />;
-}
+};
+
+export default Dashboard;
