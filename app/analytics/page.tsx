@@ -2,7 +2,7 @@ import React from 'react'
 
 const UsersPageDisplay = () => {
   return (
-    <div>UsersPage</div>
+    <div>Analytics Page</div>
   )
 }
 

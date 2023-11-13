@@ -2,8 +2,6 @@ import React from "react";
 import Card from "src/components/card/Card";
 import TransactionIcons from "./TransactionIcons";
 import formatCurrency from "src/lib/utils/formatCurrency";
-import { PlusCircleIcon } from "lucide-react";
-import Modal from "src/components/dialog/Modal";
 import AddTransaction from "./AddTransaction";
 
 const TransactionCard = (props: any) => {
@@ -26,12 +24,7 @@ const TransactionCard = (props: any) => {
 				</div>
 
 				<div className="flex items-start">
-					<Modal
-						trigger={<PlusCircleIcon stroke="#4b5563" width="16" height="16" />}
-						title={`Add ${props.type}`}
-					>
-						<AddTransaction type={props.type} />
-					</Modal>
+					<AddTransaction type={props.type} />
 				</div>
 			</div>
 		</Card>

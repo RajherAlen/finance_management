@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { FinancialState, Transaction } from "./model/transactionModel";
 
 const initialState = {
@@ -12,27 +12,43 @@ const transactionSlice = createSlice({
 	name: "transactions",
 	initialState,
 	reducers: {
-		addTransaction: (state: FinancialState, action: any) => {
-			const newTransaction = action.payload;
-			state.transactions.push(newTransaction);
+		addTransaction: (
+			state: FinancialState,
+			action: PayloadAction<Transaction>
+		) => {
+			// Creating a new state object with the updated transactions array
+			state.transactions = [...state.transactions, action.payload];
 		},
-		removeTransaction: (state: FinancialState, action: any) => {
-			const { id, type } = action.payload;
-			state.transactions.filter(
+		removeTransaction: (
+			state: FinancialState,
+			action: PayloadAction<Transaction>
+		) => {
+			// Using filter to create a new array with the specified transaction removed
+			state.transactions = state.transactions.filter(
 				(transaction: Transaction) =>
-					transaction.id !== id || transaction.type !== type
+					transaction.id !== action.payload.id ||
+					transaction.category !== action.payload.category
 			);
 		},
-		updateTransaction: (state: FinancialState, action: any) => {
+		updateTransaction: (
+			state: FinancialState,
+			action: PayloadAction<Transaction>
+		) => {
 			const updatedTransaction = action.payload;
 			const transactionIndex = state.transactions.findIndex(
 				transaction =>
 					transaction.id === updatedTransaction.id &&
-					transaction.type === updatedTransaction.type
+					transaction.category === updatedTransaction.category
 			);
 
 			if (transactionIndex !== -1) {
-				state.transactions[transactionIndex] = updatedTransaction;
+				// Creating a new array with the updated transaction
+				state.transactions = state.transactions.map(
+					(transaction, index) =>
+						index === transactionIndex
+							? updatedTransaction
+							: transaction
+				);
 			}
 		}
 	}

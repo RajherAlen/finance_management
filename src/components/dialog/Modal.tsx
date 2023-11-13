@@ -110,13 +110,15 @@ interface ModalProps {
 	trigger: React.ReactNode;
 	children: React.ReactNode;
 	footer?: React.ReactNode;
+	onOpenChange?: () => void
+	open?: boolean;
 	title?: string;
 	description?: string;
 }
 
 const Modal = (props: ModalProps) => {
 	return (
-		<Dialog>
+		<Dialog open={props.open} onOpenChange={props.onOpenChange}>
 			<DialogTrigger>{props.trigger}</DialogTrigger>
 
 			<DialogContent>
