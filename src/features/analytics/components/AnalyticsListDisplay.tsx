@@ -4,8 +4,8 @@ import AnalyticsBudgetList from './AnalyticsBudgetList';
 
 const AnalyticsListDisplay = () => {
 	return (
-		<div>
-			<AnalyticsBudgetList />
+		<div className='max-w-[600px]'>
+			{/* <AnalyticsBudgetList /> */}
 			<AnalyticsBudgetSplitChart />
 		</div>
 	)

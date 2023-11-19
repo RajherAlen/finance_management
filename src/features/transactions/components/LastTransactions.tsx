@@ -18,7 +18,7 @@ const LastTransactions = () => {
                             <p className="text-sm">{transaction.description}</p>
                             <p className="text-sm">{transaction.category}</p>
                             <p className="text-sm">{formatCurrency(transaction.amount)}</p>
-                            <p className="text-sm">{formatDate({ date: transaction.date, format: 'd.mm.yyy' })}</p>
+                            <p className="text-sm">{formatDate({ date: transaction.date!, format: 'D.MM.YYYY' })}</p>
                         </div>
                     );
                 })}

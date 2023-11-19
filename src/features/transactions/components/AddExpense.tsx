@@ -12,7 +12,7 @@ import FormSelect from "src/components/form/FormSelect";
 import { categoryOptions } from "../model/categoryOptions";
 import { expenseSchema } from "../model/expenseSchema";
 import { useAppDispatch } from "src/store/hooks";
-import { addTransaction } from "../transactionSlice";
+import { addTransaction, updateCategoryTotal, updateTotalExpense } from "../transactionSlice";
 import Modal from "src/components/dialog/Modal";
 import { PlusCircleIcon } from "lucide-react";
 
@@ -40,8 +40,11 @@ const AddExpense = () => {
 				type: "expense"
 			})
 		);
+		dispatch(updateTotalExpense(values.amount));
+		dispatch(updateCategoryTotal({category: values.category, amount: values.amount}));
 
-		setIsOpen(false)
+
+		setIsOpen(false);
 	};
 
 	return (

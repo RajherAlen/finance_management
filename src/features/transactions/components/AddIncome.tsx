@@ -11,20 +11,24 @@ import FormCustomInput from "src/components/form/FormCustomInput";
 import { incomeSchema } from "../model/incomeSchema";
 import Modal from "src/components/dialog/Modal";
 import { PlusCircleIcon } from "lucide-react";
+import { useAppDispatch } from "src/store/hooks";
+import { addTransaction, setTotalIncome } from "../transactionSlice";
 
 const AddIncome = () => {
+	const dispatch = useAppDispatch();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	const form = useForm<z.infer<typeof incomeSchema>>({
 		resolver: zodResolver(incomeSchema),
 		defaultValues: {
 			amount: 0,
-			description: ""
 		}
 	});
 
 	const onSubmit = (values: z.infer<typeof incomeSchema>) => {
-		console.log(values);
+		dispatch(setTotalIncome(values.amount))
+
+		setIsOpen(false);
 	};
 
 	return (
@@ -51,7 +55,7 @@ const AddIncome = () => {
 							/>
 						)}
 					/>
-					<FormField
+					{/* <FormField
 						control={form.control}
 						name="description"
 						render={({ field }) => (
@@ -60,7 +64,7 @@ const AddIncome = () => {
 								field={field}
 							/>
 						)}
-					/>
+					/> */}
 					<Button type="submit" className="mt-5">
 						Submit
 					</Button>

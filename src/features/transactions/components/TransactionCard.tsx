@@ -28,7 +28,7 @@ const TransactionCard = (props: TransactionCardProps) => {
 	}
 
 	return (
-		<Card className="w-full max-w-[300px]">
+		<Card className="w-full lg:max-w-[300px]">
 			<div className="flex gap-2">
 				<Card variant={transactionTypeColor} size="sml">
 					<TransactionIcons type={props.type} />

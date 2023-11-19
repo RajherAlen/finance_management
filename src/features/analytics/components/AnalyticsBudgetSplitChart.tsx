@@ -1,77 +1,87 @@
-'use client'
+"use client";
 
+import React from "react";
+import { useAppSelector } from "src/store/hooks";
 
-import React, { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import {
+	Chart as ChartJS,
+	CategoryScale,
+	LinearScale,
+	BarElement,
+	Title,
+	Tooltip,
+	Legend
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
 
-
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Doughnut } from 'react-chartjs-2';
-import { updateCategoryTotal, setTotalIncome } from "src/features/transactions/transactionSlice";
 import Card from "src/components/card/Card";
 import formatCurrency from "src/lib/utils/formatCurrency";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(
+	CategoryScale,
+	LinearScale,
+	BarElement,
+	Title,
+	Tooltip,
+	Legend
+);
 
 export const options = {
-    responsive: true,
-    elements: {
-        line: {
-            tension: 0.3
-        }
-    },
-    plugins: {
-        legend: {
-            position: "right" as const
-        },
-        title: {
-            display: true
-        }
-    }
+	responsive: true,
+	plugins: {
+		legend: {
+			position: "top" as const
+		},
+		title: {
+			display: false
+		}
+	}
 };
 
-
 const AnalyticsBudgetSplitChart = () => {
-    const dispatch = useAppDispatch();
-    const { category: {
-        needs, wants, savings
-    } } = useAppSelector((state) => state.transactionStore);
+	const {
+		spendByCategory,
+		budgetCategory: { needs, wants, savings }
+	} = useAppSelector((state) => state.transactionStore);
 
-    const labels = [
-        `${formatCurrency(needs)} - Needs`,
-        `${formatCurrency(wants)} - Wants`,
-        `${formatCurrency(savings)} - Savings`
-    ];
+	if (!spendByCategory) return null;
 
-    const updateTotal = () => {
-        dispatch(setTotalIncome(1650));
-    }
+	const labels = [
+		`${formatCurrency(needs)} - Needs`,
+		`${formatCurrency(wants)} - Wants`,
+		`${formatCurrency(savings)} - Savings`
+	];
 
-    const data = {
-        labels,
-        datasets: [
-            {
-                data: [needs, wants, savings],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                ],
-                borderWidth: 1,
-            },
-        ]
-    };
+	const data = {
+		labels,
+		datasets: [
+			{
+				label: "Budget",
+				data: [needs, wants, savings],
+				backgroundColor: "rgba(16, 185, 129, 0.5)"
+			},
+			{
+				label: "Spent",
+				data: [
+					spendByCategory.needs,
+					spendByCategory.wants,
+					spendByCategory.savings
+				],
+				backgroundColor: "rgba(239, 68, 68, 0.5)"
+			}
+		]
+	};
 
-    return (
-        <Card className="w-[400px]">
-            <Doughnut options={options} data={data} /> <button onClick={updateTotal}>UPDATE</button>
-        </Card>
-    )
-}
+	return (
+		<div>
+			<p className="font-semibold text-sm text-gray-700 mb-2">
+				Budget vs Actual
+			</p>
+			<Card>
+				<Bar options={options} data={data} />
+			</Card>
+		</div>
+	);
+};
 
-export default AnalyticsBudgetSplitChart
+export default AnalyticsBudgetSplitChart;
