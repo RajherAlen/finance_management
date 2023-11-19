@@ -4,13 +4,33 @@ import TransactionIcons from "./TransactionIcons";
 import formatCurrency from "src/lib/utils/formatCurrency";
 import AddTransaction from "./AddTransaction";
 
-const TransactionCard = (props: any) => {
-	const isIncome = props.type === "income";
+interface TransactionCardProps {
+	type: "income" | "expense" | "savings";
+	amount: number;
+}
+
+const TransactionCard = (props: TransactionCardProps) => {
+	let transactionTypeColor: "success" | "warning" | "info";
+
+	switch (props.type) {
+		case "income":
+			transactionTypeColor = "success";
+			break;
+		case "expense":
+			transactionTypeColor = "warning";
+			break;
+		case "savings":
+			transactionTypeColor = "info";
+			break;
+		default:
+			transactionTypeColor = "info";
+			break;
+	}
 
 	return (
 		<Card className="w-full max-w-[300px]">
 			<div className="flex gap-2">
-				<Card variant={isIncome ? "success" : "warning"} size="sml">
+				<Card variant={transactionTypeColor} size="sml">
 					<TransactionIcons type={props.type} />
 				</Card>
 
@@ -19,7 +39,7 @@ const TransactionCard = (props: any) => {
 						{props.type}
 					</p>
 					<p className="font-bold text-sm">
-						{formatCurrency(props.amount)}
+						{formatCurrency(props.amount ? props.amount : 0)}
 					</p>
 				</div>
 

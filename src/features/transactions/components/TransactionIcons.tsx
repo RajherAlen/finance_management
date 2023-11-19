@@ -8,7 +8,7 @@ const TransactionIcons = ({ type }: { type: string }) => {
 		case "expense":
 			return <Wallet stroke="#dc2626" />;
 		case "savings":
-			return <Banknote stroke="#dc2626" />;
+			return <Banknote stroke="#0ea5e9" />;
 		default:
 			return <Wallet />;
 	}
