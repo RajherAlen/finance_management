@@ -7,9 +7,13 @@ export interface Transaction {
 	type: "income" | "expense";
 }
 
+interface CategoryTotals {
+	[key: string]: number; // Index signature
+  }
+
 export interface FinancialState {
 	income: number;
 	totalExpense: number;
-	savings: number;
+	category: CategoryTotals
 	transactions: Transaction[];
 }

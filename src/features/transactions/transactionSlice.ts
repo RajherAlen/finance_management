@@ -1,10 +1,14 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { FinancialState, Transaction } from "./model/transactionModel";
 
-const initialState = {
-	income: 1200,
+const initialState: FinancialState = {
+	income: 0,
 	totalExpense: 0,
-	savings: 12300,
+	category: {
+		wants: 0,
+		needs: 0,
+		savings: 0
+	},
 	transactions: [
 		{
 			id: Math.random(),
@@ -25,7 +29,7 @@ const initialState = {
 		{
 			id: Math.random(),
 			amount: 60,
-			category: "Needs",
+			category: "Savings",
 			date: `${new Date()}`,
 			description: "values.description",
 			type: "expense"
@@ -49,7 +53,7 @@ const initialState = {
 		{
 			id: Math.random(),
 			amount: 60,
-			category: "Wants",
+			category: "Savings",
 			date: `${new Date()}`,
 			description: "values.description",
 			type: "expense"
@@ -115,6 +119,18 @@ const transactionSlice = createSlice({
 		// 					: transaction
 		// 		);
 		// 	}
+		updateCategoryTotal: (state: FinancialState, action: PayloadAction<{ category: string; amount: number }>) => {
+			const { category, amount } = action.payload;
+			console.log(action.payload, state)
+			state.category[category.toLowerCase()] += amount;
+		},
+		setTotalIncome: (state, action: PayloadAction<number>) => {
+			state.income += action.payload;
+
+			state.category.needs = state.income * 0.5;
+			state.category.wants = state.income * 0.3;
+			state.category.savings = state.income * 0.2;
+		},
 		// }
 	}
 });
@@ -123,5 +139,7 @@ export const {
 	// addTransaction,
 	// removeTransaction,
 	// updateTransaction
+	updateCategoryTotal,
+	setTotalIncome
 } = transactionSlice.actions;
 export default transactionSlice.reducer;
