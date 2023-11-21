@@ -14,12 +14,13 @@ interface FormCustomInputProps {
 	description?: string;
 	requiered?: boolean;
 	field: any;
+	className?: string;
 	type?: "number" | "string";
 }
 
 const FormCustomInput = (props: FormCustomInputProps) => {
 	return (
-		<FormItem>
+		<FormItem className={props.className}>
 			{props.label && (
 				<FormLabel>
 					{props.label}

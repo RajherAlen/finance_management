@@ -4,17 +4,14 @@ import TransactionCard from "./TransactionCard";
 import { useAppSelector } from "src/store/hooks";
 
 const TransactionListCard = () => {
-	const transactionStore = useAppSelector((state) => state.transactionStore);
-
-	const totalExpense = transactionStore.transactions
-		.filter((transaction: any) => transaction.type === "expense")
-		.reduce((sum: number, transaction: any) => sum + transaction.amount, 0);
+	const {income, totalExpense, totalSavings} = useAppSelector((state) => state.transactionStore);
 
 	return (
 		<div className="flex gap-3 flex-wrap">
-			<TransactionCard amount={transactionStore.income} type="income" />
+			<TransactionCard amount={income} type="income" />
 			<TransactionCard amount={totalExpense} type="expense" />
-			<TransactionCard amount={0} type="savings" />
+			<TransactionCard amount={totalSavings} type="savings" />
+			<TransactionCard amount={income - totalExpense} type="budget" />
 		</div>
 	);
 };

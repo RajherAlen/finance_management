@@ -58,7 +58,7 @@ const AnalyticsBudgetSplitChart = () => {
 			{
 				label: "Budget",
 				data: [needs, wants, savings],
-				backgroundColor: "rgba(16, 185, 129, 0.5)"
+				backgroundColor: "rgba(16, 185, 129, 0.9)"
 			},
 			{
 				label: "Spent",
@@ -67,13 +67,13 @@ const AnalyticsBudgetSplitChart = () => {
 					spendByCategory.wants,
 					spendByCategory.savings
 				],
-				backgroundColor: "rgba(239, 68, 68, 0.5)"
+				backgroundColor: "rgba(244, 63, 94, 0.9)"
 			}
 		]
 	};
 
 	return (
-		<div>
+		<div className="flex-1">
 			<p className="font-semibold text-sm text-gray-700 mb-2">
 				Budget vs Actual
 			</p>

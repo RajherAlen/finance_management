@@ -3,7 +3,7 @@ export interface Transaction {
 	amount: number;
 	description: string;
 	category: string;
-	date?: string;
+	date: Date;
 	type: "income" | "expense";
 }
 
@@ -14,6 +14,7 @@ interface CategoryTotals {
 export interface FinancialState {
 	income: number;
 	totalExpense: number;
+	totalSavings: number;
 	spendByCategory: CategoryTotals;
 	budgetCategory: CategoryTotals;
 	transactions: Transaction[];

@@ -3,21 +3,23 @@ import MenuItem from "./MenuItem";
 
 const Menu = () => {
 	return (
-		<div className="w-52 border-r px-6">
-			<div className="py-5 font-bold">FM</div>
+		<div className="h-screen p-6 bg-indigo-50 bg-opacity-50">
+			<div className="w-52 px-4 rounded-lg h-full bg-white">
+				<div className="py-5 font-bold">FM</div>
 
-			<div className="border-t py-6">
-				<div>
-					<MenuItem
-						to="/"
-						title="Dashboard"
-						icon={LayoutDashboardIcon}
-					/>
-					<MenuItem
-						to="/analytics"
-						title="Analytics"
-						icon={BarChartBig}
-					/>
+				<div className="border-t py-6">
+					<div>
+						<MenuItem
+							to="/"
+							title="Dashboard"
+							icon={LayoutDashboardIcon}
+						/>
+						<MenuItem
+							to="/analytics"
+							title="Analytics"
+							icon={BarChartBig}
+						/>
+					</div>
 				</div>
 			</div>
 		</div>

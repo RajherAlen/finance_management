@@ -11,9 +11,9 @@ const AppProvider = ({ children }: { children: React.ReactNode }) =>
         <Provider store={store}>
             <Menu />
 
-            <div className='w-full'>
+            <div className='w-full bg-indigo-50 bg-opacity-50 py-6'>
                 <Header />
-                <div className='w-full h-screen p-4 overflow-auto bg-indigo-50 bg-opacity-50'>
+                <div className='w-full h-screen p-4 overflow-auto'>
                     {children}
                 </div>
             </div>

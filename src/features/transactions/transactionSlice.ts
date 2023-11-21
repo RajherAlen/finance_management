@@ -4,6 +4,7 @@ import { FinancialState, Transaction } from "./model/transactionModel";
 const initialState: FinancialState = {
 	income: 0,
 	totalExpense: 0,
+	totalSavings: 0,
 	spendByCategory: {
 		wants: 0,
 		needs: 0,
@@ -22,7 +23,17 @@ const transactionSlice = createSlice({
 	initialState,
 	reducers: {
 		addTransaction: (state: FinancialState, action: PayloadAction<Transaction>) => {
+			const { category, amount } = action.payload;
+			
 			state.transactions = [...state.transactions, action.payload];
+
+			if(category.toLowerCase() === "savings") {
+				state.totalSavings += amount
+			} else if(category.toLowerCase() === "expense") {
+				state.totalExpense += amount
+			}
+			
+			state.spendByCategory[category.toLowerCase()] += amount;
 		},
 		setTotalIncome: (state, action: PayloadAction<number>) => {
 			state.income += action.payload;
@@ -34,17 +45,11 @@ const transactionSlice = createSlice({
 		updateTotalExpense: (state, action: PayloadAction<number>) => {
 			state.totalExpense += action.payload;
 		},
-		updateCategoryTotal: (state: FinancialState, action: PayloadAction<{ category: string; amount: number }>) => {
-			const { category, amount } = action.payload;
-			
-			state.spendByCategory[category.toLowerCase()] += amount;
-		},
 	}
 });
 
 export const {
 	addTransaction,
-	updateCategoryTotal,
 	setTotalIncome,
 	updateTotalExpense
 } = transactionSlice.actions;

@@ -12,13 +12,10 @@ import FormSelect from "src/components/form/FormSelect";
 import { categoryOptions } from "../model/categoryOptions";
 import { expenseSchema } from "../model/expenseSchema";
 import { useAppDispatch } from "src/store/hooks";
-import { addTransaction, updateCategoryTotal, updateTotalExpense } from "../transactionSlice";
-import Modal from "src/components/dialog/Modal";
-import { PlusCircleIcon } from "lucide-react";
+import { addTransaction, updateTotalExpense } from "../transactionSlice";
 
 const AddExpense = () => {
 	const dispatch = useAppDispatch();
-	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	const form = useForm<z.infer<typeof expenseSchema>>({
 		resolver: zodResolver(expenseSchema),
@@ -35,30 +32,23 @@ const AddExpense = () => {
 				id: 1,
 				amount: values.amount,
 				category: values.category,
-				date: `${new Date()}`,
+				date: new Date(),
 				description: values.description,
 				type: "expense"
 			})
 		);
 		dispatch(updateTotalExpense(values.amount));
-		dispatch(updateCategoryTotal({category: values.category, amount: values.amount}));
 
-
-		setIsOpen(false);
+		form.reset({
+			amount: 0,
+			description: ""
+		});
 	};
 
 	return (
-		<Modal
-			open={isOpen}
-			onOpenChange={() => setIsOpen(!isOpen)}
-			trigger={<PlusCircleIcon stroke="#4b5563" width="16" height="16" />}
-			title={`Add expense`}
-		>
-			<Form {...form}>
-				<form
-					onSubmit={form.handleSubmit(onSubmit)}
-					className="space-y-3"
-				>
+		<Form {...form}>
+			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+				<div className="flex gap-4">
 					<FormField
 						control={form.control}
 						name="amount"
@@ -78,6 +68,7 @@ const AddExpense = () => {
 							<FormSelect
 								fullWidth
 								requiered
+								className="flex-1"
 								label="Category"
 								placeholder="Select Category"
 								field={field}
@@ -85,22 +76,23 @@ const AddExpense = () => {
 							/>
 						)}
 					/>
-					<FormField
-						control={form.control}
-						name="description"
-						render={({ field }) => (
-							<FormCustomInput
-								label="Description"
-								field={field}
-							/>
-						)}
-					/>
-					<Button type="submit" className="mt-5">
-						Submit
-					</Button>
-				</form>
-			</Form>
-		</Modal>
+				</div>
+				<FormField
+					control={form.control}
+					name="description"
+					render={({ field }) => (
+						<FormCustomInput
+							requiered
+							label="Short description"
+							field={field}
+						/>
+					)}
+				/>
+				<Button type="submit" className="mt-5">
+					Add Expense
+				</Button>
+			</form>
+		</Form>
 	);
 };
 
