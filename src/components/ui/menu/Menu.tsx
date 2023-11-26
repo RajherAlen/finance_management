@@ -3,7 +3,7 @@ import MenuItem from "./MenuItem";
 
 const Menu = () => {
 	return (
-		<div className="h-screen p-6 bg-indigo-50 bg-opacity-50">
+		<div className="h-screen p-6">
 			<div className="w-52 px-4 rounded-lg h-full bg-white">
 				<div className="py-5 font-bold">FM</div>
 

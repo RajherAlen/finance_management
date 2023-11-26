@@ -15,7 +15,7 @@ interface FormCustomInputProps {
 	requiered?: boolean;
 	field: any;
 	className?: string;
-	type?: "number" | "string";
+	type?: string;
 }
 
 const FormCustomInput = (props: FormCustomInputProps) => {
