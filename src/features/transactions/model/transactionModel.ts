@@ -2,14 +2,22 @@ export interface Transaction {
 	id: number;
 	amount: number;
 	description: string;
-	category?: string;
-	date?: string;
+	category: string;
+	date: Date;
 	type: "income" | "expense";
+}
+
+interface CategoryTotals {
+	[key: string]: number; // Index signature
 }
 
 export interface FinancialState {
 	income: number;
 	totalExpense: number;
-	savings: number;
+	totalSavings: number;
+	spendByCategory: CategoryTotals;
+	budgetCategory: CategoryTotals;
 	transactions: Transaction[];
 }
+
+export type CategoryType = "wants" | "needs" | "savings";

@@ -7,5 +7,5 @@ export const incomeSchema = z.object({
 			invalid_type_error: "Amount must be a number"
 		})
 		.positive({ message: "Amount must be positive number" }),
-	description: z.string().max(200)
+	// description: z.string().max(200)
 });

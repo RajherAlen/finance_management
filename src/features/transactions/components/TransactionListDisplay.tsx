@@ -1,19 +1,26 @@
-"use client";
-import React from "react";
-import TransactionCard from "./TransactionCard";
-import { useAppSelector } from "src/store/hooks";
+import Card from "src/components/card/Card";
+import AddExpense from "./AddExpense";
+
+import LastTransactions from "./LastTransactions";
+import TransactionListCard from "./TransactionListCard";
+import Title from "src/components/text/Title";
+import { AnalyticsListDisplay } from "src/features/analytics";
 
 const TransactionListDisplay = () => {
-	const transactionStore = useAppSelector((state) => state.transactionStore);
-
-	const totalExpense = transactionStore.transactions
-		.filter((transaction: any) => transaction.type === "expense")
-		.reduce((sum: number, transaction: any) => sum + transaction.amount, 0);
-
 	return (
-		<div className="flex gap-3">
-			<TransactionCard amount={transactionStore.income} type="income" />
-			<TransactionCard amount={totalExpense} type="expense" />
+		<div className="flex gap-5 flex-wrap">
+			<div className="flex flex-col flex-1 gap-5">
+				<TransactionListCard />
+				<AnalyticsListDisplay />
+			</div>
+			<div className="w-full max-w-[500px]">
+				<Card>
+					<Title size="lg">Expense</Title>
+
+					<AddExpense />
+					<LastTransactions />
+				</Card>
+			</div>
 		</div>
 	);
 };

@@ -116,6 +116,7 @@ export interface SelectItem {
 interface SelectProps {
     placeholder: string
     fullWidth?: boolean
+    value: string
     options: SelectItem[]
     onChange: () => void
 }
@@ -124,7 +125,7 @@ const Select = (props: SelectProps) => {
     return (
         <SelectRoot onValueChange={props.onChange}>
             <SelectTrigger className={props.fullWidth ? 'w-full' : "w-[180px]"}>
-                <SelectValue placeholder={props.placeholder} />
+                {props.value ? <SelectValue placeholder={props.placeholder} /> : props.placeholder}
             </SelectTrigger>
             <SelectContent>
                 {props.options.map(item => {

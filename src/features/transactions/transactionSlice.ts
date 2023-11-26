@@ -1,127 +1,56 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { FinancialState, Transaction } from "./model/transactionModel";
 
-const initialState = {
-	income: 1200,
+const initialState: FinancialState = {
+	income: 0,
 	totalExpense: 0,
-	savings: 12300,
-	transactions: [
-		{
-			id: Math.random(),
-			amount: 200,
-			category: "Needs",
-			date: `${new Date()}`,
-			description: "values.description",
-			type: "expense"
-		},
-		{
-			id: Math.random(),
-			amount: 600,
-			category: "Needs",
-			date: `${new Date()}`,
-			description: "values.description",
-			type: "expense"
-		},
-		{
-			id: Math.random(),
-			amount: 60,
-			category: "Needs",
-			date: `${new Date()}`,
-			description: "values.description",
-			type: "expense"
-		},
-		{
-			id: Math.random(),
-			amount: 900,
-			category: "Needs",
-			date: `${new Date()}`,
-			description: "values.description",
-			type: "expense"
-		},
-		{
-			id: Math.random(),
-			amount: 400,
-			category: "Wants",
-			date: `${new Date()}`,
-			description: "values.description",
-			type: "expense"
-		},
-		{
-			id: Math.random(),
-			amount: 60,
-			category: "Wants",
-			date: `${new Date()}`,
-			description: "values.description",
-			type: "expense"
-		},
-		{
-			id: Math.random(),
-			amount: 690,
-			category: "Wants",
-			date: `${new Date()}`,
-			description: "values.description",
-			type: "expense"
-		},
-		{
-			id: Math.random(),
-			amount: 780,
-			category: "Wants",
-			date: `${new Date()}`,
-			description: "values.description",
-			type: "expense"
-		}
-	]
+	totalSavings: 0,
+	spendByCategory: {
+		wants: 0,
+		needs: 0,
+		savings: 0
+	},
+	budgetCategory: {
+		wants: 0,
+		needs: 0,
+		savings: 0
+	},
+	transactions: []
 };
 
 const transactionSlice = createSlice({
 	name: "transactions",
 	initialState,
 	reducers: {
-		// addTransaction: (
-		// 	state: FinancialState,
-		// 	action: PayloadAction<Transaction>
-		// ) => {
-		// 	// Creating a new state object with the updated transactions array
-		// 	state.transactions = [...state.transactions, action.payload];
-		// },
-		// removeTransaction: (
-		// 	state: FinancialState,
-		// 	action: PayloadAction<Transaction>
-		// ) => {
-		// 	// Using filter to create a new array with the specified transaction removed
-		// 	state.transactions = state.transactions.filter(
-		// 		(transaction: Transaction) =>
-		// 			transaction.id !== action.payload.id ||
-		// 			transaction.category !== action.payload.category
-		// 	);
-		// },
-		// updateTransaction: (
-		// 	state: FinancialState,
-		// 	action: PayloadAction<Transaction>
-		// ) => {
-		// 	const updatedTransaction = action.payload;
-		// 	const transactionIndex = state.transactions.findIndex(
-		// 		transaction =>
-		// 			transaction.id === updatedTransaction.id &&
-		// 			transaction.category === updatedTransaction.category
-		// 	);
+		addTransaction: (state: FinancialState, action: PayloadAction<Transaction>) => {
+			const { category, amount } = action.payload;
+			
+			state.transactions = [...state.transactions, action.payload];
 
-		// 	if (transactionIndex !== -1) {
-		// 		// Creating a new array with the updated transaction
-		// 		state.transactions = state.transactions.map(
-		// 			(transaction, index) =>
-		// 				index === transactionIndex
-		// 					? updatedTransaction
-		// 					: transaction
-		// 		);
-		// 	}
-		// }
+			if(category.toLowerCase() === "savings") {
+				state.totalSavings += amount
+			} else if(category.toLowerCase() === "expense") {
+				state.totalExpense += amount
+			}
+			
+			state.spendByCategory[category.toLowerCase()] += amount;
+		},
+		setTotalIncome: (state, action: PayloadAction<number>) => {
+			state.income += action.payload;
+			
+			state.budgetCategory.needs = state.income * 0.5;
+			state.budgetCategory.wants = state.income * 0.3;
+			state.budgetCategory.savings = state.income * 0.2;
+		},
+		updateTotalExpense: (state, action: PayloadAction<number>) => {
+			state.totalExpense += action.payload;
+		},
 	}
 });
 
 export const {
-	// addTransaction,
-	// removeTransaction,
-	// updateTransaction
+	addTransaction,
+	setTotalIncome,
+	updateTotalExpense
 } = transactionSlice.actions;
 export default transactionSlice.reducer;
