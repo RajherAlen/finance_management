@@ -24,8 +24,8 @@ const TransactionIcons = ({ type }: { type: string }) => {
 			transactionTypeColor = "info";
 			break;
 		default:
-			transactionTypeColor = "info";
-			transactionIcon = <Wallet />;
+			transactionTypeColor = "error";
+			transactionIcon = <Wallet stroke="#dc2626" />;
 			break;
 	}
 
