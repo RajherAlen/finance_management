@@ -10,16 +10,16 @@ const LoginInfoCard = ({ currentStep }: { currentStep: number }) => {
 	let loginInfoCard;
 
 	switch (currentStep) {
-		case 1:
+		case 0:
 			loginInfoCard = <BudgetaryBlueprint />;
 			break;
-		case 2:
+		case 1:
 			loginInfoCard = <ProfilePersona />;
 			break;
-		case 3:
+		case 2:
 			loginInfoCard = <FinancialFoundations />;
 			break;
-		case 4:
+		case 3:
 			loginInfoCard = <GoalSettingExpedition />;
 			break;
 		default:

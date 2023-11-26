@@ -16,7 +16,7 @@ const Stepper = ({ totalSteps, currentStep }: StepperProps) => {
 					key={Math.random()}
 					className={clsx(
 						"h-1 bg-[#D3DADD] w-5 rounded",
-						currentStep === index + 1 ? "bg-[#F75708] w-[64px]" : ""
+						currentStep === index ? "bg-[#F75708] w-[64px]" : ""
 					)}
 				></div>
 			))}

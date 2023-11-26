@@ -13,9 +13,12 @@ import { Form, FormField } from "src/components/form/form";
 import TransactionIcons from "src/features/transactions/components/TransactionIcons";
 
 import Button from "src/components/button/Button";
-import Card from "src/components/card/Card";
+import { nextStep } from "../loginSlice";
+import { useAppDispatch } from "src/store/hooks";
 
 const LoginForm = () => {
+	const dispatch = useAppDispatch();
+
 	const form = useForm<z.infer<typeof loginSchema>>({
 		resolver: zodResolver(loginSchema),
 		defaultValues: {
@@ -26,10 +29,11 @@ const LoginForm = () => {
 
 	const onSubmit = (data: z.infer<typeof loginSchema>) => {
 		console.log(data);
+		dispatch(nextStep());
 	};
 
 	return (
-		<Card className="flex-1 h-full flex flex-col justify-center items-center rounded-2xl">
+		<>
 			<TransactionIcons type="login" width={48} height={48} />
 			<h1 className="text-3xl font-bold mt-5 mb-3">Login</h1>
 
@@ -52,7 +56,7 @@ const LoginForm = () => {
 									placeholder="Enter email address"
 									label="Enter email"
 									className="w-full"
-                                    type="email"
+									type="email"
 									field={field}
 								/>
 							)}
@@ -83,7 +87,7 @@ const LoginForm = () => {
 					</form>
 				</Form>
 			</div>
-		</Card>
+		</>
 	);
 };
 

@@ -8,7 +8,11 @@ interface TransactionIconsProps {
 	height?: number;
 }
 
-const TransactionIcons = ({ type, width, height }: TransactionIconsProps) => {
+const TransactionIcons = ({
+	type,
+	width = 24,
+	height = 24
+}: TransactionIconsProps) => {
 	let transactionIcon;
 	let transactionTypeColor:
 		| "success"
@@ -18,8 +22,8 @@ const TransactionIcons = ({ type, width, height }: TransactionIconsProps) => {
 		| "caution";
 
 	const iconSize = {
-		width,
-		height
+		width: width,
+		height: height
 	};
 
 	switch (type) {
@@ -36,7 +40,9 @@ const TransactionIcons = ({ type, width, height }: TransactionIconsProps) => {
 			transactionTypeColor = "success";
 			break;
 		case "budget":
-			transactionIcon = <CircleDollarSign stroke="#0ea5e9" {...iconSize} />
+			transactionIcon = (
+				<CircleDollarSign stroke="#0ea5e9" {...iconSize} />
+			);
 			transactionTypeColor = "info";
 			break;
 		case "login":
