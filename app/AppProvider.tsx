@@ -13,7 +13,7 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<Provider store={store}>
 			{isLoginPage ? (
-				<div className="w-full h-screen p-4 overflow-auto">
+				<div className="w-full h-screen p-12 overflow-auto">
 					{children}
 				</div>
 			) : (

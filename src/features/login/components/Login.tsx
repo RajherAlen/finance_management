@@ -6,7 +6,7 @@ const Login = () => {
 	return (
 		<div className="flex gap-12 h-full">
 			<LoginForm />
-			<LoginInfoCard />
+			<LoginInfoCard currentStep={4} />
 		</div>
 	);
 };

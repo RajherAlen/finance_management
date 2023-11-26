@@ -16,7 +16,9 @@ const cardVariants = cva("rounded-md", {
 		size: {
 			default: "p-3",
 			sml: "p-2",
-			med: "p-4"
+			med: "p-4",
+			lrg: "p-6",
+			xlrg: "p-8",
 		}
 	},
 	defaultVariants: {
