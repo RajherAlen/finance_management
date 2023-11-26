@@ -31,7 +31,7 @@ const Login = () => {
 
 	return (
 		<div className="flex gap-12 h-full">
-			<Card className="flex-1 h-full flex flex-col justify-center items-center rounded-2xl">
+			<Card className="flex-1 h-full flex flex-col justify-center items-center rounded-2xl" size="xlrg">
 				{formContent}
 			</Card>
 			<LoginInfoCard currentStep={loginStore.currentStep} />
