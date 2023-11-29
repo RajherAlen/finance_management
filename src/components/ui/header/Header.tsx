@@ -11,7 +11,7 @@ const Header = () => {
 					<p className="text-sm font-bold text-slate-600">
 						Alen Rajher
 					</p>
-					<p className="text-xs text-gray-400">
+					<p className="text-xs text-muted">
 						arajher@mono.software
 					</p>
 				</div>

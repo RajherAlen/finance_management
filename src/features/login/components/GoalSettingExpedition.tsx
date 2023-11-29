@@ -15,7 +15,7 @@ const GoalSettingExpedition = () => {
 			<h1 className="text-xl font-bold mt-5 mb-3">
 				Goal Setting Expedition
 			</h1>
-			<p className="text-sm text-[#A3AEB4] font-normal text-center">
+			<p className="text-sm text-muted font-normal text-center">
 				Articulate your short-term and long-term financial aspirations.
 				Specify monetary targets, desired timelines, and prioritize each
 				goal accordingly.

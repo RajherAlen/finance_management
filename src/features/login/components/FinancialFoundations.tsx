@@ -15,7 +15,7 @@ const FinancialFoundations = () => {
 			<h1 className="text-xl font-bold mt-5 mb-3">
 				Financial Foundations
 			</h1>
-			<p className="text-sm text-[#A3AEB4] font-normal text-center">
+			<p className="text-sm text-muted font-normal text-center">
 				Disclose your income sources and enumerate regular expenses for
 				a comprehensive financial overview.
 			</p>

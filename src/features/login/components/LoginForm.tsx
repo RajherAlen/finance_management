@@ -13,22 +13,23 @@ import { Form, FormField } from "src/components/form/form";
 import TransactionIcons from "src/features/transactions/components/TransactionIcons";
 
 import Button from "src/components/button/Button";
-import { nextStep } from "../loginSlice";
-import { useAppDispatch } from "src/store/hooks";
+import { nextStep, setLoginInfo } from "../loginSlice";
+import { useAppDispatch, useAppSelector } from "src/store/hooks";
 
 const LoginForm = () => {
+	const loginStore = useAppSelector((state) => state.loginStore);
 	const dispatch = useAppDispatch();
 
 	const form = useForm<z.infer<typeof loginSchema>>({
 		resolver: zodResolver(loginSchema),
 		defaultValues: {
-			email: "",
-			password: ""
+			email: loginStore.email,
+			password: loginStore.password
 		}
 	});
 
 	const onSubmit = (data: z.infer<typeof loginSchema>) => {
-		console.log(data);
+		dispatch(setLoginInfo(data));
 		dispatch(nextStep());
 	};
 
@@ -37,7 +38,7 @@ const LoginForm = () => {
 			<TransactionIcons type="login" width={48} height={48} />
 			<h1 className="text-3xl font-bold mt-5 mb-3">Login</h1>
 
-			<p className="text-sm text-[#A3AEB4] font-normal mb-8">
+			<p className="text-sm text-muted font-normal mb-8">
 				Enter your credensialts to sign in to application
 			</p>
 

@@ -7,6 +7,7 @@ import { useAppSelector } from "src/store/hooks";
 import OnboardingStep1 from "./onboarding/OnboardingStep1";
 import Card from "src/components/card/Card";
 import OnboardingStep2 from "./onboarding/OnboardingStep2";
+import OnboardingStep3 from "./onboarding/OnboardingStep3";
 
 const Login = () => {
 	const loginStore = useAppSelector((state) => state.loginStore);
@@ -23,7 +24,7 @@ const Login = () => {
 			formContent = <OnboardingStep2 />;
 			break;
 		case 3:
-			formContent = <OnboardingStep2 />;
+			formContent = <OnboardingStep3 />;
 			break;
 		default:
 			break;

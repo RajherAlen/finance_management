@@ -13,7 +13,7 @@ const ProfilePersona = () => {
 				alt="Picture of the author"
 			/>
 			<h1 className="text-xl font-bold mt-5 mb-3">Profile Persona</h1>
-			<p className="text-sm text-[#A3AEB4] font-normal text-center">
+			<p className="text-sm text-muted font-normal text-center">
 				Provide your personal details, including your name and date of
 				birth and consider personalizing your account with a profile
 				image.

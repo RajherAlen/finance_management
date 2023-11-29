@@ -16,7 +16,7 @@ const TransactionCard = (props: TransactionCardProps) => {
 				<TransactionIcons type={props.type} />
 
 				<div className="flex flex-col flex-1 gap-1">
-					<p className="font-semibold text-xs text-gray-400 uppercase">
+					<p className="font-semibold text-xs text-muted uppercase">
 						{props.type}
 					</p>
 					<p className="font-bold text-sm">

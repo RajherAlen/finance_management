@@ -13,7 +13,7 @@ const BudgetaryBlueprint = () => {
 				alt="Picture of the author"
 			/>
 			<h1 className="text-xl font-bold mt-5 mb-3">Budgetary Blueprint</h1>
-			<p className="text-sm text-[#A3AEB4] font-normal text-center">
+			<p className="text-sm text-muted font-normal text-center">
 				Engineer a budget by delineating spending limits for distinct
 				categories. Tailor your budget to align seamlessly with your
 				financial objectives.

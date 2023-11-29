@@ -14,7 +14,7 @@ const ExpenseCard = (props: Transaction) => {
 
 				<div>
 					<p className="text-sm font-semibold mb-[2px]">{description}</p>
-					<p className="text-xs text-gray-400">{formatDate({ date: date, format: "D.MM.YYYY" })}</p>
+					<p className="text-xs text-muted">{formatDate({ date: date, format: "D.MM.YYYY" })}</p>
 				</div>
 			</div>
 			<p className="text-sm font-bold">{formatCurrency(amount)}</p>

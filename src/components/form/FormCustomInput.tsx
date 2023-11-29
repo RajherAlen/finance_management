@@ -7,6 +7,7 @@ import {
 	FormMessage
 } from "./form";
 import { Input } from "../input/Input";
+import { InputType } from "zlib";
 
 interface FormCustomInputProps {
 	label: string;
@@ -15,7 +16,7 @@ interface FormCustomInputProps {
 	requiered?: boolean;
 	field: any;
 	className?: string;
-	type?: string;
+	type?: InputType;
 }
 
 const FormCustomInput = (props: FormCustomInputProps) => {
