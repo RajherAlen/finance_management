@@ -10,7 +10,7 @@ import { Input } from "../input/Input";
 import { InputType } from "zlib";
 
 interface FormCustomInputProps {
-	label: string;
+	label?: string;
 	placeholder?: string;
 	description?: string;
 	requiered?: boolean;

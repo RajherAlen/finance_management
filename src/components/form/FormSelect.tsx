@@ -9,7 +9,7 @@ import {
 import Select, { SelectItem } from "../select/Select";
 
 interface FormSelectProps {
-	label: string;
+	label?: string;
 	placeholder: string;
 	description?: string;
 	requiered?: boolean;

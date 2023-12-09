@@ -79,7 +79,6 @@ const LoginForm = () => {
 
 						<Button
 							type="submit"
-							variant="primary"
 							size="lg"
 							className="mt-5 w-full"
 						>

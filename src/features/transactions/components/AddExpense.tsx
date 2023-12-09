@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -41,6 +41,7 @@ const AddExpense = () => {
 
 		form.reset({
 			amount: 0,
+			category: "",
 			description: ""
 		});
 	};

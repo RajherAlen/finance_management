@@ -12,7 +12,7 @@ const cardVariants = cva("", {
 			warning: "bg-orange-500 bg-opacity-10",
 			error: "bg-red-500 bg-opacity-10",
 			info: "bg-sky-500 bg-opacity-10",
-			caution: "bg-[#F8F8A0]"
+			caution: "bg-primary"
 		},
 		size: {
 			default: "p-3",
@@ -29,7 +29,8 @@ const cardVariants = cva("", {
 	},
 	defaultVariants: {
 		variant: "default",
-		size: "default"
+		size: "default",
+		radius: "md"
 	}
 });
 

@@ -16,7 +16,7 @@ const LastTransactions = () => {
 			
 			<div className="flex flex-col gap-4">
 				{transactions.map((transaction) => {
-					return <ExpenseCard {...transaction} key={transaction.id} />;
+					return <ExpenseCard {...transaction} key={Math.random()} />;
 				})}
 			</div>
 		</div>

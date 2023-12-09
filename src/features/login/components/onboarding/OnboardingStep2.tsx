@@ -1,22 +1,23 @@
 "use client";
 
-import React, { useEffect } from "react";
-import * as z from "zod";
-import { useForm } from "react-hook-form";
+import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
 import FormCustomInput from "src/components/form/FormCustomInput";
 import { Form, FormField } from "src/components/form/form";
 
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
 
-import OnboardingLayout from "./OnboardingLayout";
+import LastTransactions from "src/features/transactions/components/LastTransactions";
+import AddTransaction from "src/features/transactions/components/AddTransaction";
 import { IncomeAndExpensesSchema } from "../../model/IncomeAndExpensesSchema";
-import { setAccountInfo } from "../../loginSlice";
-import Card from "src/components/card/Card";
+import OnboardingLayout from "./OnboardingLayout";
 import Button from "src/components/button/Button";
+import { setAccountInfo } from "../../loginSlice";
 import { PlusCircleIcon } from "lucide-react";
-import Separator from "src/components/separator/Separator";
+import Card from "src/components/card/Card";
 
 const OnboardingStep2 = () => {
 	const transactionStore = useAppSelector((state) => state.transactionStore);
@@ -40,16 +41,17 @@ const OnboardingStep2 = () => {
 			formIsValid={form.formState.isValid}
 		>
 			<p className="text-3xl font-bold mb-8">Income and Expenses</p>
-			<Form {...form}>
-				<form
-					onSubmit={form.handleSubmit(onSubmit)}
-					className="space-y-5 h-full"
-				>
-					<div className="grid grid-cols-2 gap-10 h-full">
+			<div className="grid grid-cols-2 gap-10 h-full">
+				<Form {...form}>
+					<form
+						onSubmit={form.handleSubmit(onSubmit)}
+						className="space-y-5 h-full"
+					>
 						<Card variant="outline" radius="xlg" size="xlrg">
 							<p className="text-xl mb-4 font-semibold">
 								Add your income
 							</p>
+
 							<FormField
 								control={form.control}
 								name="incomeAmount"
@@ -62,6 +64,7 @@ const OnboardingStep2 = () => {
 									/>
 								)}
 							/>
+
 							<Button variant="outline" className="mt-3">
 								<PlusCircleIcon
 									width={16}
@@ -70,30 +73,20 @@ const OnboardingStep2 = () => {
 								/>
 								Add
 							</Button>
-
-							<Separator />
 						</Card>
-						<Card variant="outline" radius="xlg" size="xlrg">
-							<p className="text-xl mb-4 font-semibold">
-								Add your recurring expenses
-							</p>
+					</form>
+				</Form>
 
-							<FormField
-								control={form.control}
-								name="expenseAmount"
-								render={({ field }) => (
-									<FormCustomInput
-										label="Enter Amount"
-										placeholder="Enter Amount"
-										className="w-full"
-										field={field}
-									/>
-								)}
-							/>
-						</Card>
-					</div>
-				</form>
-			</Form>
+				<Card variant="outline" radius="xlg" size="xlrg">
+					<p className="text-xl mb-4 font-semibold">
+						Add your recurring expenses
+					</p>
+
+					<AddTransaction type="expense" />
+
+					<LastTransactions />
+				</Card>
+			</div>
 		</OnboardingLayout>
 	);
 };
