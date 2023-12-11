@@ -1,88 +1,64 @@
 "use client";
 
-import React from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-
-import FormCustomInput from "src/components/form/FormCustomInput";
-import { Form, FormField } from "src/components/form/form";
+import React, { useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
 
 import LastTransactions from "src/features/transactions/components/LastTransactions";
-import AddTransaction from "src/features/transactions/components/AddTransaction";
-import { IncomeAndExpensesSchema } from "../../model/IncomeAndExpensesSchema";
 import OnboardingLayout from "./OnboardingLayout";
-import Button from "src/components/button/Button";
-import { setAccountInfo } from "../../loginSlice";
-import { PlusCircleIcon } from "lucide-react";
+import { nextStep } from "../../loginSlice";
 import Card from "src/components/card/Card";
+import AddIncome from "src/features/transactions/components/AddIncome";
+import AddExpense from "src/features/transactions/components/AddExpense";
+import formatCurrency from "src/lib/utils/formatCurrency";
+import TransactionIcons from "src/features/transactions/components/TransactionIcons";
 
 const OnboardingStep2 = () => {
-	const transactionStore = useAppSelector((state) => state.transactionStore);
+	const { income } = useAppSelector((state) => state.transactionStore);
 	const dispatch = useAppDispatch();
 
-	const form = useForm<z.infer<typeof IncomeAndExpensesSchema>>({
-		resolver: zodResolver(IncomeAndExpensesSchema),
-		defaultValues: {
-			incomeAmount: transactionStore.income,
-			expenseAmount: transactionStore.totalExpense
-		}
-	});
+	const [checkValidation, setCheckValidation] = useState(false);
 
-	const onSubmit = (data: z.infer<typeof IncomeAndExpensesSchema>) => {
-		dispatch(setAccountInfo(data));
+	const onSubmit = () => {
+		setCheckValidation(true);
+
+		if (income > 0) {
+			dispatch(nextStep());
+		}
 	};
 
 	return (
-		<OnboardingLayout
-			actionToContinue={form.handleSubmit(onSubmit)}
-			formIsValid={form.formState.isValid}
-		>
+		<OnboardingLayout actionToContinue={onSubmit} formIsValid={income > 0}>
 			<p className="text-3xl font-bold mb-8">Income and Expenses</p>
 			<div className="grid grid-cols-2 gap-10 h-full">
-				<Form {...form}>
-					<form
-						onSubmit={form.handleSubmit(onSubmit)}
-						className="space-y-5 h-full"
-					>
-						<Card variant="outline" radius="xlg" size="xlrg">
-							<p className="text-xl mb-4 font-semibold">
-								Add your income
-							</p>
+				<Card variant="outline" radius="xlg" size="xlrg">
+					<p className="text-xl mb-4 font-semibold">
+						Add your income
+					</p>
 
-							<FormField
-								control={form.control}
-								name="incomeAmount"
-								render={({ field }) => (
-									<FormCustomInput
-										requiered
-										label="Amount"
-										field={field}
-										type="number"
-									/>
-								)}
-							/>
+					<AddIncome checkValidation={checkValidation} />
 
-							<Button variant="outline" className="mt-3">
-								<PlusCircleIcon
-									width={16}
-									height={16}
-									stroke="#1B2327"
-								/>
-								Add
-							</Button>
-						</Card>
-					</form>
-				</Form>
+					{income > 0 && (
+						<div className="flex gap-2 mt-5">
+							<TransactionIcons type="budget" />
+							<div>
+								<p className="text-sm font-medium">
+									Total Income:
+								</p>
+								<p className="text-xl font-bold text-emerald-600">
+									{formatCurrency(income)}
+								</p>
+							</div>
+						</div>
+					)}
+				</Card>
 
 				<Card variant="outline" radius="xlg" size="xlrg">
 					<p className="text-xl mb-4 font-semibold">
 						Add your recurring expenses
 					</p>
 
-					<AddTransaction type="expense" />
+					<AddExpense required={false} />
 
 					<LastTransactions />
 				</Card>

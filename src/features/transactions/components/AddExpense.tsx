@@ -13,8 +13,9 @@ import { categoryOptions } from "../model/categoryOptions";
 import { expenseSchema } from "../model/expenseSchema";
 import { useAppDispatch } from "src/store/hooks";
 import { addTransaction, updateTotalExpense } from "../transactionSlice";
+import Card from "src/components/card/Card";
 
-const AddExpense = () => {
+const AddExpense = ({ required = true }: { required?: boolean }) => {
 	const dispatch = useAppDispatch();
 
 	const form = useForm<z.infer<typeof expenseSchema>>({
@@ -49,41 +50,42 @@ const AddExpense = () => {
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-				<div className="flex gap-4">
+				<Card variant="outline" className="flex gap-4">
 					<FormField
 						control={form.control}
 						name="amount"
 						render={({ field }) => (
 							<FormCustomInput
-								requiered
-								label="Amount"
+								requiered={required}
 								field={field}
+								inputClassName="h-6 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
 								type="number"
 							/>
 						)}
 					/>
+					<div className="border-1 border-l"></div>
 					<FormField
 						control={form.control}
 						name="category"
 						render={({ field }) => (
 							<FormSelect
 								fullWidth
-								requiered
+								requiered={required}
+								ghostSelect
 								className="flex-1"
-								label="Category"
 								placeholder="Select Category"
 								field={field}
 								options={categoryOptions}
 							/>
 						)}
 					/>
-				</div>
+				</Card>
 				<FormField
 					control={form.control}
 					name="description"
 					render={({ field }) => (
 						<FormCustomInput
-							requiered
+							requiered={required}
 							label="Short description"
 							field={field}
 						/>

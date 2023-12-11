@@ -56,7 +56,7 @@ const TransactionIcons = ({
 	}
 
 	return (
-		<Card variant={transactionTypeColor} size="sml">
+		<Card variant={transactionTypeColor} size="sml" className="flex items-center">
 			{transactionIcon}
 		</Card>
 	);

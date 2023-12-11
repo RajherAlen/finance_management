@@ -16,6 +16,7 @@ interface FormCustomInputProps {
 	requiered?: boolean;
 	field: any;
 	className?: string;
+	inputClassName?: string;
 	type?: InputType;
 }
 
@@ -34,6 +35,7 @@ const FormCustomInput = (props: FormCustomInputProps) => {
 				<Input
 					placeholder={props.placeholder}
 					type={props.type}
+					className={props.inputClassName}
 					{...props.field}
 				/>
 			</FormControl>

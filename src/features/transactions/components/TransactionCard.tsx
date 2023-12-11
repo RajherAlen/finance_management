@@ -23,12 +23,6 @@ const TransactionCard = (props: TransactionCardProps) => {
 						{formatCurrency(props.amount ? props.amount : 0)}
 					</p>
 				</div>
-
-				{props.type === "income" && (
-					<div className="flex items-start">
-						<AddTransaction type={props.type} />
-					</div>
-				)}
 			</div>
 		</Card>
 	);

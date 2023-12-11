@@ -17,6 +17,7 @@ interface FormSelectProps {
 	options: SelectItem[];
 	fullWidth?: boolean;
 	className?: string;
+	ghostSelect?: boolean;
 }
 
 const FormSelect = (props: FormSelectProps) => {
@@ -37,6 +38,7 @@ const FormSelect = (props: FormSelectProps) => {
 					fullWidth={props.fullWidth}
 					placeholder={props.placeholder}
 					options={props.options}
+					ghostSelect={props.ghostSelect}
 				/>
 			</FormControl>
 			{props.description && (
