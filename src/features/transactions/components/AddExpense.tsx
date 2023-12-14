@@ -5,7 +5,12 @@ import React, { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Form, FormField } from "src/components/form/form";
+import {
+	Form,
+	FormDescription,
+	FormField,
+	FormMessage
+} from "src/components/form/form";
 import Button from "src/components/button/Button";
 import FormCustomInput from "src/components/form/FormCustomInput";
 import FormSelect from "src/components/form/FormSelect";
@@ -14,6 +19,8 @@ import { expenseSchema } from "../model/expenseSchema";
 import { useAppDispatch } from "src/store/hooks";
 import { addTransaction, updateTotalExpense } from "../transactionSlice";
 import Card from "src/components/card/Card";
+import { PlusCircleIcon } from "lucide-react";
+import { extractErrorMessages } from "src/lib/utils/extractErrorMessage";
 
 const AddExpense = ({ required = true }: { required?: boolean }) => {
 	const dispatch = useAppDispatch();
@@ -22,8 +29,7 @@ const AddExpense = ({ required = true }: { required?: boolean }) => {
 		resolver: zodResolver(expenseSchema),
 		defaultValues: {
 			amount: 0,
-			category: "",
-			description: ""
+			category: ""
 		}
 	});
 
@@ -34,66 +40,76 @@ const AddExpense = ({ required = true }: { required?: boolean }) => {
 				amount: values.amount,
 				category: values.category,
 				date: new Date(),
-				description: values.description,
 				type: "expense"
 			})
 		);
+
 		dispatch(updateTotalExpense(values.amount));
 
 		form.reset({
 			amount: 0,
-			category: "",
-			description: ""
+			category: ""
 		});
 	};
 
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-				<Card variant="outline" className="flex gap-4">
-					<FormField
-						control={form.control}
-						name="amount"
-						render={({ field }) => (
-							<FormCustomInput
-								requiered={required}
-								field={field}
-								inputClassName="h-6 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-								type="number"
-							/>
-						)}
-					/>
-					<div className="border-1 border-l"></div>
-					<FormField
-						control={form.control}
-						name="category"
-						render={({ field }) => (
-							<FormSelect
-								fullWidth
-								requiered={required}
-								ghostSelect
-								className="flex-1"
-								placeholder="Select Category"
-								field={field}
-								options={categoryOptions}
-							/>
-						)}
-					/>
-				</Card>
-				<FormField
-					control={form.control}
-					name="description"
-					render={({ field }) => (
-						<FormCustomInput
-							requiered={required}
-							label="Short description"
-							field={field}
+				<div className="flex gap-2">
+					<Card variant="outline" className="flex flex-1 gap-4">
+						<FormField
+							control={form.control}
+							name="amount"
+							render={({ field }) => (
+								<FormCustomInput
+									requiered={required}
+									field={field}
+									inputClassName="h-6 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+									type="number"
+									hideErrorMessage
+								/>
+							)}
 						/>
-					)}
-				/>
-				<Button type="submit" className="mt-5">
-					Add Expense
-				</Button>
+						<div className="border-1 border-l"></div>
+						<FormField
+							control={form.control}
+							name="category"
+							render={({ field }) => (
+								<FormSelect
+									fullWidth
+									requiered={required}
+									ghostSelect
+									className="flex-1"
+									placeholder="Select Category"
+									field={field}
+									options={categoryOptions}
+									hideErrorMessage
+								/>
+							)}
+						/>
+					</Card>
+
+					<Button
+						variant="outline"
+						className="flex items-center gap-2"
+					>
+						<PlusCircleIcon
+							width={16}
+							height={16}
+							stroke="#1B2327"
+						/>
+						Add
+					</Button>
+				</div>
+				
+				<Card variant="error">
+					<p className="text-sm font-medium text-destructive">
+						{form.formState.errors?.amount?.message}
+					</p>
+					<p className="text-sm font-medium text-destructive">
+						{form.formState.errors?.category?.message}
+					</p>
+				</Card>
 			</form>
 		</Form>
 	);

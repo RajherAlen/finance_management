@@ -18,6 +18,7 @@ interface FormSelectProps {
 	fullWidth?: boolean;
 	className?: string;
 	ghostSelect?: boolean;
+	hideErrorMessage?: boolean;
 }
 
 const FormSelect = (props: FormSelectProps) => {
@@ -44,7 +45,7 @@ const FormSelect = (props: FormSelectProps) => {
 			{props.description && (
 				<FormDescription>{props.description}</FormDescription>
 			)}
-			<FormMessage />
+			{!props.hideErrorMessage && <FormMessage />}
 		</FormItem>
 	);
 };

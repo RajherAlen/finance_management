@@ -18,6 +18,7 @@ interface FormCustomInputProps {
 	className?: string;
 	inputClassName?: string;
 	type?: InputType;
+	hideErrorMessage?: boolean;
 }
 
 const FormCustomInput = (props: FormCustomInputProps) => {
@@ -42,7 +43,7 @@ const FormCustomInput = (props: FormCustomInputProps) => {
 			{props.description && (
 				<FormDescription>{props.description}</FormDescription>
 			)}
-			<FormMessage />
+			{!props.hideErrorMessage && <FormMessage />}
 		</FormItem>
 	);
 };
