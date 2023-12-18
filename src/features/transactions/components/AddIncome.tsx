@@ -13,7 +13,7 @@ import { useAppDispatch } from "src/store/hooks";
 import { setTotalIncome } from "../transactionSlice";
 import { PlusCircleIcon } from "lucide-react";
 
-const AddIncome = ({ checkValidation }: { checkValidation?: boolean }) => {
+const AddIncome = () => {
 	const dispatch = useAppDispatch();
 
 	const form = useForm<z.infer<typeof incomeSchema>>({
@@ -28,10 +28,8 @@ const AddIncome = ({ checkValidation }: { checkValidation?: boolean }) => {
 	};
 
 	useEffect(() => {
-		if (checkValidation) {
-			form.trigger("amount");
-		}
-	}, [checkValidation, form]);
+		form.trigger("amount");
+	}, [form]);
 
 	return (
 		<Form {...form}>

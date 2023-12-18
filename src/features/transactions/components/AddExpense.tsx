@@ -19,8 +19,8 @@ import { expenseSchema } from "../model/expenseSchema";
 import { useAppDispatch } from "src/store/hooks";
 import { addTransaction, updateTotalExpense } from "../transactionSlice";
 import Card from "src/components/card/Card";
-import { PlusCircleIcon } from "lucide-react";
-import { extractErrorMessages } from "src/lib/utils/extractErrorMessage";
+import { AlertCircleIcon, PlusCircleIcon } from "lucide-react";
+import FormError from "src/components/form/FormError";
 
 const AddExpense = ({ required = true }: { required?: boolean }) => {
 	const dispatch = useAppDispatch();
@@ -32,6 +32,8 @@ const AddExpense = ({ required = true }: { required?: boolean }) => {
 			category: ""
 		}
 	});
+
+	const { amount, category } = form.formState.errors;
 
 	const onSubmit = (values: z.infer<typeof expenseSchema>) => {
 		dispatch(
@@ -101,15 +103,13 @@ const AddExpense = ({ required = true }: { required?: boolean }) => {
 						Add
 					</Button>
 				</div>
-				
-				<Card variant="error">
-					<p className="text-sm font-medium text-destructive">
-						{form.formState.errors?.amount?.message}
-					</p>
-					<p className="text-sm font-medium text-destructive">
-						{form.formState.errors?.category?.message}
-					</p>
-				</Card>
+
+				{amount || category ? (
+					<Card variant="outline-error">
+						{amount && <FormError message={amount.message} />}
+						{category && <FormError message={category.message} />}
+					</Card>
+				) : null}
 			</form>
 		</Form>
 	);

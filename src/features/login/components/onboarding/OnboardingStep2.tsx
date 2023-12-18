@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 
-import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { useAppSelector } from "src/store/hooks";
 
 import LastTransactions from "src/features/transactions/components/LastTransactions";
 import OnboardingLayout from "./OnboardingLayout";
-import { nextStep } from "../../loginSlice";
 import Card from "src/components/card/Card";
 import AddIncome from "src/features/transactions/components/AddIncome";
 import AddExpense from "src/features/transactions/components/AddExpense";
@@ -15,20 +14,9 @@ import TransactionIcons from "src/features/transactions/components/TransactionIc
 
 const OnboardingStep2 = () => {
 	const { income } = useAppSelector((state) => state.transactionStore);
-	const dispatch = useAppDispatch();
-
-	const [checkValidation, setCheckValidation] = useState(false);
-
-	const onSubmit = () => {
-		setCheckValidation(true);
-
-		if (income > 0) {
-			dispatch(nextStep());
-		}
-	};
 
 	return (
-		<OnboardingLayout actionToContinue={onSubmit} formIsValid={income > 0}>
+		<OnboardingLayout formIsValid={income > 0}>
 			<p className="text-3xl font-bold mb-8">Income and Expenses</p>
 			<div className="grid grid-cols-2 gap-10 h-full">
 				<Card variant="outline" radius="xlg" size="xlrg">
@@ -36,7 +24,7 @@ const OnboardingStep2 = () => {
 						Add your income
 					</p>
 
-					<AddIncome checkValidation={checkValidation} />
+					<AddIncome />
 
 					{income > 0 && (
 						<div className="flex gap-2 mt-5">

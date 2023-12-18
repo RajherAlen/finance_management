@@ -11,6 +11,7 @@ const cardVariants = cva("", {
 			success: "bg-green-500 bg-opacity-10",
 			warning: "bg-orange-500 bg-opacity-10",
 			error: "bg-red-500 bg-opacity-10",
+			"outline-error": "border border-destructive",
 			info: "bg-sky-500 bg-opacity-10",
 			caution: "bg-primary"
 		},

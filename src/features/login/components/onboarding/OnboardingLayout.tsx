@@ -6,28 +6,37 @@ import { nextStep, prevStep } from "../../loginSlice";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Stepper from "src/components/stepper/Stepper";
+import { useRouter } from "next/navigation";
 
 interface OnboardingLayoutProps {
 	children: React.ReactNode;
-	actionToContinue: any;
+	actionToContinue?: any;
 	formIsValid: boolean
 }
 
 const OnboardingLayout = ({ children, actionToContinue, formIsValid }: OnboardingLayoutProps) => {
 	const loginStore = useAppSelector((state) => state.loginStore);
 	const dispatch = useAppDispatch();
+	const router = useRouter()
 
 	const handleBack = () => {
 		dispatch(prevStep());
 	};
 
 	const handleNext = () => {
-		actionToContinue();
+		if (loginStore.currentStep === 3) {
+			router.push("/");
+		}
 
-		if(formIsValid) {
+		if (actionToContinue) {
+			actionToContinue();
+		}
+
+		if (formIsValid) {
 			dispatch(nextStep());
 		}
 	};
+	
 	return (
 		<div className="flex flex-col h-full w-full gap-5">
 			<div>
