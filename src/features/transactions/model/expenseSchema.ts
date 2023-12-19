@@ -11,5 +11,6 @@ export const expenseSchema = z.object({
 		.string({
 			required_error: "This field is required"
 		})
-		.min(1, { message: "Please select category" })
+		.min(1, { message: "Please select category" }),
+	date: z.date()
 });
