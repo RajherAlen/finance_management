@@ -40,9 +40,7 @@ const TransactionIcons = ({
 			transactionTypeColor = "success";
 			break;
 		case "budget":
-			transactionIcon = (
-				<CircleDollarSign stroke="#0ea5e9" {...iconSize} />
-			);
+			transactionIcon = <CircleDollarSign stroke="#0ea5e9" {...iconSize} />;
 			transactionTypeColor = "info";
 			break;
 		case "login":

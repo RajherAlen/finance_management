@@ -45,12 +45,16 @@ const transactionSlice = createSlice({
 		updateTotalExpense: (state, action: PayloadAction<number>) => {
 			state.totalExpense += action.payload;
 		},
+		deleteTransaction: (state, action: PayloadAction<number>) => {
+			state.transactions = state.transactions.filter(transaction => transaction.id !== action.payload)
+		}
 	}
 });
 
 export const {
 	addTransaction,
 	setTotalIncome,
-	updateTotalExpense
+	updateTotalExpense,
+	deleteTransaction
 } = transactionSlice.actions;
 export default transactionSlice.reducer;

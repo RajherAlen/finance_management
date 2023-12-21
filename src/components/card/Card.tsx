@@ -25,7 +25,8 @@ const cardVariants = cva("", {
 		radius: {
 			sm: "rounded-sm",
 			md: "rounded-md",
-			xlg: "rounded-2xl"
+			xlg: "rounded-2xl",
+			full: 'rounded-full'
 		}
 	},
 	defaultVariants: {

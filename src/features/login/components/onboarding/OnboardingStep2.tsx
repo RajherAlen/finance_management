@@ -59,10 +59,6 @@ const OnboardingStep2 = () => {
 				</Card>
 
 				<Card variant="outline" radius="xlg" size="xlrg">
-					<p className="text-xl mb-4 font-semibold">
-						Add your recurring expenses
-					</p>
-
 					<AddExpense required={false} />
 
 					<LastTransactions />
