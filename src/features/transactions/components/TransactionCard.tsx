@@ -7,6 +7,7 @@ import AddTransaction from "./AddTransaction";
 interface TransactionCardProps {
 	type: "income" | "expense" | "savings" | "budget";
 	amount: number;
+	additionalAction?: React.ReactNode
 }
 
 const TransactionCard = (props: TransactionCardProps) => {
@@ -23,6 +24,8 @@ const TransactionCard = (props: TransactionCardProps) => {
 						{formatCurrency(props.amount ? props.amount : 0)}
 					</p>
 				</div>
+
+				{props.additionalAction}
 			</div>
 		</Card>
 	);

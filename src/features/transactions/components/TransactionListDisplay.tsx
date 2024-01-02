@@ -15,9 +15,7 @@ const TransactionListDisplay = () => {
 			</div>
 			<div className="w-full max-w-[500px]">
 				<Card>
-					<Title size="lg">Expense</Title>
-
-					<AddExpense />
+					<AddExpense customTitle="Expense" />
 					<LastTransactions />
 				</Card>
 			</div>

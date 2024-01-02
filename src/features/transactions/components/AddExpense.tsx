@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -17,26 +17,28 @@ import FormError from "src/components/form/FormError";
 import FormDatePicker from "src/components/form/FormDatePicker";
 import {v4 as uuidv4} from 'uuid';
 
-const AddExpense = ({ required = true }: { required?: boolean }) => {
+const AddExpense = ({ required = true, customTitle }: { required?: boolean, customTitle?: string }) => {
 	const dispatch = useAppDispatch();
+	const [category, setCategory] = useState<'needs' | 'wants'>('needs');
 
 	const form = useForm<z.infer<typeof expenseSchema>>({
 		resolver: zodResolver(expenseSchema),
 		defaultValues: {
 			amount: 0,
-			category: "",
+			description: "",
 			date: undefined
 		}
 	});
 
-	const { amount, category } = form.formState.errors;
+	const { amount, description } = form.formState.errors;
 
 	const onSubmit = (values: z.infer<typeof expenseSchema>) => {
 		dispatch(
 			addTransaction({
 				id: uuidv4(),
 				amount: values.amount,
-				category: values.category,
+				description: values.description,
+				category: category,
 				date: values.date,
 				type: "expense"
 			})
@@ -46,7 +48,7 @@ const AddExpense = ({ required = true }: { required?: boolean }) => {
 
 		form.reset({
 			amount: 0,
-			category: "",
+			description: "",
 			date: undefined
 		});
 	};
@@ -55,11 +57,11 @@ const AddExpense = ({ required = true }: { required?: boolean }) => {
 	return (
 		<div>
 			<div className="flex justify-between items-center mb-5">
-				<p className="text-xl font-semibold">Add your recurring expenses</p>
+				<p className="text-xl font-semibold">{customTitle ? customTitle : 'Add your recurring expenses'}</p>
 				<Card variant="outline" size="sml" radius="md">
 					<div className="flex gap-1">
-						<Button size="sm" variant="secondary">Essentials</Button>
-						<Button size="sm" variant="ghost">Non-Essentials</Button>
+						<Button size="sm" variant={category === 'needs' ? 'secondary' : 'ghost'} onClick={() => setCategory('needs')}>Essentials</Button>
+						<Button size="sm" variant={category === 'wants' ? 'secondary' : 'ghost'} onClick={() => setCategory('wants')}>Non-Essentials</Button>
 					</div>
 				</Card>
 			</div>
@@ -91,7 +93,7 @@ const AddExpense = ({ required = true }: { required?: boolean }) => {
 								<div className="border-1 border-l"></div>
 								<FormField
 									control={form.control}
-									name="category"
+									name="description"
 									render={({ field }) => (
 										<FormCustomInput
 											requiered={required}
@@ -127,11 +129,11 @@ const AddExpense = ({ required = true }: { required?: boolean }) => {
 						Add
 					</Button>
 
-					{amount || category ? (
+					{amount || description ? (
 						<Card variant="outline-error">
 							{amount && <FormError message={amount.message} />}
-							{category && (
-								<FormError message={category.message} />
+							{description && (
+								<FormError message={description.message} />
 							)}
 						</Card>
 					) : null}

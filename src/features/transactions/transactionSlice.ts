@@ -23,16 +23,10 @@ const transactionSlice = createSlice({
 	initialState,
 	reducers: {
 		addTransaction: (state: FinancialState, action: PayloadAction<Transaction>) => {
-			const { category, amount } = action.payload;
+			const { category, type, amount } = action.payload;
 			
 			state.transactions = [...state.transactions, action.payload];
 
-			if(category.toLowerCase() === "savings") {
-				state.totalSavings += amount
-			} else if(category.toLowerCase() === "expense") {
-				state.totalExpense += amount
-			}
-			
 			state.spendByCategory[category.toLowerCase()] += amount;
 		},
 		setTotalIncome: (state, action: PayloadAction<number>) => {
@@ -46,7 +40,19 @@ const transactionSlice = createSlice({
 			state.totalExpense += action.payload;
 		},
 		deleteTransaction: (state, action: PayloadAction<number>) => {
-			state.transactions = state.transactions.filter(transaction => transaction.id !== action.payload)
+			state.transactions = state.transactions.filter(transaction => {
+				if(transaction.id === action.payload) {
+					state.spendByCategory[transaction.category.toLowerCase()] -= transaction.amount;
+			
+					if(transaction.type.toLowerCase() === "savings") {
+						state.totalSavings -= transaction.amount
+					} else if(transaction.type.toLowerCase() === "expense") {
+						state.totalExpense -= transaction.amount
+					}
+				}
+
+				return transaction.id !== action.payload
+			})
 		}
 	}
 });

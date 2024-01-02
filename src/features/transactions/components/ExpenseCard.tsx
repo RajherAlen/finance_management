@@ -9,7 +9,7 @@ import { deleteTransaction } from "../transactionSlice";
 import { useAppDispatch } from "src/store/hooks";
 
 const ExpenseCard = (props: Transaction) => {
-	const { category, amount, date, id } = props;
+	const { description, amount, date, id } = props;
 	const dispatch = useAppDispatch();
 
 	const handleDeleteTransaction = () => {
@@ -27,7 +27,7 @@ const ExpenseCard = (props: Transaction) => {
 							{formatCurrency(amount)}
 						</p>
 						<p className="text-[11px] font-medium mb-[2px] px-2 py-1 bg-primary/30 rounded-full">
-							{category}
+							{description}
 						</p>
 					</div>
 
