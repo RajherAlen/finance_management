@@ -7,15 +7,18 @@ import {
 	FormMessage
 } from "./form";
 import { Input } from "../input/Input";
+import { InputType } from "zlib";
 
 interface FormCustomInputProps {
-	label: string;
+	label?: string;
 	placeholder?: string;
 	description?: string;
 	requiered?: boolean;
 	field: any;
 	className?: string;
-	type?: "number" | "string";
+	inputClassName?: string;
+	type?: InputType;
+	hideErrorMessage?: boolean;
 }
 
 const FormCustomInput = (props: FormCustomInputProps) => {
@@ -33,13 +36,14 @@ const FormCustomInput = (props: FormCustomInputProps) => {
 				<Input
 					placeholder={props.placeholder}
 					type={props.type}
+					className={props.inputClassName}
 					{...props.field}
 				/>
 			</FormControl>
 			{props.description && (
 				<FormDescription>{props.description}</FormDescription>
 			)}
-			<FormMessage />
+			{!props.hideErrorMessage && <FormMessage />}
 		</FormItem>
 	);
 };

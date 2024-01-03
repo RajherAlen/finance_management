@@ -7,7 +7,7 @@ const titleVariants = cva("font-semibold text-gray-700 mb-2", {
 		size: {
 			sm: "text-sm",
 			md: "text-md",
-			lg: "text-lg"
+			lg: "text-lg",
 		}
 	},
 	defaultVariants: {

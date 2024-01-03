@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -9,68 +9,61 @@ import { Form, FormField } from "src/components/form/form";
 import Button from "src/components/button/Button";
 import FormCustomInput from "src/components/form/FormCustomInput";
 import { incomeSchema } from "../model/incomeSchema";
-import Modal from "src/components/dialog/Modal";
-import { PlusCircleIcon } from "lucide-react";
 import { useAppDispatch } from "src/store/hooks";
-import { addTransaction, setTotalIncome } from "../transactionSlice";
+import { setTotalIncome } from "../transactionSlice";
+import { PlusCircleIcon } from "lucide-react";
 
-const AddIncome = () => {
+const AddIncome = ({ checkValidation }: { checkValidation?: boolean }) => {
 	const dispatch = useAppDispatch();
-	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	const form = useForm<z.infer<typeof incomeSchema>>({
 		resolver: zodResolver(incomeSchema),
 		defaultValues: {
-			amount: 0,
+			amount: 0
 		}
 	});
 
 	const onSubmit = (values: z.infer<typeof incomeSchema>) => {
-		dispatch(setTotalIncome(values.amount))
-
-		setIsOpen(false);
+		dispatch(setTotalIncome(values.amount));
 	};
 
+	useEffect(() => {
+		if (checkValidation) {
+			form.trigger("amount");
+		}
+	}, [checkValidation, form]);
+
 	return (
-		<Modal
-			open={isOpen}
-			onOpenChange={() => setIsOpen(!isOpen)}
-			trigger={<PlusCircleIcon stroke="#4b5563" width="16" height="16" />}
-			title={`Add income`}
-		>
-			<Form {...form}>
-				<form
-					onSubmit={form.handleSubmit(onSubmit)}
-					className="space-y-3"
-				>
+		<Form {...form}>
+			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+				<div className="flex gap-2">
 					<FormField
 						control={form.control}
 						name="amount"
 						render={({ field }) => (
 							<FormCustomInput
 								requiered
+								className="flex-1"
 								label="Amount"
 								field={field}
 								type="number"
 							/>
 						)}
 					/>
-					{/* <FormField
-						control={form.control}
-						name="description"
-						render={({ field }) => (
-							<FormCustomInput
-								label="Description"
-								field={field}
-							/>
-						)}
-					/> */}
-					<Button type="submit" className="mt-5">
-						Submit
+					<Button
+						variant="outline"
+						className="mt-7 flex items-center gap-2"
+					>
+						<PlusCircleIcon
+							width={16}
+							height={16}
+							stroke="#1B2327"
+						/>
+						Add
 					</Button>
-				</form>
-			</Form>
-		</Modal>
+				</div>
+			</form>
+		</Form>
 	);
 };
 

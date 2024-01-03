@@ -1,8 +1,8 @@
 export interface Transaction {
-	id: number;
+	id: number | string;
 	amount: number;
 	description: string;
-	category: string;
+	category: 'savings' | 'wants' | 'needs'
 	date: Date;
 	type: "income" | "expense";
 }
@@ -18,6 +18,14 @@ export interface FinancialState {
 	spendByCategory: CategoryTotals;
 	budgetCategory: CategoryTotals;
 	transactions: Transaction[];
+	savings: Saving[]
+}
+
+export interface Saving {
+	id: number | string;
+	name: string,
+	goalAmount: number,
+	currentlySaved: number
 }
 
 export type CategoryType = "wants" | "needs" | "savings";

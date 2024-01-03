@@ -1,9 +1,9 @@
-import { BarChartBig, LayoutDashboardIcon } from "lucide-react";
+import { BarChartBig, LayoutDashboardIcon, PiggyBankIcon } from "lucide-react";
 import MenuItem from "./MenuItem";
 
 const Menu = () => {
 	return (
-		<div className="h-screen p-6 bg-indigo-50 bg-opacity-50">
+		<div className="h-screen p-6">
 			<div className="w-52 px-4 rounded-lg h-full bg-white">
 				<div className="py-5 font-bold">FM</div>
 
@@ -18,6 +18,11 @@ const Menu = () => {
 							to="/analytics"
 							title="Analytics"
 							icon={BarChartBig}
+						/>
+						<MenuItem
+							to="/savings"
+							title="Savings"
+							icon={PiggyBankIcon}
 						/>
 					</div>
 				</div>

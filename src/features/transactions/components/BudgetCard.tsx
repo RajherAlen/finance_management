@@ -10,7 +10,7 @@ const BudgetCard = () => {
 	return (
 		<Card className="flex justify-between">
 			<div className="flex-1 text-center">
-				<p className="font-semibold text-xs text-gray-400 uppercase">
+				<p className="font-semibold text-xs text-muted uppercase">
 					Your balance
 				</p>
 				<p className="font-bold text-sm">{formatCurrency(income - totalExpense)}</p>

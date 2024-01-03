@@ -7,28 +7,26 @@ import AddTransaction from "./AddTransaction";
 interface TransactionCardProps {
 	type: "income" | "expense" | "savings" | "budget";
 	amount: number;
+	additionalAction?: React.ReactNode
 }
 
 const TransactionCard = (props: TransactionCardProps) => {
 	return (
-		<Card className="flex-1 min-w-[200px]">
+		<Card className="flex flex-col justify-center flex-1 min-w-[200px]">
+			<div className="flex justify-end">
+				{props.additionalAction}
+			</div>
 			<div className="flex gap-2">
 				<TransactionIcons type={props.type} />
 
 				<div className="flex flex-col flex-1 gap-1">
-					<p className="font-semibold text-xs text-gray-400 uppercase">
-						{props.type}
-					</p>
-					<p className="font-bold text-sm">
+					<p className="font-bold text-lg">
 						{formatCurrency(props.amount ? props.amount : 0)}
 					</p>
+					<p className="text-xs text-muted uppercase">
+						{props.type}
+					</p>
 				</div>
-
-				{props.type === "income" && (
-					<div className="flex items-start">
-						<AddTransaction type={props.type} />
-					</div>
-				)}
 			</div>
 		</Card>
 	);

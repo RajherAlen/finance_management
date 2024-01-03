@@ -9,7 +9,7 @@ import {
 import Select, { SelectItem } from "../select/Select";
 
 interface FormSelectProps {
-	label: string;
+	label?: string;
 	placeholder: string;
 	description?: string;
 	requiered?: boolean;
@@ -17,6 +17,8 @@ interface FormSelectProps {
 	options: SelectItem[];
 	fullWidth?: boolean;
 	className?: string;
+	ghostSelect?: boolean;
+	hideErrorMessage?: boolean;
 }
 
 const FormSelect = (props: FormSelectProps) => {
@@ -37,12 +39,13 @@ const FormSelect = (props: FormSelectProps) => {
 					fullWidth={props.fullWidth}
 					placeholder={props.placeholder}
 					options={props.options}
+					ghostSelect={props.ghostSelect}
 				/>
 			</FormControl>
 			{props.description && (
 				<FormDescription>{props.description}</FormDescription>
 			)}
-			<FormMessage />
+			{!props.hideErrorMessage && <FormMessage />}
 		</FormItem>
 	);
 };

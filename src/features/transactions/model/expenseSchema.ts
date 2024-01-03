@@ -7,15 +7,10 @@ export const expenseSchema = z.object({
 			invalid_type_error: "Amount must be a number"
 		})
 		.positive({ message: "Amount must be positive number" }),
-	category: z
+	description: z
 		.string({
 			required_error: "This field is required"
 		})
-		.min(1, { message: "Please select category" }),
-	description: z
-		.string({
-			required_error: "Please add some description name"
-		})
-		.min(2, { message: "Please enter short description" })
-		.max(20, { message: "Max 20 characters" })
+		.min(1, { message: "Please add description" }),
+	date: z.date()
 });

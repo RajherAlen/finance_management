@@ -19,17 +19,17 @@ const BudgetProgressList = () => {
 			<Title>Budget split (50, 30, 20)</Title>
 			<Card className="flex flex-col gap-5 flex-1">
 				<ProgressBar
-					value={calcPercentage(needs, budgetCategory.needs)}
+					value={needs}
 					label="Needs"
 					total={budgetCategory.needs}
 				/>
 				<ProgressBar
-					value={calcPercentage(wants, budgetCategory.wants)}
+					value={wants}
 					label="Wants"
 					total={budgetCategory.wants}
 				/>
 				<ProgressBar
-					value={calcPercentage(savings, budgetCategory.savings)}
+					value={savings}
 					label="Savings"
 					total={budgetCategory.savings}
 				/>
