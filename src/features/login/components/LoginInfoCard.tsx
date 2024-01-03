@@ -22,6 +22,8 @@ const LoginInfoCard = ({ currentStep }: { currentStep: number }) => {
 		case 3:
 			loginInfoCard = <GoalSettingExpedition />;
 			break;
+		case 4:
+			return null;
 		default:
 			loginInfoCard = null;
 	}

@@ -38,12 +38,13 @@ const cardVariants = cva("", {
 
 interface CardProps extends VariantProps<typeof cardVariants> {
 	children: React.ReactNode;
+	onClick?: () => void;
 	className?: string;
 }
 
-const Card = ({ children, variant, size, radius, className }: CardProps) => {
+const Card = ({ children, variant, size, radius, className, onClick }: CardProps) => {
 	return (
-		<div className={cn(cardVariants({ variant, radius, size, className }))}>
+		<div className={cn(cardVariants({ variant, radius, size, className }))} onClick={onClick}>
 			{children}
 		</div>
 	);

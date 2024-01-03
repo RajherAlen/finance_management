@@ -30,6 +30,8 @@ const LoginForm = () => {
 
 	const onSubmit = (data: z.infer<typeof loginSchema>) => {
 		dispatch(setLoginInfo(data));
+		// TODO
+		// IF user exist just redirect to dashboard
 		dispatch(nextStep());
 	};
 

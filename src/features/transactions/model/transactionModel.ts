@@ -18,6 +18,14 @@ export interface FinancialState {
 	spendByCategory: CategoryTotals;
 	budgetCategory: CategoryTotals;
 	transactions: Transaction[];
+	savings: Saving[]
+}
+
+export interface Saving {
+	id: number | string;
+	name: string,
+	goalAmount: number,
+	currentlySaved: number
 }
 
 export type CategoryType = "wants" | "needs" | "savings";

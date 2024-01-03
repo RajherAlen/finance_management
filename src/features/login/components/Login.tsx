@@ -8,6 +8,7 @@ import OnboardingStep1 from "./onboarding/OnboardingStep1";
 import Card from "src/components/card/Card";
 import OnboardingStep2 from "./onboarding/OnboardingStep2";
 import OnboardingStep3 from "./onboarding/OnboardingStep3";
+import OnboardingSuccess from "./onboarding/OnboardingSuccess";
 
 const Login = () => {
 	const loginStore = useAppSelector((state) => state.loginStore);
@@ -25,6 +26,9 @@ const Login = () => {
 			break;
 		case 3:
 			formContent = <OnboardingStep3 />;
+			break;
+		case 4:
+			formContent = <OnboardingSuccess />;
 			break;
 		default:
 			break;

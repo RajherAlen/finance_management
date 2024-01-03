@@ -1,4 +1,4 @@
-import { BarChartBig, LayoutDashboardIcon } from "lucide-react";
+import { BarChartBig, LayoutDashboardIcon, PiggyBankIcon } from "lucide-react";
 import MenuItem from "./MenuItem";
 
 const Menu = () => {
@@ -18,6 +18,11 @@ const Menu = () => {
 							to="/analytics"
 							title="Analytics"
 							icon={BarChartBig}
+						/>
+						<MenuItem
+							to="/savings"
+							title="Savings"
+							icon={PiggyBankIcon}
 						/>
 					</div>
 				</div>

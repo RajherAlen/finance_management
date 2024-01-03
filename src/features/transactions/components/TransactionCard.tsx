@@ -12,20 +12,21 @@ interface TransactionCardProps {
 
 const TransactionCard = (props: TransactionCardProps) => {
 	return (
-		<Card className="flex-1 min-w-[200px]">
+		<Card className="flex flex-col justify-center flex-1 min-w-[200px]">
+			<div className="flex justify-end">
+				{props.additionalAction}
+			</div>
 			<div className="flex gap-2">
 				<TransactionIcons type={props.type} />
 
 				<div className="flex flex-col flex-1 gap-1">
-					<p className="font-semibold text-xs text-muted uppercase">
-						{props.type}
-					</p>
-					<p className="font-bold text-sm">
+					<p className="font-bold text-lg">
 						{formatCurrency(props.amount ? props.amount : 0)}
 					</p>
+					<p className="text-xs text-muted uppercase">
+						{props.type}
+					</p>
 				</div>
-
-				{props.additionalAction}
 			</div>
 		</Card>
 	);

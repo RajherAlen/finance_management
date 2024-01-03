@@ -1,5 +1,5 @@
 import React from "react";
-import { CircleDollarSign, Landmark, Wallet } from "lucide-react";
+import { CircleDollarSign, CreditCardIcon, Landmark, PiggyBankIcon, Wallet } from "lucide-react";
 import Card from "src/components/card/Card";
 
 interface TransactionIconsProps {
@@ -28,19 +28,19 @@ const TransactionIcons = ({
 
 	switch (type) {
 		case "income":
-			transactionIcon = <Wallet stroke="#f97316" {...iconSize} />;
+			transactionIcon = <CircleDollarSign stroke="#f97316" {...iconSize} />;
 			transactionTypeColor = "warning";
 			break;
 		case "expense":
-			transactionIcon = <Wallet stroke="#dc2626" {...iconSize} />;
+			transactionIcon = <CreditCardIcon stroke="#dc2626" {...iconSize} />;
 			transactionTypeColor = "error";
 			break;
 		case "savings":
-			transactionIcon = <Landmark stroke="#10b981" {...iconSize} />;
+			transactionIcon = <PiggyBankIcon stroke="#10b981" {...iconSize} />;
 			transactionTypeColor = "success";
 			break;
 		case "budget":
-			transactionIcon = <CircleDollarSign stroke="#0ea5e9" {...iconSize} />;
+			transactionIcon = <Wallet stroke="#0ea5e9" {...iconSize} />;
 			transactionTypeColor = "info";
 			break;
 		case "login":

@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { FinancialState, Transaction } from "./model/transactionModel";
+import { FinancialState, Saving, Transaction } from "./model/transactionModel";
 
 const initialState: FinancialState = {
 	income: 0,
@@ -15,7 +15,8 @@ const initialState: FinancialState = {
 		needs: 0,
 		savings: 0
 	},
-	transactions: []
+	transactions: [],
+	savings: []
 };
 
 const transactionSlice = createSlice({
@@ -23,13 +24,21 @@ const transactionSlice = createSlice({
 	initialState,
 	reducers: {
 		addTransaction: (state: FinancialState, action: PayloadAction<Transaction>) => {
-			const { category, type, amount } = action.payload;
+			const { category, amount } = action.payload;
 			
 			state.transactions = [...state.transactions, action.payload];
 
 			state.spendByCategory[category.toLowerCase()] += amount;
 		},
-		setTotalIncome: (state, action: PayloadAction<number>) => {
+		addToSavings: (state: FinancialState, action: PayloadAction<Saving>) => {
+			state.savings = [...state.savings, action.payload]
+		},
+		updateSaving: (state: FinancialState, action: PayloadAction<Saving>) => {
+			state.savings = state.savings.map(saving =>
+				saving.id === action.payload.id ? action.payload : saving
+			);
+		},
+ 		setTotalIncome: (state, action: PayloadAction<number>) => {
 			state.income += action.payload;
 			
 			state.budgetCategory.needs = state.income * 0.5;
@@ -59,8 +68,10 @@ const transactionSlice = createSlice({
 
 export const {
 	addTransaction,
+	addToSavings,
 	setTotalIncome,
 	updateTotalExpense,
-	deleteTransaction
+	deleteTransaction,
+	updateSaving
 } = transactionSlice.actions;
 export default transactionSlice.reducer;

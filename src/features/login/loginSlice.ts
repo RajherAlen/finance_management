@@ -28,7 +28,7 @@ const loginSlice = createSlice({
 			state.jobRole = jobRole;
 		},
 		nextStep: state => {
-			if (state.currentStep < 3) {
+			if (state.currentStep < 4) {
 				state.currentStep += 1;
 			}
 		},
