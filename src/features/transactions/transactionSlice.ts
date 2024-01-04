@@ -20,37 +20,30 @@ const initialState: FinancialState = {
     savings: [],
 };
 
+const updateTotalSaving = (state: FinancialState) => {
+    state.totalSavings = state.savings.reduce((accumulator, currentValue) => accumulator + currentValue.currentlySaved, 0);
+};
+
 const transactionSlice = createSlice({
     name: 'transactions',
     initialState,
     reducers: {
         addTransaction: (state: FinancialState, action: PayloadAction<Transaction>) => {
             const { category, amount } = action.payload;
-
             state.transactions = [...state.transactions, action.payload];
-
             state.spendByCategory[category.toLowerCase()] += amount;
         },
         addToSavings: (state: FinancialState, action: PayloadAction<Saving>) => {
             state.savings = [...state.savings, action.payload];
+            updateTotalSaving(state);
         },
         updateSaving: (state: FinancialState, action: PayloadAction<Saving>) => {
             state.savings = state.savings.map((saving) => (saving.id === action.payload.id ? action.payload : saving));
+            updateTotalSaving(state);
         },
         deleteSaving: (state, action: PayloadAction<number | string>) => {
-            state.savings = state.savings.filter((saving) => {
-                // if(saving.id === action.payload) {
-                // 	state.spendByCategory[saving.category.toLowerCase()] -= saving.amount;
-
-                // 	if(saving.type.toLowerCase() === "savings") {
-                // 		state.totalSavings -= saving.amount
-                // 	} else if(saving.type.toLowerCase() === "expense") {
-                // 		state.totalExpense -= saving.amount
-                // 	}
-                // }
-
-                return saving.id !== action.payload;
-            });
+            state.savings = state.savings.filter((saving) => saving.id !== action.payload);
+            updateTotalSaving(state);
         },
         setTotalIncome: (state, action: PayloadAction<number>) => {
             state.income += action.payload;

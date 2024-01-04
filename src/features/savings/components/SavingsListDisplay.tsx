@@ -15,10 +15,6 @@ const SavingsListDisplay = () => {
     const { savings } = useAppSelector((state) => state.transactionStore);
     const [isOpen, setIsOpen] = useState(false);
 
-    const handleOpenModal = () => {
-        setIsOpen(true);
-    };
-
     const handleCloseModal = () => {
         setIsOpen(false);
     };
@@ -32,7 +28,7 @@ const SavingsListDisplay = () => {
                     triggerAsChild
                     onOpenChange={setIsOpen}
                     trigger={
-                        <Button onClick={handleOpenModal} variant="outline" className="flex items-center gap-2" size="sm">
+                        <Button variant="outline" className="flex items-center gap-2" size="sm">
                             <PlusCircleIcon width={16} height={16} stroke="#1B2327" />
                             Add New saving
                         </Button>

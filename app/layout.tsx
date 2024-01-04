@@ -18,7 +18,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en">
             <body className={cn('flex overflow-hidden', inter.className)} suppressHydrationWarning={true}>
-                <AppProvider>{children}</AppProvider>
+                <AppProvider>
+                    {children}
+                </AppProvider>
             </body>
         </html>
     );

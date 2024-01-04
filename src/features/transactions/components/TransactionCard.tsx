@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import Card from 'src/components/card/Card';
 
 import formatCurrency from 'src/lib/utils/formatCurrency';
 
-import AddTransaction from './AddTransaction';
 import TransactionIcons from './TransactionIcons';
 
 interface TransactionCardProps {

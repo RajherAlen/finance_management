@@ -24,6 +24,7 @@ const MenuItem = ({ icon: Icon, title, to }: MenuItemProps) => {
     return (
         <Link
             href={to}
+            prefetch={true}
             className={clsx(
                 'mb-1 flex items-center gap-3 rounded-md p-2 transition-all ease-out hover:bg-slate-100 hover:dark:bg-slate-900',
                 isActive ? 'bg-secondary bg-opacity-20' : ''

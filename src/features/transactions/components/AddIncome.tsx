@@ -15,7 +15,7 @@ import * as z from 'zod';
 import { incomeSchema } from '../model/incomeSchema';
 import { setTotalIncome } from '../transactionSlice';
 
-const AddIncome = ({ checkValidation }: { checkValidation?: boolean }) => {
+const AddIncome = ({ checkValidation, additionalAction }: { checkValidation?: boolean, additionalAction?: () => void  }) => {
     const dispatch = useAppDispatch();
 
     const form = useForm<z.infer<typeof incomeSchema>>({
@@ -27,6 +27,10 @@ const AddIncome = ({ checkValidation }: { checkValidation?: boolean }) => {
 
     const onSubmit = (values: z.infer<typeof incomeSchema>) => {
         dispatch(setTotalIncome(values.amount));
+        
+        if (additionalAction !== undefined) {
+            additionalAction();
+        }
     };
 
     useEffect(() => {
