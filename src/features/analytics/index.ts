@@ -1,1 +1,1 @@
-export {default as AnalyticsListDisplay} from './components/AnalyticsListDisplay';
+export { default as AnalyticsListDisplay } from './components/AnalyticsListDisplay';

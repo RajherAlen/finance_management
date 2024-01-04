@@ -1,11 +1,7 @@
-import React from "react";
+import React from 'react';
 
 const CardLabel = ({ children }: { children: React.ReactNode }) => {
-	return (
-		<p className="font-semibold text-xs text-muted uppercase">
-			{children}
-		</p>
-	);
+    return <p className="text-xs font-semibold uppercase text-muted">{children}</p>;
 };
 
 export default CardLabel;

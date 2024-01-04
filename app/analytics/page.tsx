@@ -1,8 +1,9 @@
-import React from "react";
-import { AnalyticsListDisplay } from "src/features/analytics";
+import React from 'react';
+
+import { AnalyticsListDisplay } from 'src/features/analytics';
 
 const Analytics = () => {
-	return <AnalyticsListDisplay />;
+    return <AnalyticsListDisplay />;
 };
 
 export default Analytics;

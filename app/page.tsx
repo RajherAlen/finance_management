@@ -1,7 +1,7 @@
-import TransactionListDisplay from "src/features/transactions/components/TransactionListDisplay";
+import TransactionListDisplay from 'src/features/transactions/components/TransactionListDisplay';
 
 const Dashboard = () => {
-	return <TransactionListDisplay />;
+    return <TransactionListDisplay />;
 };
 
 export default Dashboard;

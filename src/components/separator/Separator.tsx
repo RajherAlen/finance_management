@@ -1,9 +1,7 @@
-import React from "react";
+import React from 'react';
 
 const Separator = () => {
-	return (
-		<div className="border-t border-slate-200 border-opacity-60 my-4"></div>
-	);
+    return <div className="my-4 border-t border-slate-200 border-opacity-60"></div>;
 };
 
 export default Separator;

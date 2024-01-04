@@ -1,8 +1,9 @@
-import React from "react";
-import { Login as LoginPage } from "src/features/login";
+import React from 'react';
+
+import { Login as LoginPage } from 'src/features/login';
 
 const Login = () => {
-	return <LoginPage />;
+    return <LoginPage />;
 };
 
 export default Login;
