@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 
 import Button from 'src/components/button/Button';
 import FormCustomInput from 'src/components/form/FormCustomInput';
+import FormDatePicker from 'src/components/form/FormDatePicker';
 import { Form, FormField } from 'src/components/form/form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -20,7 +21,7 @@ interface EditSavingProps extends Saving {
 }
 
 const EditSaving = (props: EditSavingProps) => {
-    const { name, goalAmount, currentlySaved, additionalAction, id } = props;
+    const { name, goalAmount, currentlySaved, additionalAction, date, id } = props;
 
     const dispatch = useAppDispatch();
 
@@ -28,6 +29,7 @@ const EditSaving = (props: EditSavingProps) => {
         name,
         goalAmount,
         currentlySaved,
+        date,
     };
 
     const form = useForm<z.infer<typeof savingSchema>>({
@@ -42,6 +44,7 @@ const EditSaving = (props: EditSavingProps) => {
                 name: data.name,
                 goalAmount: data.goalAmount,
                 currentlySaved: data.currentlySaved,
+                date: data.date,
             })
         );
 
@@ -93,6 +96,9 @@ const EditSaving = (props: EditSavingProps) => {
                         />
                     )}
                 />
+
+                <FormField control={form.control} name="date" render={({ field }) => <FormDatePicker disableBefore field={field} />} />
+
                 <div className="flex justify-end">
                     <Button variant="outline" className="flex items-center gap-2">
                         Save

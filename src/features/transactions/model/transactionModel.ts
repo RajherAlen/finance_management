@@ -26,6 +26,7 @@ export interface Saving {
     name: string;
     goalAmount: number;
     currentlySaved: number;
+    date: Date;
 }
 
 export type CategoryType = 'wants' | 'needs' | 'savings';

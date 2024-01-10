@@ -26,7 +26,7 @@ const OnboardingLayout = ({ children, actionToContinue, formIsValid }: Onboardin
 
     const handleNext = () => {
         if (actionToContinue) {
-            actionToContinue();
+           actionToContinue();
         }
 
         if (formIsValid) {

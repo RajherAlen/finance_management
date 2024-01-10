@@ -15,7 +15,7 @@ import * as z from 'zod';
 import { incomeSchema } from '../model/incomeSchema';
 import { setTotalIncome } from '../transactionSlice';
 
-const AddIncome = ({ checkValidation, additionalAction }: { checkValidation?: boolean, additionalAction?: () => void  }) => {
+const AddIncome = ({ checkValidation, additionalAction }: { checkValidation?: boolean; additionalAction?: () => void }) => {
     const dispatch = useAppDispatch();
 
     const form = useForm<z.infer<typeof incomeSchema>>({
@@ -27,7 +27,7 @@ const AddIncome = ({ checkValidation, additionalAction }: { checkValidation?: bo
 
     const onSubmit = (values: z.infer<typeof incomeSchema>) => {
         dispatch(setTotalIncome(values.amount));
-        
+
         if (additionalAction !== undefined) {
             additionalAction();
         }
@@ -42,16 +42,18 @@ const AddIncome = ({ checkValidation, additionalAction }: { checkValidation?: bo
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-                <div className="flex gap-2">
+                <div className="flex flex-col gap-2">
                     <FormField
                         control={form.control}
                         name="amount"
                         render={({ field }) => <FormCustomInput requiered className="flex-1" label="Amount" field={field} type="number" />}
                     />
-                    <Button variant="outline" className="mt-7 flex items-center gap-2">
-                        <PlusCircleIcon width={16} height={16} stroke="#1B2327" />
-                        Add
-                    </Button>
+                    <div>
+                        <Button variant="outline" className="flex items-center gap-2">
+                            <PlusCircleIcon width={16} height={16} stroke="#1B2327" />
+                            Add
+                        </Button>
+                    </div>
                 </div>
             </form>
         </Form>

@@ -14,4 +14,7 @@ export const savingSchema = z.object({
             required_error: 'This field is required',
         })
         .min(1, { message: 'Please add financial goal name' }),
+    date: z.date({
+        required_error: 'Please set date',
+    }),
 });

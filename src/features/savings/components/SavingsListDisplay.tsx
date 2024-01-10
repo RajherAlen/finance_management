@@ -20,9 +20,9 @@ const SavingsListDisplay = () => {
     };
 
     return (
-        <div className="max-w-md">
-            <div className="mb-4 flex items-center justify-between gap-4">
-                <p className="text-sm font-semibold text-gray-700">Saving Goals</p>
+        <div>
+            <div className="mb-4 flex max-w-md items-center justify-between gap-4">
+                <p className="text-sm font-semibold text-gray-700">Savings</p>
                 <Modal
                     open={isOpen}
                     triggerAsChild
@@ -39,9 +39,7 @@ const SavingsListDisplay = () => {
             </div>
 
             {savings.map((saving) => {
-                return (
-                    <SavingGoalCard key={saving.id} {...saving} />
-                );
+                return <SavingGoalCard key={saving.id} {...saving} />;
             })}
         </div>
     );

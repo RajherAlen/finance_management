@@ -27,7 +27,7 @@ Progress.displayName = ProgressPrimitive.Root.displayName;
 export { Progress };
 
 interface ProgressBarProps {
-    label?: string;
+    label?: string | React.ReactNode;
     value: number;
     total: number;
     additionalComponent?: React.ReactNode;
