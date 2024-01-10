@@ -14,12 +14,14 @@ import { deleteSaving } from 'src/features/transactions/transactionSlice';
 import { Edit3Icon, Trash } from 'lucide-react';
 import formatCurrency from 'src/lib/utils/formatCurrency';
 import { useAppDispatch } from 'src/store/hooks';
+import Separator from 'src/components/separator/Separator';
 
 const SavingGoalCard = (props: Saving) => {
+    const dispatch = useAppDispatch();
     const { name, goalAmount, currentlySaved, id } = props;
+
     const [editIsOpen, setEditIsOpen] = useState(false);
     const [deleteIsOpen, setDeleteIsOpen] = useState(false);
-    const dispatch = useAppDispatch();
 
     const handleDeleteSaving = () => {
         dispatch(deleteSaving(id));
@@ -35,7 +37,12 @@ const SavingGoalCard = (props: Saving) => {
 
     return (
         <Card className="mb-4">
-            <ProgressBar value={currentlySaved} label={name} total={goalAmount} />
+            <p className="font-semibold text-sm">{name}</p>
+
+            <Separator />
+
+            <ProgressBar value={currentlySaved} total={goalAmount} />
+            
             <div className="mt-3 flex justify-end gap-2">
                 <Modal
                     open={editIsOpen}

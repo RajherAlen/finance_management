@@ -8,7 +8,7 @@ import { useAppSelector } from 'src/store/hooks';
 const ExpenseByCategoryChart = () => {
     const { transactions } = useAppSelector((state) => state.transactionStore);
 
-    if (!transactions) return null;
+    if (transactions.length <= 0) return null;
 
     return (
         <div>
@@ -16,17 +16,17 @@ const ExpenseByCategoryChart = () => {
             <BubbleChart
                 width={600}
                 height={600}
-                padding={0}
+                padding={20}
                 graph={{
                     zoom: 0.8,
-                    offsetX: -0.05,
-                    offsetY: -0.01,
+                    offsetX: 0,
+                    offsetY: 0,
                 }}
                 showLegend={false}
                 fontFamily="Arial"
                 valueFont={{
                     family: 'Arial',
-                    size: 16,
+                    size: 18,
                     color: '#fff',
                 }}
                 labelFont={{

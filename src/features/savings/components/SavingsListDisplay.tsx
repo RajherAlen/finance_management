@@ -40,9 +40,7 @@ const SavingsListDisplay = () => {
 
             {savings.map((saving) => {
                 return (
-                    <div key={saving.id}>
-                        <SavingGoalCard {...saving} />
-                    </div>
+                    <SavingGoalCard key={saving.id} {...saving} />
                 );
             })}
         </div>
