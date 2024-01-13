@@ -15,6 +15,7 @@ export interface FinancialState {
     income: number;
     totalExpense: number;
     totalSavings: number;
+    totalGoalSaving: number;
     spendByCategory: CategoryTotals;
     budgetCategory: CategoryTotals;
     transactions: Transaction[];

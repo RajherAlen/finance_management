@@ -4,6 +4,7 @@ import ExpenseByCategoryChart from 'src/features/analytics/components/ExpenseByC
 import AddExpense from './AddExpense';
 import LastTransactions from './LastTransactions';
 import TransactionListCard from './TransactionListCard';
+import TotalSpentChart from 'src/features/analytics/components/TotalSpentChart';
 
 const TransactionListDisplay = () => {
     return (
@@ -12,7 +13,7 @@ const TransactionListDisplay = () => {
                 <TransactionListCard />
                 <div className="grid grid-cols-2">
                     <ExpenseByCategoryChart />
-                    <div></div>
+                    <TotalSpentChart />
                 </div>
             </div>
             <div className="w-full max-w-[520px]">

@@ -8,40 +8,40 @@ import { useAppSelector } from 'src/store/hooks';
 const ExpenseByCategoryChart = () => {
     const { transactions } = useAppSelector((state) => state.transactionStore);
 
-    if (transactions.length <= 0) return null;
-
     return (
         <div>
-            <p className="mb-2 text-xl font-semibold">Expenses by category</p>
-            <BubbleChart
-                width={600}
-                height={600}
-                padding={20}
-                graph={{
-                    zoom: 0.8,
-                    offsetX: 0,
-                    offsetY: 0,
-                }}
-                showLegend={false}
-                fontFamily="Arial"
-                valueFont={{
-                    family: 'Arial',
-                    size: 18,
-                    color: '#fff',
-                }}
-                labelFont={{
-                    family: 'Arial',
-                    size: 11,
-                    color: '#fff',
-                    weight: 'normal'
-                }}
-                data={transactions.map((transaction) => {
-                    return {
-                        label: transaction.description,
-                        value: transaction.amount,
-                    };
-                })}
-            />
+            <p className="mb-5 text-xl font-semibold">Expenses by category</p>
+            <div className="flex justify-center p-5">
+                <BubbleChart
+                    width={400}
+                    height={400}
+                    graph={{
+                        zoom: 0.8,
+                        offsetX: .1,
+                        offsetY: .05,
+                    }}
+                    padding={0}
+                    showLegend={false}
+                    fontFamily="Arial"
+                    valueFont={{
+                        family: 'Arial',
+                        size: 14,
+                        color: '#fff',
+                    }}
+                    labelFont={{
+                        family: 'Arial',
+                        size: 10,
+                        color: '#fff',
+                        weight: 'normal',
+                    }}
+                    data={transactions.map((transaction) => {
+                        return {
+                            label: transaction.description,
+                            value: transaction.amount,
+                        };
+                    })}
+                />
+            </div>
         </div>
     );
 };

@@ -6,6 +6,7 @@ const initialState: FinancialState = {
     income: 0,
     totalExpense: 0,
     totalSavings: 0,
+    totalGoalSaving: 0,
     spendByCategory: {
         wants: 0,
         needs: 0,
@@ -24,6 +25,10 @@ const updateTotalSaving = (state: FinancialState) => {
     state.totalSavings = state.savings.reduce((accumulator, currentValue) => accumulator + currentValue.currentlySaved, 0);
 };
 
+const updatetotalGoalSaving = (state: FinancialState) => {
+    state.totalGoalSaving = state.savings.reduce((accumulator, currentValue) => accumulator + currentValue.goalAmount, 0);
+};
+
 const transactionSlice = createSlice({
     name: 'transactions',
     initialState,
@@ -36,10 +41,12 @@ const transactionSlice = createSlice({
         addToSavings: (state: FinancialState, action: PayloadAction<Saving>) => {
             state.savings = [...state.savings, action.payload];
             updateTotalSaving(state);
+            updatetotalGoalSaving(state);
         },
         updateSaving: (state: FinancialState, action: PayloadAction<Saving>) => {
             state.savings = state.savings.map((saving) => (saving.id === action.payload.id ? action.payload : saving));
             updateTotalSaving(state);
+            updatetotalGoalSaving(state);
         },
         deleteSaving: (state, action: PayloadAction<number | string>) => {
             state.savings = state.savings.filter((saving) => saving.id !== action.payload);
