@@ -13,7 +13,7 @@ const Menu = () => {
                         <MenuItem to="/" title="Dashboard" icon={LayoutDashboardIcon} />
                         <MenuItem to="/analytics" title="Analytics" icon={BarChartBig} />
                         <MenuItem to="/savings" title="Savings" icon={PiggyBankIcon} />
-                        <MenuItem to="/dept" title="Depts" icon={CreditCardIcon} />
+                        <MenuItem to="/loans" title="Loans" icon={CreditCardIcon} />
                     </div>
                 </div>
             </div>
