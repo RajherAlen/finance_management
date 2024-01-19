@@ -36,7 +36,7 @@ const FormDatePicker = (props: FormSelectProps) => {
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                        disabled={() => disableBefore ? field.value < new Date() : false}
+                        disabled={(date: any) => disableBefore ? date < new Date() : false}
                         initialFocus
                     />
                 </PopoverContent>

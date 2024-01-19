@@ -9,11 +9,14 @@ import { Form, FormField } from 'src/components/form/form';
 import TransactionIcons from 'src/features/transactions/components/TransactionIcons';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { PrismaClient } from '@prisma/client';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import * as z from 'zod';
 
 import { nextStep, setLoginInfo } from '../loginSlice';
 import { loginSchema } from '../model/loginSchema';
+
+const prisma = new PrismaClient();
 
 const LoginForm = () => {
     const loginStore = useAppSelector((state) => state.loginStore);
@@ -27,11 +30,30 @@ const LoginForm = () => {
         },
     });
 
-    const onSubmit = (data: z.infer<typeof loginSchema>) => {
-        dispatch(setLoginInfo(data));
-        // TODO
-        // IF user exist just redirect to dashboard
-        dispatch(nextStep());
+    const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+        // Check if the user exists in the database
+        const user = await prisma.user.findUnique({
+            where: { email: data.email },
+        });
+
+        if (user) {
+            // User exists, redirect to dashboard or perform any other actions
+            console.log('USER EXISTS');
+        } else {
+            // User does not exist, handle accordingly (e.g., show error message)
+            const newUser = await prisma.user.create({
+                data: {
+                    email: 'example@example.com',
+                    password: 'hashed_password', // You should hash the password before inserting
+                    fullName: 'John Doe',
+                    username: 'johndoe',
+                    jobRole: 'Software Developer',
+                },
+            });
+            console.log(newUser)
+            // dispatch(setLoginInfo(data));
+            // dispatch(nextStep());
+        }
     };
 
     return (
