@@ -15,3 +15,15 @@ model user {
   password String
   username String
 }
+
+model transaction {
+  id              Int       @id @default(autoincrement())
+  amount          Float
+  description     String
+  category        String    // Assuming category can be stored as a string
+  date            DateTime
+  type            String    // Assuming type can be stored as a string
+  userId          Int
+  // createdAt       DateTime  @default(now())
+  // updatedAt       DateTime  @updatedAt
+}

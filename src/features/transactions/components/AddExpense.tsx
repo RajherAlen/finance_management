@@ -17,11 +17,13 @@ import { v4 as uuidv4 } from 'uuid';
 import * as z from 'zod';
 
 import { expenseSchema } from '../model/expenseSchema';
-import { addTransaction, updateTotalExpense } from '../transactionSlice';
+import { updateTotalExpense } from '../transactionSlice';
+import { useAddTransactionMutation } from '../api/transactionsApi';
 
 const AddExpense = ({ required = true, customTitle }: { required?: boolean; customTitle?: string }) => {
     const dispatch = useAppDispatch();
     const [category, setCategory] = useState<'needs' | 'wants'>('needs');
+    const [addTransaction, { isLoading }] = useAddTransactionMutation()
 
     const form = useForm<z.infer<typeof expenseSchema>>({
         resolver: zodResolver(expenseSchema),
@@ -34,19 +36,15 @@ const AddExpense = ({ required = true, customTitle }: { required?: boolean; cust
 
     const { amount, description } = form.formState.errors;
 
-    const onSubmit = (values: z.infer<typeof expenseSchema>) => {
-        dispatch(
-            addTransaction({
-                id: uuidv4(),
-                amount: values.amount,
-                description: values.description,
-                category: category,
-                date: values.date,
-                type: 'expense',
-            })
-        );
+    const onSubmit = (data: z.infer<typeof expenseSchema>) => {
+        addTransaction({
+            ...data, 
+            category: category,
+            type: 'expense',
+            userId: 1
+        })
 
-        dispatch(updateTotalExpense(values.amount));
+        dispatch(updateTotalExpense(data.amount));
 
         form.reset({
             amount: 0,
