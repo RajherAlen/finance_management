@@ -9,18 +9,18 @@ import { Form, FormField } from 'src/components/form/form';
 import TransactionIcons from 'src/features/transactions/components/TransactionIcons';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { PrismaClient } from '@prisma/client';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import * as z from 'zod';
 
 import { nextStep, setLoginInfo } from '../loginSlice';
 import { loginSchema } from '../model/loginSchema';
-
-const prisma = new PrismaClient();
+import { useLoginMutation } from '../api/loginApi';
+import validationToast from 'src/lib/utils/validationToast';
 
 const LoginForm = () => {
     const loginStore = useAppSelector((state) => state.loginStore);
     const dispatch = useAppDispatch();
+    const [login, { isLoading }] = useLoginMutation();
 
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
@@ -30,29 +30,18 @@ const LoginForm = () => {
         },
     });
 
-    const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-        // Check if the user exists in the database
-        const user = await prisma.user.findUnique({
-            where: { email: data.email },
-        });
 
-        if (user) {
-            // User exists, redirect to dashboard or perform any other actions
-            console.log('USER EXISTS');
-        } else {
-            // User does not exist, handle accordingly (e.g., show error message)
-            const newUser = await prisma.user.create({
-                data: {
-                    email: 'example@example.com',
-                    password: 'hashed_password', // You should hash the password before inserting
-                    fullName: 'John Doe',
-                    username: 'johndoe',
-                    jobRole: 'Software Developer',
-                },
+    const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+        const loginData: any = await login(data);
+
+        if (!isLoading && loginData.data.success) {
+            dispatch(setLoginInfo(data));
+            dispatch(nextStep());
+        } else if (!loginData.data.success) {
+            validationToast({
+                status: 'error',
+                message: loginData.data.data,
             });
-            console.log(newUser)
-            // dispatch(setLoginInfo(data));
-            // dispatch(nextStep());
         }
     };
 

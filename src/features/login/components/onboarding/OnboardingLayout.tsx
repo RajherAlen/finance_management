@@ -9,6 +9,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
 import { nextStep, prevStep } from '../../loginSlice';
+import { useRegisterMutation } from '../../api/loginApi';
 
 interface OnboardingLayoutProps {
     children: React.ReactNode;
@@ -18,6 +19,7 @@ interface OnboardingLayoutProps {
 
 const OnboardingLayout = ({ children, actionToContinue, formIsValid }: OnboardingLayoutProps) => {
     const loginStore = useAppSelector((state) => state.loginStore);
+    const [register, { isLoading }] = useRegisterMutation();
     const dispatch = useAppDispatch();
 
     const handleBack = () => {
@@ -26,11 +28,17 @@ const OnboardingLayout = ({ children, actionToContinue, formIsValid }: Onboardin
 
     const handleNext = () => {
         if (actionToContinue) {
-           actionToContinue();
+            actionToContinue();
         }
 
         if (formIsValid) {
-            dispatch(nextStep());
+            if (loginStore.currentStep === 3) {
+                register(loginStore)
+            }
+            
+            if(!isLoading) {
+                dispatch(nextStep());
+            }
         }
     };
 

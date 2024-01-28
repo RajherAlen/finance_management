@@ -8,6 +8,8 @@ import { useAppSelector } from 'src/store/hooks';
 
 const ExpenseByCategoryChart = () => {
     const { transactions } = useAppSelector((state) => state.transactionStore);
+    
+    if(transactions.length === 0) return null;
 
     return (
         <div>
