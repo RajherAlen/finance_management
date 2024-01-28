@@ -5,7 +5,9 @@ import { useForm } from 'react-hook-form';
 
 import Button from 'src/components/button/Button';
 import FormCustomInput from 'src/components/form/FormCustomInput';
-import { Form, FormField } from 'src/components/form/form';
+import FormDatePicker from 'src/components/form/FormDatePicker';
+import { Form, FormField, FormLabel } from 'src/components/form/form';
+import Separator from 'src/components/separator/Separator';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PlusCircleIcon } from 'lucide-react';
@@ -23,6 +25,7 @@ const AddSaving = ({ additionalAction }: { additionalAction?: () => void }) => {
         name: '',
         goalAmount: 0,
         currentlySaved: 0,
+        date: undefined,
     };
 
     const form = useForm<z.infer<typeof savingSchema>>({
@@ -37,6 +40,7 @@ const AddSaving = ({ additionalAction }: { additionalAction?: () => void }) => {
                 name: data.name,
                 goalAmount: data.goalAmount,
                 currentlySaved: data.currentlySaved,
+                date: data.date,
             })
         );
 
@@ -62,7 +66,6 @@ const AddSaving = ({ additionalAction }: { additionalAction?: () => void }) => {
                         />
                     )}
                 />
-
                 <FormField
                     control={form.control}
                     name="goalAmount"
@@ -76,26 +79,32 @@ const AddSaving = ({ additionalAction }: { additionalAction?: () => void }) => {
                         />
                     )}
                 />
-
-                <FormField
-                    control={form.control}
-                    name="currentlySaved"
-                    render={({ field }) => (
-                        <FormCustomInput
-                            label="Enter an amount you currently have saved"
-                            placeholder="Enter amount"
-                            className="w-full"
-                            type="number"
-                            field={field}
+                <div className='space-y-1'>
+                    <FormLabel>
+                        Enter your current savings and target savings date:
+                        {<span className="ml-1 text-sky-600">*</span>}
+                    </FormLabel>{' '}
+                    <div className="flex items-end gap-2">
+                        <FormField
+                            control={form.control}
+                            name="currentlySaved"
+                            render={({ field }) => (
+                                <FormCustomInput placeholder="Enter amount" className="w-full" type="number" field={field} />
+                            )}
                         />
-                    )}
-                />
-                <div className="flex justify-end">
-                    <Button variant="outline" className="flex items-center gap-2">
-                        <PlusCircleIcon width={16} height={16} stroke="#1B2327" />
-                        Add
-                    </Button>
+
+                        <FormField
+                            control={form.control}
+                            name="date"
+                            render={({ field }) => <FormDatePicker disableBefore field={field} />}
+                        />
+                    </div>
                 </div>
+                <Separator />
+                <Button variant="outline" className="flex items-center gap-2">
+                    <PlusCircleIcon width={16} height={16} stroke="#1B2327" />
+                    Add
+                </Button>
             </form>
         </Form>
     );

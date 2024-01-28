@@ -15,11 +15,17 @@ import { Edit3Icon, Trash } from 'lucide-react';
 import formatCurrency from 'src/lib/utils/formatCurrency';
 import { useAppDispatch } from 'src/store/hooks';
 
+import { calculateMonthlySavings } from '../utils/calculateMonthlySavings';
+import { calculateSavingDateOfPayment } from '../utils/calculateSavingDateOfPayment';
+
 const SavingGoalCard = (props: Saving) => {
-    const { name, goalAmount, currentlySaved, id } = props;
+    const dispatch = useAppDispatch();
+    const { name, goalAmount, currentlySaved, id, date } = props;
+
     const [editIsOpen, setEditIsOpen] = useState(false);
     const [deleteIsOpen, setDeleteIsOpen] = useState(false);
-    const dispatch = useAppDispatch();
+
+    const savingDateOfPayment = calculateSavingDateOfPayment(date);
 
     const handleDeleteSaving = () => {
         dispatch(deleteSaving(id));
@@ -34,8 +40,21 @@ const SavingGoalCard = (props: Saving) => {
     };
 
     return (
-        <Card className="mb-4">
-            <ProgressBar value={currentlySaved} label={name} total={goalAmount} />
+        <Card className="mb-4 max-w-md">
+            <ProgressBar
+                label={
+                    <>
+                        <span className="block text-sm font-semibold">{name}</span>
+                        <span className="mr-1 text-xs text-muted">{savingDateOfPayment}</span>
+                        <span className="mr-1 text-xs text-muted">/</span>
+                        <span className="mr-1 text-xs text-muted font-bold">{formatCurrency(calculateMonthlySavings(goalAmount - currentlySaved, +savingDateOfPayment.split(' ')[0]))}</span>
+                        <span className="text-xs text-muted">per month</span>
+                    </>
+                }
+                value={currentlySaved}
+                total={goalAmount}
+            />
+
             <div className="mt-3 flex justify-end gap-2">
                 <Modal
                     open={editIsOpen}

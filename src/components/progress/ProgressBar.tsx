@@ -27,7 +27,7 @@ Progress.displayName = ProgressPrimitive.Root.displayName;
 export { Progress };
 
 interface ProgressBarProps {
-    label: string;
+    label?: string | React.ReactNode;
     value: number;
     total: number;
     additionalComponent?: React.ReactNode;
@@ -37,11 +37,13 @@ export const ProgressBar = ({ label, value, total, additionalComponent }: Progre
     return (
         <div className="flex flex-col gap-1">
             <div className="flex justify-between gap-3">
-                <p className="text-xs">{label}</p>
+                {label && <p className="text-xs">{label}</p>}
+
                 <div className="flex gap-2">
                     <p className="text-xs font-bold">
                         {formatCurrency(value ? value : 0)}/{formatCurrency(total)}
                     </p>
+
                     {additionalComponent}
                 </div>
             </div>

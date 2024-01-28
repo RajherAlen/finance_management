@@ -11,7 +11,7 @@ import { Calendar } from '../calendar/Calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '../popover/Popover';
 
 export function DatePicker({ action }: { action?: (date: Date | undefined) => void }) {
-    const [date, setDate] = useState<Date>();
+    const [date, setDate] = React.useState<Date>();
 
     useEffect(() => {
         if (action) {

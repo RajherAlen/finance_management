@@ -11,10 +11,11 @@ import { FormControl, FormItem, FormMessage } from './form';
 
 interface FormSelectProps {
     field: any;
+    disableBefore?: boolean
 }
 
 const FormDatePicker = (props: FormSelectProps) => {
-    const { field } = props;
+    const { field, disableBefore } = props;
 
     return (
         <FormItem>
@@ -35,14 +36,12 @@ const FormDatePicker = (props: FormSelectProps) => {
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date: any) => date > new Date() || date < new Date('1900-01-01')}
+                        disabled={(date: any) => disableBefore ? date < new Date() : false}
                         initialFocus
                     />
                 </PopoverContent>
             </Popover>
-            {/* <FormDescription>
-				Your date of birth is used to calculate your age.
-			</FormDescription> */}
+
             <FormMessage />
         </FormItem>
     );

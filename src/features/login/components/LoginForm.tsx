@@ -14,10 +14,13 @@ import * as z from 'zod';
 
 import { nextStep, setLoginInfo } from '../loginSlice';
 import { loginSchema } from '../model/loginSchema';
+import { useLoginMutation } from '../api/loginApi';
+import validationToast from 'src/lib/utils/validationToast';
 
 const LoginForm = () => {
     const loginStore = useAppSelector((state) => state.loginStore);
     const dispatch = useAppDispatch();
+    const [login, { isLoading }] = useLoginMutation();
 
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
@@ -27,11 +30,19 @@ const LoginForm = () => {
         },
     });
 
-    const onSubmit = (data: z.infer<typeof loginSchema>) => {
-        dispatch(setLoginInfo(data));
-        // TODO
-        // IF user exist just redirect to dashboard
-        dispatch(nextStep());
+
+    const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+        const loginData: any = await login(data);
+
+        if (!isLoading && loginData.data.success) {
+            dispatch(setLoginInfo(data));
+            dispatch(nextStep());
+        } else if (!loginData.data.success) {
+            validationToast({
+                status: 'error',
+                message: loginData.data.data,
+            });
+        }
     };
 
     return (

@@ -23,10 +23,6 @@ const OnboardingStep2 = () => {
 
     const onSubmit = () => {
         setCheckValidation(true);
-
-        if (income > 0) {
-            dispatch(nextStep());
-        }
     };
 
     return (
