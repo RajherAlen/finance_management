@@ -3,7 +3,6 @@
 import React from 'react';
 
 import { Avatar } from 'src/components/avatar/Avatar';
-import Title from 'src/components/text/Title';
 
 import { usePathname } from 'next/navigation';
 

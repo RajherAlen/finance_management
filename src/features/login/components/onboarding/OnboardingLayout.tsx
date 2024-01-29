@@ -8,8 +8,9 @@ import Stepper from 'src/components/stepper/Stepper';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
-import { nextStep, prevStep } from '../../loginSlice';
 import { useRegisterMutation } from '../../api/loginApi';
+import { nextStep, prevStep } from '../../loginSlice';
+import { setCredentials } from 'src/store/authSlice';
 
 interface OnboardingLayoutProps {
     children: React.ReactNode;
@@ -19,6 +20,8 @@ interface OnboardingLayoutProps {
 
 const OnboardingLayout = ({ children, actionToContinue, formIsValid }: OnboardingLayoutProps) => {
     const loginStore = useAppSelector((state) => state.loginStore);
+    const transactionStore = useAppSelector((state) => state.transactionStore);
+
     const [register, { isLoading }] = useRegisterMutation();
     const dispatch = useAppDispatch();
 
@@ -33,10 +36,11 @@ const OnboardingLayout = ({ children, actionToContinue, formIsValid }: Onboardin
 
         if (formIsValid) {
             if (loginStore.currentStep === 3) {
-                register(loginStore)
+                register({ ...loginStore, income: transactionStore.income });
+                dispatch(setCredentials({ ...loginStore, income: transactionStore.income }));
             }
-            
-            if(!isLoading) {
+
+            if (!isLoading) {
                 dispatch(nextStep());
             }
         }

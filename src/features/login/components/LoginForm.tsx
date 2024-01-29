@@ -9,18 +9,22 @@ import { Form, FormField } from 'src/components/form/form';
 import TransactionIcons from 'src/features/transactions/components/TransactionIcons';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import validationToast from 'src/lib/utils/validationToast';
+import { setCredentials } from 'src/store/authSlice';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import * as z from 'zod';
 
+import { useLoginMutation } from '../api/loginApi';
 import { nextStep, setLoginInfo } from '../loginSlice';
 import { loginSchema } from '../model/loginSchema';
-import { useLoginMutation } from '../api/loginApi';
-import validationToast from 'src/lib/utils/validationToast';
 
 const LoginForm = () => {
     const loginStore = useAppSelector((state) => state.loginStore);
+
     const dispatch = useAppDispatch();
-    const [login, { isLoading }] = useLoginMutation();
+    const [login] = useLoginMutation();
+    const router = useRouter();
 
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
@@ -30,14 +34,16 @@ const LoginForm = () => {
         },
     });
 
-
     const onSubmit = async (data: z.infer<typeof loginSchema>) => {
         const loginData: any = await login(data);
 
-        if (!isLoading && loginData.data.success) {
+        if (!loginData.data.isLoggedIn && loginData.data.success) {
             dispatch(setLoginInfo(data));
             dispatch(nextStep());
-        } else if (!loginData.data.success) {
+        } else if (loginData.data.isLoggedIn) {
+            dispatch(setCredentials(loginData));
+            router.push('/');
+        } else {
             validationToast({
                 status: 'error',
                 message: loginData.data.data,

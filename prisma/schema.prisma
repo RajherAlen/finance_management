@@ -8,22 +8,23 @@ datasource db {
 }
 
 model user {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique(map: "User_email_key")
+  id       Int    @id @default(autoincrement())
+  email    String @unique(map: "User_email_key")
   fullName String
   jobRole  String
   password String
   username String
+  income   Int
 }
 
 model transaction {
-  id              Int       @id @default(autoincrement())
-  amount          Float
-  description     String
-  category        String    // Assuming category can be stored as a string
-  date            DateTime
-  type            String    // Assuming type can be stored as a string
-  userId          Int
+  id          Int      @id @default(autoincrement())
+  amount      Float
+  description String
+  category    String // Assuming category can be stored as a string
+  date        DateTime
+  type        String // Assuming type can be stored as a string
+  userId      Int
   // createdAt       DateTime  @default(now())
   // updatedAt       DateTime  @updatedAt
 }

@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 import { NextResponse } from 'next/server';
+import { generateToken } from 'src/lib/utils/generateToken';
 
 const prisma = new PrismaClient();
 
@@ -10,7 +12,8 @@ export async function GET() {
         return NextResponse.json({ success: true, data: users });
     } catch (error) {
         return NextResponse.json({
-            success: false, error: 'Failed to test database connection',
+            success: false,
+            error: 'Failed to test database connection',
         });
     } finally {
         await prisma.$disconnect();
@@ -23,17 +26,21 @@ export async function POST(req: Request) {
 
         const users = await prisma.user.findUnique({
             where: {
-                email: data.email
-            }
+                email: data.email,
+            },
         });
 
         if (users) {
-            // CHECK IF PASSWORD MATCH WITH THIS
-            // IF MATCH - SUCCESS TRUE - NAVIGATE TO DASHBOARD
-            // ELSE - SUCCESS FALSE - THROW TOAST AND TRY AGAIN
-            return NextResponse.json({ success: false, data: "User exists" });
+            const isValidPassword = await bcrypt.compare(data.password, users.password);
+            const userToken = generateToken(data.email);
+
+            if (isValidPassword) {
+                return NextResponse.json({ userToken, userInfo: users, success: true, isLoggedIn: true, data: 'You are logged in' });
+            } else {
+                return NextResponse.json({ success: false, isLoggedIn: false, data: 'Password not match, please try again' });
+            }
         } else {
-            return NextResponse.json({ success: true, data: "User not exists, you can go on next step" });
+            return NextResponse.json({ success: true, isLoggedIn: false, data: 'User not exists, you can go on next step' });
         }
     } catch (error) {
         return NextResponse.json({ error: error }, { status: 500 });

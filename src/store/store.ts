@@ -4,11 +4,13 @@ import transactionSlice from 'src/features/transactions/transactionSlice';
 import { configureStore } from '@reduxjs/toolkit';
 
 import { apiSlice } from './apiSlice';
+import authSlice from './authSlice';
 
 export const store = configureStore({
     reducer: {
         transactionStore: transactionSlice,
         loginStore: loginSlice,
+        authStore: authSlice,
         [apiSlice.reducerPath]: apiSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => {

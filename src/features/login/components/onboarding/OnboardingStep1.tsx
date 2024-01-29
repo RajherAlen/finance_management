@@ -28,6 +28,7 @@ const OnboardingStep1 = () => {
     });
 
     const onSubmit = (data: z.infer<typeof accountInfoSchema>) => {
+        console.log("DATA: ",data)
         dispatch(setAccountInfo(data));
     };
 
@@ -38,7 +39,7 @@ const OnboardingStep1 = () => {
                 <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-[610px] space-y-5">
                     <FormField
                         control={form.control}
-                        name="username"
+                        name="fullName"
                         render={({ field }) => (
                             <FormCustomInput
                                 label="Enter your full name"
@@ -51,7 +52,7 @@ const OnboardingStep1 = () => {
 
                     <FormField
                         control={form.control}
-                        name="jobRole"
+                        name="username"
                         render={({ field }) => (
                             <FormCustomInput
                                 label="Enter your username"
@@ -64,7 +65,7 @@ const OnboardingStep1 = () => {
 
                     <FormField
                         control={form.control}
-                        name="fullName"
+                        name="jobRole"
                         render={({ field }) => (
                             <FormCustomInput
                                 placeholder="Enter your job role"

@@ -53,7 +53,7 @@ const transactionSlice = createSlice({
             updateTotalSaving(state);
         },
         setTotalIncome: (state, action: PayloadAction<number>) => {
-            state.income += action.payload;
+            state.income = action.payload;
 
             state.budgetCategory.needs = state.income * 0.5;
             state.budgetCategory.wants = state.income * 0.3;

@@ -1,6 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+type UserState = {
+    email: string;
+    password: string;
+    fullName: string;
+    username: string;
+    jobRole: string;
+    profilePicture: string;
+    currentStep: number;
+};
+
+
+const initialState: UserState = {
     email: '',
     password: '',
     fullName: '',

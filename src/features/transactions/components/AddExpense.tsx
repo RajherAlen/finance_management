@@ -12,18 +12,19 @@ import { Form, FormField } from 'src/components/form/form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PlusCircleIcon } from 'lucide-react';
-import { useAppDispatch } from 'src/store/hooks';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { v4 as uuidv4 } from 'uuid';
 import * as z from 'zod';
 
+import { useAddTransactionMutation } from '../api/transactionsApi';
 import { expenseSchema } from '../model/expenseSchema';
 import { updateTotalExpense } from '../transactionSlice';
-import { useAddTransactionMutation } from '../api/transactionsApi';
 
 const AddExpense = ({ required = true, customTitle }: { required?: boolean; customTitle?: string }) => {
     const dispatch = useAppDispatch();
     const [category, setCategory] = useState<'needs' | 'wants'>('needs');
-    const [addTransaction, { isLoading }] = useAddTransactionMutation()
+    const [addTransaction] = useAddTransactionMutation();
+    const { userInfo } = useAppSelector((state) => state.authStore);
 
     const form = useForm<z.infer<typeof expenseSchema>>({
         resolver: zodResolver(expenseSchema),
@@ -38,11 +39,11 @@ const AddExpense = ({ required = true, customTitle }: { required?: boolean; cust
 
     const onSubmit = (data: z.infer<typeof expenseSchema>) => {
         addTransaction({
-            ...data, 
+            ...data,
             category: category,
             type: 'expense',
-            userId: 1
-        })
+            userId: userInfo.id,
+        });
 
         dispatch(updateTotalExpense(data.amount));
 

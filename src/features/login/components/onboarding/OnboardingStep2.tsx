@@ -10,14 +10,12 @@ import LastTransactions from 'src/features/transactions/components/LastTransacti
 import TransactionIcons from 'src/features/transactions/components/TransactionIcons';
 
 import formatCurrency from 'src/lib/utils/formatCurrency';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import { useAppSelector } from 'src/store/hooks';
 
-import { nextStep } from '../../loginSlice';
 import OnboardingLayout from './OnboardingLayout';
 
 const OnboardingStep2 = () => {
     const { income } = useAppSelector((state) => state.transactionStore);
-    const dispatch = useAppDispatch();
 
     const [checkValidation, setCheckValidation] = useState(false);
 
