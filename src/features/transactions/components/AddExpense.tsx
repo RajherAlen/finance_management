@@ -45,8 +45,6 @@ const AddExpense = ({ required = true, customTitle }: { required?: boolean; cust
             userId: userInfo.id,
         });
 
-        dispatch(updateTotalExpense(data.amount));
-
         form.reset({
             amount: 0,
             description: '',

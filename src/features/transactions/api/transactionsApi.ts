@@ -17,8 +17,18 @@ export const transactionApiSlice = apiSlice.enhanceEndpoints({ addTagTypes: ['tr
             }),
             invalidatesTags: ['transactionList'],
         }),
+        deleteTransaction: builder.mutation({
+            query: ({ userId, transactionId }) => ({
+                url: `/transaction/${userId}`,
+                method: 'DELETE',
+                body: {
+                    transactionId,
+                },
+            }),
+            invalidatesTags: ['transactionList'],
+        }),
     }),
     overrideExisting: true,
 });
 
-export const { useAddTransactionMutation, useGetTransactionQuery } = transactionApiSlice;
+export const { useAddTransactionMutation, useGetTransactionQuery, useDeleteTransactionMutation } = transactionApiSlice;
