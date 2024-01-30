@@ -1,6 +1,5 @@
 import { apiSlice } from "src/store/apiSlice";
 
-const backendURL = "http://localhost:3000";
 
 export interface LoginUserProps {
 	username: string;
@@ -11,14 +10,14 @@ export const authApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		login: builder.mutation({
 			query: (data) => ({
-				url: `${backendURL}/api/auth/login`,
+				url: `/auth/login`,
 				method: "POST",
 				body: data
 			})
 		}),
 		register: builder.mutation({
 			query: (data) => ({
-				url: `${backendURL}/api/auth/register`,
+				url: `/auth/register`,
 				method: "POST",
 				body: data
 			})

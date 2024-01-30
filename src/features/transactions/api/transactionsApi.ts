@@ -1,17 +1,24 @@
-import { apiSlice } from "src/store/apiSlice";
+import { apiSlice } from 'src/store/apiSlice';
 
-const backendURL = "http://localhost:3000";
-
-export const transactionApiSlice = apiSlice.injectEndpoints({
-	endpoints: (builder) => ({
-		addTransaction: builder.mutation({
-			query: (data) => ({
-				url: `${backendURL}/api/transaction`,
-				method: "POST",
-				body: data
-			})
-		}),
-	})
+export const transactionApiSlice = apiSlice.enhanceEndpoints({ addTagTypes: ['transactionList'] }).injectEndpoints({
+    endpoints: (builder) => ({
+        getTransaction: builder.query({
+            query: (userId: string | number) => ({
+                url: `/transaction/${userId}`,
+                method: 'GET',
+            }),
+            providesTags: ['transactionList'],
+        }),
+        addTransaction: builder.mutation({
+            query: (data) => ({
+                url: `/transaction`,
+                method: 'POST',
+                body: data,
+            }),
+            invalidatesTags: ['transactionList'],
+        }),
+    }),
+    overrideExisting: true,
 });
 
-export const { useAddTransactionMutation } = transactionApiSlice;
+export const { useAddTransactionMutation, useGetTransactionQuery } = transactionApiSlice;

@@ -43,6 +43,11 @@ const transactionSlice = createSlice({
             updateTotalSaving(state);
             updatetotalGoalSaving(state);
         },
+        getAllTransactions: (state: FinancialState, action: PayloadAction<Transaction[]>) => {
+            if (action.payload) {
+                state.transactions = action.payload;
+            }
+        },
         updateSaving: (state: FinancialState, action: PayloadAction<Saving>) => {
             state.savings = state.savings.map((saving) => (saving.id === action.payload.id ? action.payload : saving));
             updateTotalSaving(state);
@@ -59,8 +64,8 @@ const transactionSlice = createSlice({
             state.budgetCategory.wants = state.income * 0.3;
             state.budgetCategory.savings = state.income * 0.2;
         },
-        updateTotalExpense: (state, action: PayloadAction<number>) => {
-            state.totalExpense += action.payload;
+        updateTotalExpense: (state, action: PayloadAction) => {
+            state.totalExpense = state.transactions.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
         },
         deleteTransaction: (state, action: PayloadAction<number | string>) => {
             state.transactions = state.transactions.filter((transaction) => {
@@ -80,6 +85,14 @@ const transactionSlice = createSlice({
     },
 });
 
-export const { addTransaction, addToSavings, updateSaving, deleteSaving, setTotalIncome, updateTotalExpense, deleteTransaction } =
-    transactionSlice.actions;
+export const {
+    addTransaction,
+    addToSavings,
+    updateSaving,
+    getAllTransactions,
+    deleteSaving,
+    setTotalIncome,
+    updateTotalExpense,
+    deleteTransaction,
+} = transactionSlice.actions;
 export default transactionSlice.reducer;
