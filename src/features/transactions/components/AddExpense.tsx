@@ -21,7 +21,6 @@ import { expenseSchema } from '../model/expenseSchema';
 import { updateTotalExpense } from '../transactionSlice';
 
 const AddExpense = ({ required = true, customTitle }: { required?: boolean; customTitle?: string }) => {
-    const dispatch = useAppDispatch();
     const [category, setCategory] = useState<'needs' | 'wants'>('needs');
     const [addTransaction] = useAddTransactionMutation();
     const { userInfo } = useAppSelector((state) => state.authStore);
@@ -44,8 +43,6 @@ const AddExpense = ({ required = true, customTitle }: { required?: boolean; cust
             type: 'expense',
             userId: userInfo.id,
         });
-
-        dispatch(updateTotalExpense(data.amount));
 
         form.reset({
             amount: 0,

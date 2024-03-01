@@ -6,8 +6,8 @@ const prisma = new PrismaClient();
 export async function POST(req: Request) {
     try {
         const data = await req.json();
-        
-        const newTransaction = await prisma.transaction.create({ data })
+
+        const newTransaction = await prisma.transaction.create({ data });
 
         return NextResponse.json({ newTransaction });
     } catch (error) {

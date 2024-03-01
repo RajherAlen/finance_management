@@ -5,18 +5,17 @@ import Button from 'src/components/button/Button';
 import { XIcon } from 'lucide-react';
 import formatCurrency from 'src/lib/utils/formatCurrency';
 import { formatDate } from 'src/lib/utils/formatDate';
-import { useAppDispatch } from 'src/store/hooks';
 
+import { useDeleteTransactionMutation } from '../api/transactionsApi';
 import { Transaction } from '../model/transactionModel';
-import { deleteTransaction } from '../transactionSlice';
 import CategoryIcons from './CategoryIcons';
 
 const ExpenseCard = (props: Transaction) => {
     const { description, amount, date, id } = props;
-    const dispatch = useAppDispatch();
+    const [deleteTransaction] = useDeleteTransactionMutation();
 
     const handleDeleteTransaction = () => {
-        dispatch(deleteTransaction(id));
+        deleteTransaction({ userId: 1, transactionId: id });
     };
 
     return (
