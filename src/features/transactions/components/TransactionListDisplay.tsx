@@ -1,10 +1,10 @@
 import Card from 'src/components/card/Card';
 import ExpenseByCategoryChart from 'src/features/analytics/components/ExpenseByCategoryChart';
+import TotalSpentChart from 'src/features/analytics/components/TotalSpentChart';
 
 import AddExpense from './AddExpense';
 import LastTransactions from './LastTransactions';
 import TransactionListCard from './TransactionListCard';
-import TotalSpentChart from 'src/features/analytics/components/TotalSpentChart';
 
 const TransactionListDisplay = () => {
     return (
@@ -16,12 +16,11 @@ const TransactionListDisplay = () => {
                     <TotalSpentChart />
                 </div>
             </div>
-            <div className="w-full max-w-[520px]">
-                <Card>
-                    <AddExpense customTitle="Expense" />
-                    <LastTransactions />
-                </Card>
-            </div>
+            
+            <Card className="l-aside flex flex-col">
+                <AddExpense customTitle="Expense" />
+                <LastTransactions />
+            </Card>
         </div>
     );
 };

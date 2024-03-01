@@ -17,14 +17,23 @@ model user {
   income   Int
 }
 
+enum TransactionType {
+  expense
+  income
+}
+
+enum TransactionCategory {
+  needs
+  wants
+}
+
 model transaction {
-  id          Int      @id @default(autoincrement())
+  id          Int             @id @default(autoincrement())
   amount      Float
   description String
-  category    String // Assuming category can be stored as a string
+  category    String
   date        DateTime
-  type        String // Assuming type can be stored as a string
+  type        TransactionType
   userId      Int
-  // createdAt       DateTime  @default(now())
-  // updatedAt       DateTime  @updatedAt
+  recuring    Boolean?
 }

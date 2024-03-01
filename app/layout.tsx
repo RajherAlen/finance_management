@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en">
-            <body className={cn('flex overflow-hidden', inter.className)} suppressHydrationWarning={true}>
+            <body className={cn('flex overflow-hidden h-screen', inter.className)} suppressHydrationWarning={true}>
                 <AppProvider>
                     {children}
                 </AppProvider>

@@ -14,18 +14,20 @@ const LastTransactions = () => {
 
     if (transactions.length === 0) return null;
     return (
-        <div>
+        <>
             <Separator />
 
-            {transactions.map((transaction, i) => {
-                return (
-                    <div key={Math.random()}>
-                        <ExpenseCard {...transaction} />
-                        {transactions.length !== i + 1 && <Separator />}
-                    </div>
-                );
-            })}
-        </div>
+            <div className='overflow-auto pr-4'>
+                {transactions.map((transaction, i) => {
+                    return (
+                        <div key={Math.random()}>
+                            <ExpenseCard {...transaction} />
+                            {transactions.length !== i + 1 && <Separator />}
+                        </div>
+                    );
+                })}
+            </div>
+        </>
     );
 };
 

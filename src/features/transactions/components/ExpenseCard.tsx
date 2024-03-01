@@ -2,7 +2,7 @@ import React from 'react';
 
 import Button from 'src/components/button/Button';
 
-import { XIcon } from 'lucide-react';
+import { RefreshCwIcon, XIcon } from 'lucide-react';
 import formatCurrency from 'src/lib/utils/formatCurrency';
 import { formatDate } from 'src/lib/utils/formatDate';
 
@@ -26,7 +26,10 @@ const ExpenseCard = (props: Transaction) => {
                 <div>
                     <div className="flex items-center gap-2">
                         <p className="text-base font-medium">{formatCurrency(amount)}</p>
-                        <p className="mb-[2px] rounded-full bg-primary/30 px-2 py-1 text-[11px] font-medium">{description}</p>
+                        <p className="mb-[2px] rounded-full bg-primary px-2 py-1 text-[11px] font-medium flex gap-1.5 items-center">
+                            <RefreshCwIcon size={10} />
+                            {description}
+                        </p>
                     </div>
 
                     <p className="text-xs text-muted">{formatDate({ date: date, format: 'D.MM.YYYY' })}</p>

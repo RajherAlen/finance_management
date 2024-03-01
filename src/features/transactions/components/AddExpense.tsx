@@ -12,13 +12,11 @@ import { Form, FormField } from 'src/components/form/form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PlusCircleIcon } from 'lucide-react';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { v4 as uuidv4 } from 'uuid';
+import { useAppSelector } from 'src/store/hooks';
 import * as z from 'zod';
 
 import { useAddTransactionMutation } from '../api/transactionsApi';
 import { expenseSchema } from '../model/expenseSchema';
-import { updateTotalExpense } from '../transactionSlice';
 
 const AddExpense = ({ required = true, customTitle }: { required?: boolean; customTitle?: string }) => {
     const [category, setCategory] = useState<'needs' | 'wants'>('needs');
