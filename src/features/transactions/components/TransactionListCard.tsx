@@ -14,7 +14,7 @@ const TransactionListCard = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if (userInfo.income) {
+        if (userInfo?.income) {
             dispatch(setTotalIncome(userInfo.income));
         }
     }, []);

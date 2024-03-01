@@ -45,9 +45,9 @@ const SavingGoalCard = (props: Saving) => {
                 label={
                     <>
                         <span className="block text-sm font-semibold">{name}</span>
-                        <span className="mr-1 text-xs text-muted">{savingDateOfPayment}</span>
+                        <span className="mr-1 text-xs text-muted">{savingDateOfPayment.message}</span>
                         <span className="mr-1 text-xs text-muted">/</span>
-                        <span className="mr-1 text-xs text-muted font-bold">{formatCurrency(calculateMonthlySavings(goalAmount - currentlySaved, +savingDateOfPayment.split(' ')[0]))}</span>
+                        <span className="mr-1 text-xs text-muted font-bold">{formatCurrency(calculateMonthlySavings(goalAmount - currentlySaved, savingDateOfPayment.monthsLeft ? savingDateOfPayment.monthsLeft : 0))}</span>
                         <span className="text-xs text-muted">per month</span>
                     </>
                 }

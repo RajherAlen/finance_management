@@ -12,19 +12,27 @@ export const calculateSavingDateOfPayment = (date: any) => {
     const savingDateYear = +savingDate[2];
 
     let untilDate = null;
+    let monthsLeft = null;
+    let message = '';
 
     if (todayYear === savingDateYear) {
         if (todayMonth === savingDateMonth) {
             untilDate = savingDateDay - todayDay;
-            return `${untilDate} day${untilDate > 1 ? 's' : ''} left`;
+            message = `${untilDate} day${untilDate > 1 ? 's' : ''} left`;
         } else if (todayMonth < savingDateMonth) {
-            const monthsLeft = savingDateMonth - todayMonth;
-            return `${monthsLeft} month${monthsLeft > 1 ? 's' : ''} left`;
+            monthsLeft = savingDateMonth - todayMonth;
+            message = `${monthsLeft} month${monthsLeft > 1 ? 's' : ''} left`;
         }
     } else if (todayYear < savingDateYear) {
         const yearsLeft = savingDateYear - todayYear;
-        return `${yearsLeft} year${yearsLeft > 1 ? 's' : ''} left`;
+        const monthsInYearsLeft = yearsLeft * 12;
+        const remainingMonths = 12 - todayMonth + savingDateMonth - 1;
+        monthsLeft = monthsInYearsLeft + remainingMonths;
+        
+        message = `${yearsLeft} year${yearsLeft > 1 ? 's' : ''} left/${monthsLeft} month${monthsLeft > 1 ? 's' : ''} left`;
+    } else {
+        message = 'Payment date has already passed';
     }
 
-    return 'Payment date has already passed';
+    return { message, monthsLeft };
 };

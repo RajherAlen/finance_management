@@ -46,7 +46,7 @@ const AddIncome = ({ checkValidation, additionalAction }: { checkValidation?: bo
                     <FormField
                         control={form.control}
                         name="amount"
-                        render={({ field }) => <FormCustomInput requiered className="flex-1" label="Amount" field={field} type="number" />}
+                        render={({ field }) => <FormCustomInput requiered className="flex-1 mb-2" label="Amount" field={field} type="number" />}
                     />
                     <div>
                         <Button variant="outline" className="flex items-center gap-2">
