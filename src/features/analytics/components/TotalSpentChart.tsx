@@ -29,7 +29,7 @@ const TotalSpentChart = () => {
         <div>
             <p className="mb-5 text-xl font-semibold">Total Spent</p>
 
-            <div className="flex flex-col items-center justify-center">
+            <div className="flex flex-col items-center justify-center h-full">
                 <div className="mb-5 h-[220px] w-[220px]">
                     <CircularChart data={data} />
                 </div>
