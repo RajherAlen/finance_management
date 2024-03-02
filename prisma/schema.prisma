@@ -32,3 +32,12 @@ enum TransactionType {
   expense
   income
 }
+
+model savings {
+  id             Int      @id @default(autoincrement())
+  goalAmount     Float
+  currentlySaved Float
+  name           String
+  date           DateTime
+  userId         Int
+}

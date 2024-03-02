@@ -9,17 +9,18 @@ import FormDatePicker from 'src/components/form/FormDatePicker';
 import { Form, FormField, FormLabel } from 'src/components/form/form';
 import Separator from 'src/components/separator/Separator';
 
+import { useAddSavingMutation } from 'src/features/savings/api/savingsApi';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PlusCircleIcon } from 'lucide-react';
-import { useAppDispatch } from 'src/store/hooks';
-import { v4 as uuidv4 } from 'uuid';
+import { useAppSelector } from 'src/store/hooks';
 import * as z from 'zod';
 
-import { savingSchema } from '../model/savingSchema';
-import { addToSavings } from '../transactionSlice';
+import { savingSchema } from '../../transactions/model/savingSchema';
 
 const AddSaving = ({ additionalAction }: { additionalAction?: () => void }) => {
-    const dispatch = useAppDispatch();
+    const [addSaving] = useAddSavingMutation();
+    const { userInfo } = useAppSelector((state) => state.authStore);
 
     const defaultValues = {
         name: '',
@@ -34,15 +35,13 @@ const AddSaving = ({ additionalAction }: { additionalAction?: () => void }) => {
     });
 
     const onSubmit = (data: z.infer<typeof savingSchema>) => {
-        dispatch(
-            addToSavings({
-                id: uuidv4(),
-                name: data.name,
-                goalAmount: data.goalAmount,
-                currentlySaved: data.currentlySaved,
-                date: data.date,
-            })
-        );
+        addSaving({
+            name: data.name,
+            goalAmount: data.goalAmount,
+            currentlySaved: data.currentlySaved,
+            date: data.date,
+            userId: userInfo.id,
+        });
 
         if (additionalAction !== undefined) {
             additionalAction();
@@ -79,7 +78,7 @@ const AddSaving = ({ additionalAction }: { additionalAction?: () => void }) => {
                         />
                     )}
                 />
-                <div className='space-y-1'>
+                <div className="space-y-1">
                     <FormLabel>
                         Enter your current savings and target savings date:
                         {<span className="ml-1 text-sky-600">*</span>}

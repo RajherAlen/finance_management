@@ -6,7 +6,7 @@ import Button from 'src/components/button/Button';
 import Card from 'src/components/card/Card';
 import Modal from 'src/components/dialog/Modal';
 import { ProgressBar } from 'src/components/progress/ProgressBar';
-import EditSaving from 'src/features/transactions/components/EditSaving';
+import EditSaving from 'src/features/savings/components/EditSaving';
 
 import { Saving } from 'src/features/transactions/model/transactionModel';
 import { deleteSaving } from 'src/features/transactions/transactionSlice';

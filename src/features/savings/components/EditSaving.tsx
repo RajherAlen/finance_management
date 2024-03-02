@@ -12,9 +12,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useAppDispatch } from 'src/store/hooks';
 import * as z from 'zod';
 
-import { savingSchema } from '../model/savingSchema';
-import { Saving } from '../model/transactionModel';
-import { updateSaving } from '../transactionSlice';
+import { savingSchema } from '../../transactions/model/savingSchema';
+import { Saving } from '../../transactions/model/transactionModel';
+import { updateSaving } from '../../transactions/transactionSlice';
 
 interface EditSavingProps extends Saving {
     additionalAction?: () => void;

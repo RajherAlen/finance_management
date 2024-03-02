@@ -4,20 +4,27 @@ import React, { useState } from 'react';
 
 import Button from 'src/components/button/Button';
 import Modal from 'src/components/dialog/Modal';
-import AddSaving from 'src/features/transactions/components/AddSaving';
+import AddSaving from 'src/features/savings/components/AddSaving';
 
 import { PlusCircleIcon } from 'lucide-react';
 import { useAppSelector } from 'src/store/hooks';
 
+import { useGetSavingsQuery } from '../api/savingsApi';
+import { Saving } from '../model/Saving';
 import SavingGoalCard from './SavingGoalCard';
+import GlobalLoader from 'src/components/loader/GlobalLoader';
 
 const SavingsListDisplay = () => {
-    const { savings } = useAppSelector((state) => state.transactionStore);
+    const { userInfo } = useAppSelector((state) => state.authStore);
+    const { data, isLoading } = useGetSavingsQuery(userInfo?.id);
+
     const [isOpen, setIsOpen] = useState(false);
 
     const handleCloseModal = () => {
         setIsOpen(false);
     };
+
+    if (isLoading) return <GlobalLoader />;
 
     return (
         <div>
@@ -38,7 +45,7 @@ const SavingsListDisplay = () => {
                 </Modal>
             </div>
 
-            {savings.map((saving) => {
+            {data?.savings.map((saving: Saving) => {
                 return <SavingGoalCard key={saving.id} {...saving} />;
             })}
         </div>
