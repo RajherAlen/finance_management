@@ -1,24 +1,31 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Button from 'src/components/button/Button';
 import Modal from 'src/components/dialog/Modal';
+import GlobalLoader from 'src/components/loader/GlobalLoader';
 import AddSaving from 'src/features/savings/components/AddSaving';
 
+import { updateSaving } from 'src/features/transactions/transactionSlice';
+
 import { PlusCircleIcon } from 'lucide-react';
-import { useAppSelector } from 'src/store/hooks';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
 import { useGetSavingsQuery } from '../api/savingsApi';
 import { Saving } from '../model/Saving';
 import SavingGoalCard from './SavingGoalCard';
-import GlobalLoader from 'src/components/loader/GlobalLoader';
 
 const SavingsListDisplay = () => {
+    const dispatch = useAppDispatch();
     const { userInfo } = useAppSelector((state) => state.authStore);
     const { data, isLoading } = useGetSavingsQuery(userInfo?.id);
 
     const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        dispatch(updateSaving(data?.savings));
+    }, [data, isLoading, dispatch]);
 
     const handleCloseModal = () => {
         setIsOpen(false);

@@ -39,19 +39,37 @@ const SavingGoalCard = (props: Saving) => {
         setDeleteIsOpen(false);
     };
 
+    const isFinished = goalAmount - currentlySaved === 0;
+
     return (
         <Card className="mb-4 max-w-md">
             <ProgressBar
                 label={
                     <>
                         <span className="block text-sm font-semibold">{name}</span>
-                        <span className="mr-1 text-xs text-muted">{savingDateOfPayment.message}</span>
-                        <span className="mr-1 text-xs text-muted">/</span>
-                        <span className="mr-1 text-xs text-muted font-bold">{formatCurrency(calculateMonthlySavings(goalAmount - currentlySaved, savingDateOfPayment.monthsLeft ? savingDateOfPayment.monthsLeft : 0))}</span>
-                        <span className="text-xs text-muted">per month</span>
+                        {isFinished ? (
+                            <p className="my-1 inline-block rounded-full bg-green-500/80 px-3 py-1 text-xs font-semibold text-white">
+                                Finished
+                            </p>
+                        ) : (
+                            <>
+                                <span className="mr-1 text-xs text-muted">{savingDateOfPayment.message}</span>
+                                <span className="mr-1 text-xs text-muted">/</span>
+                                <span className="mr-1 text-xs font-bold text-muted">
+                                    {formatCurrency(
+                                        calculateMonthlySavings(
+                                            goalAmount - currentlySaved,
+                                            savingDateOfPayment.monthsLeft ? savingDateOfPayment.monthsLeft : 0
+                                        )
+                                    )}
+                                </span>
+                                <span className="text-xs text-muted">per month</span>
+                            </>
+                        )}
                     </>
                 }
                 value={currentlySaved}
+                isFinished={isFinished}
                 total={goalAmount}
             />
 

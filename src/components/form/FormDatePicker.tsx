@@ -8,6 +8,7 @@ import Button from '../button/Button';
 import { Calendar } from '../calendar/Calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '../popover/Popover';
 import { FormControl, FormItem, FormMessage } from './form';
+import { formatDate } from 'src/lib/utils/formatDate';
 
 interface FormSelectProps {
     field: any;
@@ -27,7 +28,7 @@ const FormDatePicker = (props: FormSelectProps) => {
                             className={cn('h-12 justify-start text-left font-normal', !field.value && 'text-muted-foreground')}
                         >
                             <CalendarIcon className="mr-2 h-4 w-4" />
-                            {field.value ? format(field.value, 'd-L-y') : <span>Add Date</span>}
+                            {field.value ? formatDate(field.value) : <span>Add Date</span>}
                         </Button>
                     </FormControl>
                 </PopoverTrigger>

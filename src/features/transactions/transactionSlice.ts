@@ -48,8 +48,10 @@ const transactionSlice = createSlice({
                 state.transactions = action.payload;
             }
         },
-        updateSaving: (state: FinancialState, action: PayloadAction<Saving>) => {
-            state.savings = state.savings.map((saving) => (saving.id === action.payload.id ? action.payload : saving));
+        updateSaving: (state: FinancialState, action: PayloadAction<Saving[]>) => {
+            if (action.payload) {
+                state.savings = action.payload;
+            }
             updateTotalSaving(state);
             updatetotalGoalSaving(state);
         },

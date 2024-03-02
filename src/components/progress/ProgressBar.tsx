@@ -11,13 +11,9 @@ const Progress = React.forwardRef<
     React.ElementRef<typeof ProgressPrimitive.Root>,
     React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>
 >(({ className, value, ...props }, ref) => (
-    <ProgressPrimitive.Root
-        ref={ref}
-        className={cn('relative h-3 w-full overflow-hidden rounded-full bg-[#A3AEB44D]/20', className)}
-        {...props}
-    >
+    <ProgressPrimitive.Root ref={ref} className={cn('relative h-3 w-full overflow-hidden rounded-full bg-[#A3AEB44D]/20')} {...props}>
         <ProgressPrimitive.Indicator
-            className="h-full w-full flex-1 bg-muted transition-all"
+            className={cn('h-full w-full flex-1 bg-slate-600 transition-all', className)}
             style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
         />
     </ProgressPrimitive.Root>
@@ -31,9 +27,10 @@ interface ProgressBarProps {
     value: number;
     total: number;
     additionalComponent?: React.ReactNode;
+    isFinished?: boolean;
 }
 
-export const ProgressBar = ({ label, value, total, additionalComponent }: ProgressBarProps) => {
+export const ProgressBar = ({ label, value, total, additionalComponent, isFinished }: ProgressBarProps) => {
     return (
         <div className="flex flex-col gap-1">
             <div className="flex justify-between gap-3">
@@ -47,7 +44,7 @@ export const ProgressBar = ({ label, value, total, additionalComponent }: Progre
                     {additionalComponent}
                 </div>
             </div>
-            <Progress value={calcPercentage(value, total)} />
+            <Progress value={calcPercentage(value, total)} className={isFinished ? 'bg-green-500' : ''} />
         </div>
     );
 };
