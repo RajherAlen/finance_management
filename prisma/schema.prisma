@@ -17,16 +17,6 @@ model user {
   income   Int
 }
 
-enum TransactionType {
-  expense
-  income
-}
-
-enum TransactionCategory {
-  needs
-  wants
-}
-
 model transaction {
   id          Int             @id @default(autoincrement())
   amount      Float
@@ -36,4 +26,9 @@ model transaction {
   type        TransactionType
   userId      Int
   recuring    Boolean?
+}
+
+enum TransactionType {
+  expense
+  income
 }
