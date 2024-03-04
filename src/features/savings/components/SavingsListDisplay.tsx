@@ -34,27 +34,29 @@ const SavingsListDisplay = () => {
     if (isLoading) return <GlobalLoader />;
 
     return (
-        <div>
-            <div className="mb-4 flex max-w-md items-center justify-between gap-4">
-                <p className="text-sm font-semibold text-gray-700">Savings</p>
-                <Modal
-                    open={isOpen}
-                    triggerAsChild
-                    onOpenChange={setIsOpen}
-                    trigger={
-                        <Button variant="outline" className="flex items-center gap-2" size="sm">
-                            <PlusCircleIcon width={16} height={16} stroke="#1B2327" />
-                            Add New saving
-                        </Button>
-                    }
-                >
-                    <AddSaving additionalAction={handleCloseModal} />
-                </Modal>
-            </div>
+        <div className="flex gap-5">
+            <div>
+                <div className="mb-4 flex max-w-md items-center justify-between gap-4">
+                    <p className="text-sm font-semibold text-gray-700">Savings</p>
+                    <Modal
+                        open={isOpen}
+                        triggerAsChild
+                        onOpenChange={setIsOpen}
+                        trigger={
+                            <Button variant="outline" className="flex items-center gap-2" size="sm">
+                                <PlusCircleIcon width={16} height={16} stroke="#1B2327" />
+                                Add New saving
+                            </Button>
+                        }
+                    >
+                        <AddSaving additionalAction={handleCloseModal} />
+                    </Modal>
+                </div>
 
-            {data?.savings.map((saving: Saving) => {
-                return <SavingGoalCard key={saving.id} {...saving} />;
-            })}
+                {data?.savings.map((saving: Saving) => {
+                    return <SavingGoalCard key={saving.id} {...saving} />;
+                })}
+            </div>
         </div>
     );
 };

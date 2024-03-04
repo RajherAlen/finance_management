@@ -8,13 +8,15 @@ import FormCustomInput from 'src/components/form/FormCustomInput';
 import FormDatePicker from 'src/components/form/FormDatePicker';
 import { Form, FormField, FormLabel } from 'src/components/form/form';
 
+import { savingSchema } from 'src/features/transactions/model/savingSchema';
+import { updateSaving } from 'src/features/transactions/transactionSlice';
+
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useAppDispatch } from 'src/store/hooks';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import * as z from 'zod';
 
-import { savingSchema } from '../../transactions/model/savingSchema';
-import { Saving } from '../../transactions/model/transactionModel';
-import { updateSaving } from '../../transactions/transactionSlice';
+import { useUpdateSavingMutation } from '../api/savingsApi';
+import { Saving } from '../model/Saving';
 
 interface EditSavingProps extends Saving {
     additionalAction?: () => void;
@@ -22,8 +24,8 @@ interface EditSavingProps extends Saving {
 
 const EditSaving = (props: EditSavingProps) => {
     const { name, goalAmount, currentlySaved, additionalAction, date, id } = props;
-
-    const dispatch = useAppDispatch();
+    const [updateSaving] = useUpdateSavingMutation();
+    const { userInfo } = useAppSelector((state) => state.authStore);
 
     const defaultValues = {
         name,
@@ -38,15 +40,14 @@ const EditSaving = (props: EditSavingProps) => {
     });
 
     const onSubmit = (data: z.infer<typeof savingSchema>) => {
-        dispatch(
-            updateSaving({
-                id: id,
-                name: data.name,
-                goalAmount: data.goalAmount,
-                currentlySaved: data.currentlySaved,
-                date: data.date,
-            })
-        );
+        updateSaving({
+            id: id,
+            name: data.name,
+            goalAmount: data.goalAmount,
+            currentlySaved: data.currentlySaved,
+            date: data.date,
+            userId: userInfo.id,
+        });
 
         if (additionalAction !== undefined) {
             additionalAction();

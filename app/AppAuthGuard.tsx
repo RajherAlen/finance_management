@@ -5,10 +5,11 @@ import React, { useEffect, useState } from 'react';
 import GlobalLoader from 'src/components/loader/GlobalLoader';
 
 import { useGetTransactionQuery } from 'src/features/transactions/api/transactionsApi';
-import { getAllTransactions, updateTotalExpense } from 'src/features/transactions/transactionSlice';
+import { getAllTransactions, updateSaving, updateTotalExpense } from 'src/features/transactions/transactionSlice';
 
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import { useGetSavingsQuery } from 'src/features/savings/api/savingsApi';
 
 const AppAuthGuard = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter();
@@ -19,6 +20,7 @@ const AppAuthGuard = ({ children }: { children: React.ReactNode }) => {
     const dispatch = useAppDispatch();
 
     const { data } = useGetTransactionQuery(userInfo?.id);
+    const { data: savingData } = useGetSavingsQuery(userInfo?.id);
 
     useEffect(() => {
         if (!authStore.userInfo && !authStore.userToken) {
@@ -26,10 +28,11 @@ const AppAuthGuard = ({ children }: { children: React.ReactNode }) => {
         }
 
         dispatch(getAllTransactions(data?.transactions));
+        dispatch(updateSaving(savingData?.savings));
         dispatch(updateTotalExpense());
 
         setIsLoading(false);
-    }, [authStore.userInfo, authStore.userToken, router, data, dispatch]);
+    }, [authStore.userInfo, authStore.userToken, router, data, dispatch, savingData]);
 
     if (isLoading) return <GlobalLoader />;
 

@@ -17,7 +17,15 @@ export const savingsApiSlice = apiSlice.enhanceEndpoints({ addTagTypes: ['saving
             }),
             invalidatesTags: ['savingList'],
         }),
+        updateSaving: builder.mutation({
+            query: (data) => ({
+                url: '/saving',
+                method: 'PATCH',
+                body: data,
+            }),
+            invalidatesTags: ['savingList'],
+        }),
     }),
 });
 
-export const { useAddSavingMutation, useGetSavingsQuery } = savingsApiSlice;
+export const { useAddSavingMutation, useGetSavingsQuery, useUpdateSavingMutation } = savingsApiSlice;
