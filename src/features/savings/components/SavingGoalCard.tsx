@@ -9,26 +9,29 @@ import { ProgressBar } from 'src/components/progress/ProgressBar';
 import EditSaving from 'src/features/savings/components/EditSaving';
 
 import { Saving } from 'src/features/transactions/model/transactionModel';
-import { deleteSaving } from 'src/features/transactions/transactionSlice';
 
 import { Edit3Icon, Trash } from 'lucide-react';
 import formatCurrency from 'src/lib/utils/formatCurrency';
-import { useAppDispatch } from 'src/store/hooks';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
+import { useDeleteSavingMutation } from '../api/savingsApi';
 import { calculateMonthlySavings } from '../utils/calculateMonthlySavings';
 import { calculateSavingDateOfPayment } from '../utils/calculateSavingDateOfPayment';
 
 const SavingGoalCard = (props: Saving) => {
-    const dispatch = useAppDispatch();
     const { name, goalAmount, currentlySaved, id, date } = props;
-
     const [editIsOpen, setEditIsOpen] = useState(false);
     const [deleteIsOpen, setDeleteIsOpen] = useState(false);
+
+    const { userInfo } = useAppSelector((state) => state.authStore);
+    const [deleteSaving] = useDeleteSavingMutation();
 
     const savingDateOfPayment = calculateSavingDateOfPayment(date);
 
     const handleDeleteSaving = () => {
-        dispatch(deleteSaving(id));
+        deleteSaving({ id, userId: userInfo.id });
+
+        handleCloseEditModal()
     };
 
     const handleCloseEditModal = () => {

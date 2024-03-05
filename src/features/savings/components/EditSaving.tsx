@@ -24,6 +24,7 @@ interface EditSavingProps extends Saving {
 
 const EditSaving = (props: EditSavingProps) => {
     const { name, goalAmount, currentlySaved, additionalAction, date, id } = props;
+
     const [updateSaving] = useUpdateSavingMutation();
     const { userInfo } = useAppSelector((state) => state.authStore);
 

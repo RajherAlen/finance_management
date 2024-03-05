@@ -12,7 +12,7 @@ import { updateSaving } from 'src/features/transactions/transactionSlice';
 import { PlusCircleIcon } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
-import { useGetSavingsQuery } from '../api/savingsApi';
+import { useDeleteSavingMutation, useGetSavingsQuery } from '../api/savingsApi';
 import { Saving } from '../model/Saving';
 import SavingGoalCard from './SavingGoalCard';
 

@@ -17,6 +17,14 @@ export const savingsApiSlice = apiSlice.enhanceEndpoints({ addTagTypes: ['saving
             }),
             invalidatesTags: ['savingList'],
         }),
+        deleteSaving: builder.mutation({
+            query: (data: DeleteSavingProps) => ({
+                url: '/saving',
+                method: 'DELETE',
+                body: data,
+            }),
+            invalidatesTags: ['savingList'],
+        }),
         updateSaving: builder.mutation({
             query: (data) => ({
                 url: '/saving',
@@ -28,4 +36,9 @@ export const savingsApiSlice = apiSlice.enhanceEndpoints({ addTagTypes: ['saving
     }),
 });
 
-export const { useAddSavingMutation, useGetSavingsQuery, useUpdateSavingMutation } = savingsApiSlice;
+export const { useAddSavingMutation, useGetSavingsQuery, useUpdateSavingMutation, useDeleteSavingMutation } = savingsApiSlice;
+
+interface DeleteSavingProps {
+    id: string | number;
+    userId: string | number;
+}
