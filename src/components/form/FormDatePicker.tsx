@@ -8,11 +8,10 @@ import Button from '../button/Button';
 import { Calendar } from '../calendar/Calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '../popover/Popover';
 import { FormControl, FormItem, FormMessage } from './form';
-import { formatDate } from 'src/lib/utils/formatDate';
 
 interface FormSelectProps {
     field: any;
-    disableBefore?: boolean
+    disableBefore?: boolean;
 }
 
 const FormDatePicker = (props: FormSelectProps) => {
@@ -28,16 +27,17 @@ const FormDatePicker = (props: FormSelectProps) => {
                             className={cn('h-12 justify-start text-left font-normal', !field.value && 'text-muted-foreground')}
                         >
                             <CalendarIcon className="mr-2 h-4 w-4" />
-                            {field.value ? formatDate(field.value) : <span>Add Date</span>}
+                            {field.value ?  new Date(field.value).toLocaleDateString() : <span>Add Date</span>}
                         </Button>
                     </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
                         mode="single"
-                        selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date: any) => disableBefore ? date < new Date() : false}
+                        selected={new Date(field.value)}
+                        defaultMonth={new Date(field.value)}
+                        disabled={(date: any) => (disableBefore ? date < new Date() : false)}
                         initialFocus
                     />
                 </PopoverContent>
