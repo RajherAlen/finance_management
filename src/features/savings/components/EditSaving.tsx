@@ -32,7 +32,7 @@ const EditSaving = (props: EditSavingProps) => {
         name,
         goalAmount,
         currentlySaved,
-        date,
+        date: new Date(date),
     };
 
     const form = useForm<z.infer<typeof savingSchema>>({
