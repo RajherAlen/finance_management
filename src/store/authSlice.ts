@@ -8,34 +8,34 @@ const userToken = LocalStorageProvider.get('userToken').value ? LocalStorageProv
 const userInfo = LocalStorageProvider.get('userInfo').value ? LocalStorageProvider.get('userInfo').value : null;
 
 type UserState = {
-    userInfo: any,
-	userToken: string | null | unknown;
-}
+    userInfo: any;
+    userToken: string | null | unknown;
+};
 
 const initialState: UserState = {
     userToken,
-    userInfo
+    userInfo,
 };
 
 const authSlice = createSlice({
-	name: "auth",
-	initialState,
-	reducers: {
-		logout: (state) => {
-			LocalStorageProvider.remove("userInfo");
-			LocalStorageProvider.remove("userToken");
+    name: 'auth',
+    initialState,
+    reducers: {
+        logout: (state) => {
+            LocalStorageProvider.remove('userInfo');
+            LocalStorageProvider.remove('userToken');
 
-			state.userInfo = null;
-			state.userToken = null;
-		},
-		setCredentials: (state, { payload }) => {
-			state.userInfo = payload.data.userInfo;
-			state.userToken = payload.data.userToken;
+            state.userInfo = null;
+            state.userToken = null;
+        },
+        setCredentials: (state, { payload }) => {
+            state.userInfo = payload.data.userInfo;
+            state.userToken = payload.data.userToken;
 
-			LocalStorageProvider.set("userInfo", state.userInfo);
-			LocalStorageProvider.set("userToken", state.userToken);
-		}
-	}
+            LocalStorageProvider.set('userInfo', state.userInfo);
+            LocalStorageProvider.set('userToken', state.userToken);
+        },
+    },
 });
 
 export const { logout, setCredentials } = authSlice.actions;

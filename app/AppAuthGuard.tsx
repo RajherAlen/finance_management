@@ -4,12 +4,12 @@ import React, { useEffect, useState } from 'react';
 
 import GlobalLoader from 'src/components/loader/GlobalLoader';
 
+import { useGetSavingsQuery } from 'src/features/savings/api/savingsApi';
 import { useGetTransactionQuery } from 'src/features/transactions/api/transactionsApi';
 import { getAllTransactions, updateSaving, updateTotalExpense } from 'src/features/transactions/transactionSlice';
 
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { useGetSavingsQuery } from 'src/features/savings/api/savingsApi';
 
 const AppAuthGuard = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter();

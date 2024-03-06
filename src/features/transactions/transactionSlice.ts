@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import LocalStorageProvider from 'src/lib/utils/storage/LocalStorageProvider';
 
 import { FinancialState, Saving, Transaction } from './model/transactionModel';
 
@@ -60,7 +61,10 @@ const transactionSlice = createSlice({
             updateTotalSaving(state);
         },
         setTotalIncome: (state, action: PayloadAction<number>) => {
+            const userInfo: any = LocalStorageProvider.get('userInfo').value;
+            
             state.income = action.payload;
+            LocalStorageProvider.set('userInfo', { ...userInfo, income: action.payload });
 
             state.budgetCategory.needs = state.income * 0.5;
             state.budgetCategory.wants = state.income * 0.3;
