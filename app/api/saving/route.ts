@@ -1,5 +1,3 @@
-import { Saving } from 'src/features/transactions/model/transactionModel';
-
 import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
 

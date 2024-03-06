@@ -11,6 +11,7 @@ const TransactionListDisplay = () => {
         <div className="flex flex-wrap gap-5">
             <div className="flex flex-1 flex-col gap-5">
                 <TransactionListCard />
+                
                 <div className="grid grid-cols-2">
                     <ExpenseByCategoryChart />
                     <TotalSpentChart />

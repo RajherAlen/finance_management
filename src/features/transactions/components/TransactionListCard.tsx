@@ -5,8 +5,8 @@ import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
 import { setTotalIncome } from '../transactionSlice';
-import AddIncomeModal from './AddIncomeModal';
 import TransactionCard from './TransactionCard';
+import EditIncomeModal from './EditIncomeModal';
 
 const TransactionListCard = () => {
     const { income, totalExpense, totalSavings } = useAppSelector((state) => state.transactionStore);
@@ -21,7 +21,7 @@ const TransactionListCard = () => {
 
     return (
         <div className="flex flex-wrap gap-3">
-            <TransactionCard amount={income} type="income" additionalAction={<AddIncomeModal />} />
+            <TransactionCard amount={income} type="income" additionalAction={<EditIncomeModal />} />
             <TransactionCard amount={totalExpense} type="expense" />
             <TransactionCard amount={totalSavings} type="savings" />
             <TransactionCard amount={income - totalExpense} type="budget" />

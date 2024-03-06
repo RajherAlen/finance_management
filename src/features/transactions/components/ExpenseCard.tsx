@@ -17,7 +17,7 @@ const ExpenseCard = (props: Transaction) => {
     const handleDeleteTransaction = () => {
         deleteTransaction({ userId: 1, transactionId: id });
     };
-    console.log(recuring)
+
     return (
         <div className="flex items-center gap-5">
             <div className="flex flex-1 gap-3">

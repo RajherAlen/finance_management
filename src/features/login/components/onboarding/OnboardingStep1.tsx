@@ -28,7 +28,6 @@ const OnboardingStep1 = () => {
     });
 
     const onSubmit = (data: z.infer<typeof accountInfoSchema>) => {
-        console.log("DATA: ",data)
         dispatch(setAccountInfo(data));
     };
 
