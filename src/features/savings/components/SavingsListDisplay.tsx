@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
 import { useDeleteSavingMutation, useGetSavingsQuery } from '../api/savingsApi';
 import { Saving } from '../model/Saving';
+import AddToSavingForm from './AddToSavingForm';
 import SavingGoalCard from './SavingGoalCard';
 
 const SavingsListDisplay = () => {
@@ -34,7 +35,7 @@ const SavingsListDisplay = () => {
     if (isLoading) return <GlobalLoader />;
 
     return (
-        <div className="flex gap-5">
+        <div className="flex items-start gap-5">
             <div>
                 <div className="mb-4 flex max-w-md items-center justify-between gap-4">
                     <p className="text-sm font-semibold text-gray-700">Savings</p>
@@ -57,6 +58,8 @@ const SavingsListDisplay = () => {
                     return <SavingGoalCard key={saving.id} {...saving} />;
                 })}
             </div>
+
+            <AddToSavingForm savings={data?.savings} />
         </div>
     );
 };

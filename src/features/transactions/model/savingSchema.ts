@@ -18,3 +18,13 @@ export const savingSchema = z.object({
         required_error: 'Please set date',
     }),
 });
+
+export const addToSavingSchema = z.object({
+    amount: z.coerce.number({
+        required_error: 'Amount is required',
+        invalid_type_error: 'Amount must be a number',
+    }),
+    savingName: z.string({
+        required_error: 'This field is required',
+    }),
+});

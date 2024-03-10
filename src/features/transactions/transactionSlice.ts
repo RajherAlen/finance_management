@@ -49,7 +49,7 @@ const transactionSlice = createSlice({
                 state.transactions = action.payload;
             }
         },
-        updateSaving: (state: FinancialState, action: PayloadAction<Saving[]>) => {
+        updateSaving: (state: FinancialState, action: PayloadAction<any>) => {
             if (action.payload) {
                 state.savings = action.payload;
             }

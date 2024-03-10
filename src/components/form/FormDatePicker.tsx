@@ -35,8 +35,8 @@ const FormDatePicker = (props: FormSelectProps) => {
                     <Calendar
                         mode="single"
                         onSelect={field.onChange}
-                        selected={new Date(field.value)}
-                        defaultMonth={new Date(field.value)}
+                        selected={field.value ? new Date(field.value) : field.value}
+                        defaultMonth={field.value ? new Date(field.value) : field.value}
                         disabled={(date: any) => (disableBefore ? date < new Date() : false)}
                         initialFocus
                     />
