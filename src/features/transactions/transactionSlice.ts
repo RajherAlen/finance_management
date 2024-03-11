@@ -34,20 +34,16 @@ const transactionSlice = createSlice({
     name: 'transactions',
     initialState,
     reducers: {
-        addTransaction: (state: FinancialState, action: PayloadAction<Transaction>) => {
-            const { category, amount } = action.payload;
-            state.transactions = [...state.transactions, action.payload];
-            state.spendByCategory[category.toLowerCase()] += amount;
+        getAllTransactions: (state: FinancialState, action: PayloadAction<Transaction[]>) => {
+            if (action.payload) {
+                state.transactions = action.payload;
+            }
+            state.totalExpense = state.transactions.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
         },
         addToSavings: (state: FinancialState, action: PayloadAction<Saving>) => {
             state.savings = [...state.savings, action.payload];
             updateTotalSaving(state);
             updatetotalGoalSaving(state);
-        },
-        getAllTransactions: (state: FinancialState, action: PayloadAction<Transaction[]>) => {
-            if (action.payload) {
-                state.transactions = action.payload;
-            }
         },
         updateSaving: (state: FinancialState, action: PayloadAction<any>) => {
             if (action.payload) {
@@ -56,13 +52,9 @@ const transactionSlice = createSlice({
             updateTotalSaving(state);
             updatetotalGoalSaving(state);
         },
-        deleteSaving: (state, action: PayloadAction<number | string>) => {
-            state.savings = state.savings.filter((saving) => saving.id !== action.payload);
-            updateTotalSaving(state);
-        },
         setTotalIncome: (state, action: PayloadAction<number>) => {
             const userInfo: any = LocalStorageProvider.get('userInfo').value;
-            
+
             state.income = action.payload;
             LocalStorageProvider.set('userInfo', { ...userInfo, income: action.payload });
 
@@ -70,35 +62,8 @@ const transactionSlice = createSlice({
             state.budgetCategory.wants = state.income * 0.3;
             state.budgetCategory.savings = state.income * 0.2;
         },
-        updateTotalExpense: (state, action: PayloadAction) => {
-            state.totalExpense = state.transactions.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
-        },
-        deleteTransaction: (state, action: PayloadAction<number | string>) => {
-            state.transactions = state.transactions.filter((transaction) => {
-                if (transaction.id === action.payload) {
-                    state.spendByCategory[transaction.category.toLowerCase()] -= transaction.amount;
-
-                    if (transaction.type.toLowerCase() === 'savings') {
-                        state.totalSavings -= transaction.amount;
-                    } else if (transaction.type.toLowerCase() === 'expense') {
-                        state.totalExpense -= transaction.amount;
-                    }
-                }
-
-                return transaction.id !== action.payload;
-            });
-        },
     },
 });
 
-export const {
-    addTransaction,
-    addToSavings,
-    updateSaving,
-    getAllTransactions,
-    deleteSaving,
-    setTotalIncome,
-    updateTotalExpense,
-    deleteTransaction,
-} = transactionSlice.actions;
+export const { addToSavings, updateSaving, getAllTransactions, setTotalIncome } = transactionSlice.actions;
 export default transactionSlice.reducer;
