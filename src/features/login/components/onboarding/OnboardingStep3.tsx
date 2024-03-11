@@ -1,6 +1,6 @@
 import React from 'react';
 
-import AddSaving from 'src/features/transactions/components/AddSaving';
+import AddSaving from 'src/features/savings/components/AddSaving';
 
 import { SavingsListDisplay } from 'src/features/savings';
 

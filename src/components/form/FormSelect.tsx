@@ -14,6 +14,7 @@ interface FormSelectProps {
     className?: string;
     ghostSelect?: boolean;
     hideErrorMessage?: boolean;
+    onChange?: any;
 }
 
 const FormSelect = (props: FormSelectProps) => {
@@ -28,7 +29,7 @@ const FormSelect = (props: FormSelectProps) => {
             <FormControl>
                 <Select
                     value={props.field.value}
-                    onChange={props.field.onChange}
+                    onChange={props.onChange || props.field.onChange}
                     fullWidth={props.fullWidth}
                     placeholder={props.placeholder}
                     options={props.options}

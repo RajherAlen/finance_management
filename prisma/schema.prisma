@@ -7,14 +7,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
-  id       Int    @id @default(autoincrement())
-  email    String @unique(map: "User_email_key")
-  fullName String
-  jobRole  String
-  password String
-  username String
-  income   Int
+model User {
+  id           Int           @id @default(autoincrement())
+  email        String        @unique
+  fullName     String
+  jobRole      String
+  password     String
+  username     String
+  income       Int
+  transactions Transaction[]
+  savings      Savings[]
+}
+
+model Transaction {
+  id          Int             @id @default(autoincrement())
+  amount      Float
+  description String
+  category    String
+  date        DateTime
+  type        TransactionType
+  user        User            @relation(fields: [userId], references: [id])
+  userId      Int
+  recurring   Boolean?
 }
 
 enum TransactionType {
@@ -22,18 +36,12 @@ enum TransactionType {
   income
 }
 
-enum TransactionCategory {
-  needs
-  wants
-}
-
-model transaction {
-  id          Int             @id @default(autoincrement())
-  amount      Float
-  description String
-  category    String
-  date        DateTime
-  type        TransactionType
-  userId      Int
-  recuring    Boolean?
+model Savings {
+  id             Int      @id @default(autoincrement())
+  goalAmount     Float
+  currentlySaved Float
+  name           String
+  date           DateTime
+  user           User     @relation(fields: [userId], references: [id])
+  userId         Int
 }

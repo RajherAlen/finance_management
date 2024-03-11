@@ -26,10 +26,24 @@ export const calculateSavingDateOfPayment = (date: any) => {
     } else if (todayYear < savingDateYear) {
         const yearsLeft = savingDateYear - todayYear;
         const monthsInYearsLeft = yearsLeft * 12;
-        const remainingMonths = 12 - todayMonth + savingDateMonth - 1;
-        monthsLeft = monthsInYearsLeft + remainingMonths;
-        
-        message = `${yearsLeft} year${yearsLeft > 1 ? 's' : ''} left/${monthsLeft} month${monthsLeft > 1 ? 's' : ''} left`;
+        let remainingMonths;
+        if (savingDateMonth > todayMonth || (savingDateMonth === todayMonth && savingDateDay >= todayDay)) {
+            remainingMonths = savingDateMonth - todayMonth;
+        } else {
+            remainingMonths = savingDateMonth - todayMonth - 1;
+        }
+
+        monthsLeft = remainingMonths + monthsInYearsLeft;
+
+        if (monthsLeft > 12) {
+            const remainingYears = Math.floor(monthsLeft / 12);
+            const remainingMonthsInYear = monthsLeft % 12;
+            message = `${remainingYears} year${remainingYears !== 1 ? 's' : ''} ${remainingMonthsInYear} month${
+                remainingMonthsInYear !== 1 ? 's' : ''
+            } left`;
+        } else {
+            message = `${monthsLeft} month${monthsLeft !== 1 ? 's' : ''} left`;
+        }
     } else {
         message = 'Payment date has already passed';
     }

@@ -11,7 +11,7 @@ import { Transaction } from '../model/transactionModel';
 import CategoryIcons from './CategoryIcons';
 
 const ExpenseCard = (props: Transaction) => {
-    const { description, amount, date, id } = props;
+    const { description, amount, date, id, recuring } = props;
     const [deleteTransaction] = useDeleteTransactionMutation();
 
     const handleDeleteTransaction = () => {
@@ -27,7 +27,7 @@ const ExpenseCard = (props: Transaction) => {
                     <div className="flex items-center gap-2">
                         <p className="text-base font-medium">{formatCurrency(amount)}</p>
                         <p className="mb-[2px] rounded-full bg-primary px-2 py-1 text-[11px] font-medium flex gap-1.5 items-center">
-                            <RefreshCwIcon size={10} />
+                            {recuring && <RefreshCwIcon size={10} />}
                             {description}
                         </p>
                     </div>

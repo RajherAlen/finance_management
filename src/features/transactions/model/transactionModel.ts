@@ -5,6 +5,7 @@ export interface Transaction {
     category: 'savings' | 'wants' | 'needs';
     date: Date;
     type: 'income' | 'expense';
+    recuring?: boolean;
 }
 
 interface CategoryTotals {

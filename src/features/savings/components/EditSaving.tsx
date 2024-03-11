@@ -7,25 +7,32 @@ import Button from 'src/components/button/Button';
 import FormCustomInput from 'src/components/form/FormCustomInput';
 import FormDatePicker from 'src/components/form/FormDatePicker';
 import { Form, FormField, FormLabel } from 'src/components/form/form';
-import Separator from 'src/components/separator/Separator';
+
+import { savingSchema } from 'src/features/transactions/model/savingSchema';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { PlusCircleIcon } from 'lucide-react';
-import { useAppDispatch } from 'src/store/hooks';
-import { v4 as uuidv4 } from 'uuid';
+import { format } from 'date-fns';
+import { useAppSelector } from 'src/store/hooks';
 import * as z from 'zod';
 
-import { savingSchema } from '../model/savingSchema';
-import { addToSavings } from '../transactionSlice';
+import { useUpdateSavingMutation } from '../api/savingsApi';
+import { Saving } from '../model/Saving';
 
-const AddSaving = ({ additionalAction }: { additionalAction?: () => void }) => {
-    const dispatch = useAppDispatch();
+interface EditSavingProps extends Saving {
+    additionalAction?: () => void;
+}
+
+const EditSaving = (props: EditSavingProps) => {
+    const { name, goalAmount, currentlySaved, additionalAction, date, id } = props;
+
+    const [updateSaving] = useUpdateSavingMutation();
+    const { userInfo } = useAppSelector((state) => state.authStore);
 
     const defaultValues = {
-        name: '',
-        goalAmount: 0,
-        currentlySaved: 0,
-        date: undefined,
+        name,
+        goalAmount,
+        currentlySaved,
+        date: new Date(date),
     };
 
     const form = useForm<z.infer<typeof savingSchema>>({
@@ -34,21 +41,18 @@ const AddSaving = ({ additionalAction }: { additionalAction?: () => void }) => {
     });
 
     const onSubmit = (data: z.infer<typeof savingSchema>) => {
-        dispatch(
-            addToSavings({
-                id: uuidv4(),
-                name: data.name,
-                goalAmount: data.goalAmount,
-                currentlySaved: data.currentlySaved,
-                date: data.date,
-            })
-        );
+        updateSaving({
+            id: id,
+            name: data.name,
+            goalAmount: data.goalAmount,
+            currentlySaved: data.currentlySaved,
+            date: data.date,
+            userId: userInfo.id,
+        });
 
         if (additionalAction !== undefined) {
             additionalAction();
         }
-
-        form.reset(defaultValues);
     };
 
     return (
@@ -66,6 +70,7 @@ const AddSaving = ({ additionalAction }: { additionalAction?: () => void }) => {
                         />
                     )}
                 />
+
                 <FormField
                     control={form.control}
                     name="goalAmount"
@@ -79,11 +84,12 @@ const AddSaving = ({ additionalAction }: { additionalAction?: () => void }) => {
                         />
                     )}
                 />
-                <div className='space-y-1'>
+
+                <div className="space-y-1">
                     <FormLabel>
                         Enter your current savings and target savings date:
                         {<span className="ml-1 text-sky-600">*</span>}
-                    </FormLabel>{' '}
+                    </FormLabel>
                     <div className="flex items-end gap-2">
                         <FormField
                             control={form.control}
@@ -100,14 +106,15 @@ const AddSaving = ({ additionalAction }: { additionalAction?: () => void }) => {
                         />
                     </div>
                 </div>
-                <Separator />
-                <Button variant="outline" className="flex items-center gap-2">
-                    <PlusCircleIcon width={16} height={16} stroke="#1B2327" />
-                    Add
-                </Button>
+
+                <div className="flex justify-end">
+                    <Button variant="outline" className="flex items-center gap-2">
+                        Save
+                    </Button>
+                </div>
             </form>
         </Form>
     );
 };
 
-export default AddSaving;
+export default EditSaving;

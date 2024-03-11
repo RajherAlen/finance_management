@@ -11,7 +11,7 @@ import { FormControl, FormItem, FormMessage } from './form';
 
 interface FormSelectProps {
     field: any;
-    disableBefore?: boolean
+    disableBefore?: boolean;
 }
 
 const FormDatePicker = (props: FormSelectProps) => {
@@ -27,16 +27,17 @@ const FormDatePicker = (props: FormSelectProps) => {
                             className={cn('h-12 justify-start text-left font-normal', !field.value && 'text-muted-foreground')}
                         >
                             <CalendarIcon className="mr-2 h-4 w-4" />
-                            {field.value ? format(field.value, 'd-L-y') : <span>Add Date</span>}
+                            {field.value ?  new Date(field.value).toLocaleDateString() : <span>Add Date</span>}
                         </Button>
                     </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
                         mode="single"
-                        selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date: any) => disableBefore ? date < new Date() : false}
+                        selected={field.value ? new Date(field.value) : field.value}
+                        defaultMonth={field.value ? new Date(field.value) : field.value}
+                        disabled={(date: any) => (disableBefore ? date < new Date() : false)}
                         initialFocus
                     />
                 </PopoverContent>

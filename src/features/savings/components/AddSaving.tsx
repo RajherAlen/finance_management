@@ -7,29 +7,26 @@ import Button from 'src/components/button/Button';
 import FormCustomInput from 'src/components/form/FormCustomInput';
 import FormDatePicker from 'src/components/form/FormDatePicker';
 import { Form, FormField, FormLabel } from 'src/components/form/form';
+import Separator from 'src/components/separator/Separator';
+
+import { useAddSavingMutation } from 'src/features/savings/api/savingsApi';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useAppDispatch } from 'src/store/hooks';
+import { PlusCircleIcon } from 'lucide-react';
+import { useAppSelector } from 'src/store/hooks';
 import * as z from 'zod';
 
-import { savingSchema } from '../model/savingSchema';
-import { Saving } from '../model/transactionModel';
-import { updateSaving } from '../transactionSlice';
+import { savingSchema } from '../../transactions/model/savingSchema';
 
-interface EditSavingProps extends Saving {
-    additionalAction?: () => void;
-}
-
-const EditSaving = (props: EditSavingProps) => {
-    const { name, goalAmount, currentlySaved, additionalAction, date, id } = props;
-
-    const dispatch = useAppDispatch();
+const AddSaving = ({ additionalAction }: { additionalAction?: () => void }) => {
+    const [addSaving] = useAddSavingMutation();
+    const { userInfo } = useAppSelector((state) => state.authStore);
 
     const defaultValues = {
-        name,
-        goalAmount,
-        currentlySaved,
-        date,
+        name: '',
+        goalAmount: 0,
+        currentlySaved: 0,
+        date: undefined,
     };
 
     const form = useForm<z.infer<typeof savingSchema>>({
@@ -38,19 +35,19 @@ const EditSaving = (props: EditSavingProps) => {
     });
 
     const onSubmit = (data: z.infer<typeof savingSchema>) => {
-        dispatch(
-            updateSaving({
-                id: id,
-                name: data.name,
-                goalAmount: data.goalAmount,
-                currentlySaved: data.currentlySaved,
-                date: data.date,
-            })
-        );
+        addSaving({
+            name: data.name,
+            goalAmount: data.goalAmount,
+            currentlySaved: data.currentlySaved,
+            date: data.date,
+            userId: userInfo.id,
+        });
 
         if (additionalAction !== undefined) {
             additionalAction();
         }
+
+        form.reset(defaultValues);
     };
 
     return (
@@ -68,7 +65,6 @@ const EditSaving = (props: EditSavingProps) => {
                         />
                     )}
                 />
-
                 <FormField
                     control={form.control}
                     name="goalAmount"
@@ -82,12 +78,11 @@ const EditSaving = (props: EditSavingProps) => {
                         />
                     )}
                 />
-
                 <div className="space-y-1">
                     <FormLabel>
                         Enter your current savings and target savings date:
                         {<span className="ml-1 text-sky-600">*</span>}
-                    </FormLabel>
+                    </FormLabel>{' '}
                     <div className="flex items-end gap-2">
                         <FormField
                             control={form.control}
@@ -104,15 +99,14 @@ const EditSaving = (props: EditSavingProps) => {
                         />
                     </div>
                 </div>
-
-                <div className="flex justify-end">
-                    <Button variant="outline" className="flex items-center gap-2">
-                        Save
-                    </Button>
-                </div>
+                <Separator />
+                <Button variant="outline" className="flex items-center gap-2">
+                    <PlusCircleIcon width={16} height={16} stroke="#1B2327" />
+                    Add
+                </Button>
             </form>
         </Form>
     );
 };
 
-export default EditSaving;
+export default AddSaving;
