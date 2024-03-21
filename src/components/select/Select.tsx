@@ -101,16 +101,16 @@ const SelectSeparator = React.forwardRef<
 SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
 
 export interface SelectItem {
-    id: number;
+    id: number | string;
     value: string;
 }
 
 interface SelectProps {
-    placeholder: string;
+    placeholder?: string;
     fullWidth?: boolean;
     value: string;
     options: SelectItem[];
-    onChange: () => void;
+    onChange: (value: string) => void;
     ghostSelect?: boolean;
 }
 
@@ -126,13 +126,15 @@ const Select = (props: SelectProps) => {
                 {props.value ? <SelectValue placeholder={props.placeholder} /> : props.placeholder}
             </SelectTrigger>
             <SelectContent>
-                {props.options.map((item) => {
-                    return (
-                        <SelectItem value={item.value} key={item.id}>
-                            {item.value}
-                        </SelectItem>
-                    );
-                })}
+                <SelectGroup>
+                    {props.options.map((item) => {
+                        return (
+                            <SelectItem value={item.value} key={item.id}>
+                                {item.value}
+                            </SelectItem>
+                        );
+                    })}
+                </SelectGroup>
             </SelectContent>
         </SelectRoot>
     );

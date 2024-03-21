@@ -19,10 +19,9 @@ const TransactionListDisplay = () => {
                 </div>
             </div>
 
-            <Card className="l-aside flex flex-col">
-                <AddExpense customTitle="Expense" />
+            <div className="l-aside flex flex-col">
                 <LastTransactions />
-            </Card>
+            </div>
         </div>
     );
 };

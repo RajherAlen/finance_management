@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { formatDate } from 'src/lib/utils/formatDate';
 import LocalStorageProvider from 'src/lib/utils/storage/LocalStorageProvider';
 
 import { FinancialState, Saving, Transaction } from './model/transactionModel';
@@ -52,6 +53,23 @@ const transactionSlice = createSlice({
             updateTotalSaving(state);
             updatetotalGoalSaving(state);
         },
+        filterThisWeekTransactions: (state: FinancialState, action) => {
+            const currentWeek = formatDate({ date: new Date(), format: 'w' });
+
+            state.transactions = action.payload.filter((transaction: any) => currentWeek === formatDate({ date: transaction.date, format: 'w' }));
+        },
+        filterLastWeekTransactions: (state: FinancialState, action) => {
+            console.log(state)
+            const currentWeek = formatDate({ date: new Date(), format: 'w' });
+            const lastWeek = +currentWeek - 1;
+
+            state.transactions = action.payload.filter((transaction: any) => lastWeek.toString() === formatDate({ date: transaction.date, format: 'w' }));
+        },
+        filterThisMonthTransactions: (state: FinancialState, action) => {
+            const currentMonth = formatDate({ date: new Date(), format: 'M' });
+
+            state.transactions = action.payload.filter((transaction: any) => currentMonth === formatDate({ date: transaction.date, format: 'M' }));
+        },
         setTotalIncome: (state, action: PayloadAction<number>) => {
             const userInfo: any = LocalStorageProvider.get('userInfo').value;
 
@@ -65,5 +83,13 @@ const transactionSlice = createSlice({
     },
 });
 
-export const { addToSavings, updateSaving, getAllTransactions, setTotalIncome } = transactionSlice.actions;
+export const {
+    addToSavings,
+    updateSaving,
+    getAllTransactions,
+    setTotalIncome,
+    filterThisWeekTransactions,
+    filterLastWeekTransactions,
+    filterThisMonthTransactions,
+} = transactionSlice.actions;
 export default transactionSlice.reducer;

@@ -18,7 +18,7 @@ import * as z from 'zod';
 import { useAddTransactionMutation } from '../api/transactionsApi';
 import { expenseSchema } from '../model/expenseSchema';
 
-const AddExpense = ({ required = true, customTitle }: { required?: boolean; customTitle?: string }) => {
+const AddExpense = ({ required = true, additionalFn }: { required?: boolean; additionalFn?: () => void }) => {
     const [category, setCategory] = useState<'needs' | 'wants'>('needs');
     const [addTransaction] = useAddTransactionMutation();
     const { userInfo } = useAppSelector((state) => state.authStore);
@@ -42,6 +42,10 @@ const AddExpense = ({ required = true, customTitle }: { required?: boolean; cust
             userId: userInfo.id,
         });
 
+        if (additionalFn !== undefined) {
+            additionalFn();
+        }
+
         form.reset({
             amount: 0,
             description: '',
@@ -52,7 +56,6 @@ const AddExpense = ({ required = true, customTitle }: { required?: boolean; cust
     return (
         <div>
             <div className="mb-5 flex items-center justify-between">
-                <p className="text-xl font-semibold">{customTitle ? customTitle : 'Add your recurring expenses'}</p>
                 <Card variant="outline" size="sml" radius="md">
                     <div className="flex gap-1">
                         <Button size="sm" variant={category === 'needs' ? 'secondary' : 'ghost'} onClick={() => setCategory('needs')}>
