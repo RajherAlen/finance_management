@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import Button from 'src/components/button/Button';
 import Card from 'src/components/card/Card';
-import Modal from 'src/components/dialog/Modal';
+import EmptyState from 'src/components/card/EmptyState';
+import GlobalLoader from 'src/components/loader/GlobalLoader';
 import Select from 'src/components/select/Select';
 import Separator from 'src/components/separator/Separator';
 
@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { useGetTransactionQuery } from '../api/transactionsApi';
 import { transactionOptions } from '../model/transactionOptions';
 import { filterLastWeekTransactions, filterThisMonthTransactions, filterThisWeekTransactions } from '../transactionSlice';
-import AddExpense from './AddExpense';
+import AddExpenseModal from './AddExpenseModal';
 import ExpenseCard from './ExpenseCard';
 
 const LastTransactions = () => {
@@ -22,7 +22,6 @@ const LastTransactions = () => {
     const { transactions } = useAppSelector((state) => state.transactionStore);
 
     const [period, setPeriod] = useState<string>('');
-    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const handlePeriod = (value: string) => {
         setPeriod(value);
@@ -44,7 +43,16 @@ const LastTransactions = () => {
         }
     };
 
-    if (transactions.length === 0) return null;
+    if (isLoading) return <GlobalLoader />;
+    if (data.transactions.length === 0) {
+        return (
+            <EmptyState
+                actionComponent={<AddExpenseModal />}
+                title="No Transactions Yet"
+                description="It looks like you haven't made any transactions yet. Start adding transactions to track your financial activity."
+            />
+        );
+    }
 
     return (
         <>
@@ -58,33 +66,26 @@ const LastTransactions = () => {
                 <Separator />
 
                 <div className="h-full overflow-auto pr-4">
-                    {transactions.map((transaction, i) => {
-                        return (
-                            <div key={Math.random()}>
-                                <ExpenseCard {...transaction} />
-                                {transactions.length !== i + 1 && <Separator />}
-                            </div>
-                        );
-                    })}
+                    {transactions.length === 0 ? (
+                        <EmptyState
+                            title="No Transactions Found"
+                            description="Looks like there are no transactions recorded for the selected period. Start making transactions to populate your history."
+                        />
+                    ) : (
+                        transactions.map((transaction, i) => {
+                            return (
+                                <div key={Math.random()}>
+                                    <ExpenseCard {...transaction} />
+                                    {transactions.length !== i + 1 && <Separator />}
+                                </div>
+                            );
+                        })
+                    )}
                 </div>
 
                 <Separator />
 
-                <div className="flex justify-end">
-                    <Modal
-                        title="Add your recurring expenses"
-                        triggerAsChild
-                        open={isOpen}
-                        onOpenChange={() => setIsOpen(true)}
-                        trigger={
-                            <Button size="lg" variant="outline">
-                                Add new transaction
-                            </Button>
-                        }
-                    >
-                        <AddExpense additionalFn={() => setIsOpen(false)} />
-                    </Modal>
-                </div>
+                <AddExpenseModal />
             </Card>
         </>
     );
