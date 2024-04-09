@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Card from 'src/components/card/Card';
 import EmptyState from 'src/components/card/EmptyState';
@@ -10,18 +10,23 @@ import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
 import { useGetTransactionQuery } from '../api/transactionsApi';
 import { transactionOptions } from '../model/transactionOptions';
-import { filterLastWeekTransactions, filterThisMonthTransactions, filterThisWeekTransactions } from '../transactionSlice';
+import {
+    filterLastMonthTransactions,
+    filterLastWeekTransactions,
+    filterThisMonthTransactions,
+    filterThisWeekTransactions,
+} from '../transactionSlice';
 import AddExpenseModal from './AddExpenseModal';
 import ExpenseCard from './ExpenseCard';
 
 const LastTransactions = () => {
     const dispatch = useAppDispatch();
+    const [period, setPeriod] = useState<string>('');
+
     const { userInfo } = useAppSelector((state) => state.authStore);
 
     const { data, isLoading } = useGetTransactionQuery(userInfo?.id);
     const { transactions } = useAppSelector((state) => state.transactionStore);
-
-    const [period, setPeriod] = useState<string>('');
 
     const handlePeriod = (value: string) => {
         setPeriod(value);
@@ -36,6 +41,9 @@ const LastTransactions = () => {
                     break;
                 case 'This Month':
                     dispatch(filterThisMonthTransactions(data.transactions));
+                    break;
+                case 'Last Month':
+                    dispatch(filterLastMonthTransactions(data.transactions));
                     break;
                 default:
                     break;

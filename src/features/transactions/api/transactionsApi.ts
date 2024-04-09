@@ -9,6 +9,27 @@ export const transactionApiSlice = apiSlice.enhanceEndpoints({ addTagTypes: ['tr
             }),
             providesTags: ['transactionList'],
         }),
+        getLastWeekTransactions: builder.query({
+            query: (userId: string | number) => ({
+                url: `/transaction/last-week/${userId}`,
+                method: 'GET',
+            }),
+            providesTags: ['transactionList'],
+        }),
+        getThisMonthTransactions: builder.query({
+            query: (userId: string | number) => ({
+                url: `/transaction/this-month/${userId}`,
+                method: 'GET',
+            }),
+            providesTags: ['transactionList'],
+        }),
+        getLastMonthTransactions: builder.query({
+            query: (userId: string | number) => ({
+                url: `/transaction/last-month/${userId}`,
+                method: 'GET',
+            }),
+            providesTags: ['transactionList'],
+        }),
         addTransaction: builder.mutation({
             query: (data) => ({
                 url: `/transaction`,
@@ -42,5 +63,12 @@ export const transactionApiSlice = apiSlice.enhanceEndpoints({ addTagTypes: ['tr
     overrideExisting: true,
 });
 
-export const { useAddTransactionMutation, useGetTransactionQuery, useDeleteTransactionMutation, useUpdateIncomeMutation } =
-    transactionApiSlice;
+export const {
+    useAddTransactionMutation,
+    useGetTransactionQuery,
+    useGetLastWeekTransactionsQuery,
+    useGetThisMonthTransactionsQuery,
+    useGetLastMonthTransactionsQuery,
+    useDeleteTransactionMutation,
+    useUpdateIncomeMutation,
+} = transactionApiSlice;

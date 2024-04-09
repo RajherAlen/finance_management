@@ -59,7 +59,6 @@ const transactionSlice = createSlice({
             state.transactions = action.payload.filter((transaction: any) => currentWeek === formatDate({ date: transaction.date, format: 'w' }));
         },
         filterLastWeekTransactions: (state: FinancialState, action) => {
-            console.log(state)
             const currentWeek = formatDate({ date: new Date(), format: 'w' });
             const lastWeek = +currentWeek - 1;
 
@@ -67,8 +66,14 @@ const transactionSlice = createSlice({
         },
         filterThisMonthTransactions: (state: FinancialState, action) => {
             const currentMonth = formatDate({ date: new Date(), format: 'M' });
-
+            
             state.transactions = action.payload.filter((transaction: any) => currentMonth === formatDate({ date: transaction.date, format: 'M' }));
+        },
+        filterLastMonthTransactions: (state: FinancialState, action) => {
+            const currentMonth = formatDate({ date: new Date(), format: 'M' });
+            const lastMonth = +currentMonth - 1;
+
+            state.transactions = action.payload.filter((transaction: any) => lastMonth.toString() === formatDate({ date: transaction.date, format: 'M' }));
         },
         setTotalIncome: (state, action: PayloadAction<number>) => {
             const userInfo: any = LocalStorageProvider.get('userInfo').value;
@@ -91,5 +96,6 @@ export const {
     filterThisWeekTransactions,
     filterLastWeekTransactions,
     filterThisMonthTransactions,
+    filterLastMonthTransactions
 } = transactionSlice.actions;
 export default transactionSlice.reducer;
