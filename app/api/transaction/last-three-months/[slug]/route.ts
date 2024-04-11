@@ -7,13 +7,15 @@ export async function GET(req: Request, { params }: { params: { slug: string } }
     try {
         const slug = params.slug;
 
-        const startDate = new Date();
-        startDate.setDate(1); // Set to the beginning of the current month
+        const today = new Date();
+        const startDate = new Date(today);
+        startDate.setMonth(startDate.getMonth() - 4);
+        startDate.setDate(1);
         startDate.setHours(0, 0, 0, 0);
 
-        const endDate = new Date();
-        endDate.setMonth(startDate.getMonth() + 1);
-        endDate.setDate(0); // Set to the last day of the current month
+        const endDate = new Date(today);
+        endDate.setMonth(endDate.getMonth() + 1);
+        endDate.setDate(0);
         endDate.setHours(23, 59, 59, 999);
 
         const transactions = await prisma.transaction.findMany({

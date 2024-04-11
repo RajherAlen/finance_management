@@ -27,7 +27,7 @@ export async function GET(req: Request, { params }: { params: { slug: string } }
             },
         });
 
-        return NextResponse.json({ transactions });
+        return NextResponse.json({ transactions, length: transactions.length });
     } catch (error) {
         return NextResponse.json({ error: error }, { status: 500 });
     } finally {

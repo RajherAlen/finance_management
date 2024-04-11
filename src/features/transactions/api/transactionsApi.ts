@@ -16,6 +16,13 @@ export const transactionApiSlice = apiSlice.enhanceEndpoints({ addTagTypes: ['tr
             }),
             providesTags: ['transactionList'],
         }),
+        getThisWeekTransactions: builder.query({
+            query: (userId: string | number) => ({
+                url: `/transaction/this-week/${userId}`,
+                method: 'GET',
+            }),
+            providesTags: ['transactionList'],
+        }),
         getThisMonthTransactions: builder.query({
             query: (userId: string | number) => ({
                 url: `/transaction/this-month/${userId}`,
@@ -26,6 +33,27 @@ export const transactionApiSlice = apiSlice.enhanceEndpoints({ addTagTypes: ['tr
         getLastMonthTransactions: builder.query({
             query: (userId: string | number) => ({
                 url: `/transaction/last-month/${userId}`,
+                method: 'GET',
+            }),
+            providesTags: ['transactionList'],
+        }),
+        getLastThreeMonthTransactions: builder.query({
+            query: (userId: string | number) => ({
+                url: `/transaction/last-three-month/${userId}`,
+                method: 'GET',
+            }),
+            providesTags: ['transactionList'],
+        }),
+        getLastSixMonthTransactions: builder.query({
+            query: (userId: string | number) => ({
+                url: `/transaction/last-six-month/${userId}`,
+                method: 'GET',
+            }),
+            providesTags: ['transactionList'],
+        }),
+        getThisYear: builder.query({
+            query: (userId: string | number) => ({
+                url: `/transaction/this-year/${userId}`,
                 method: 'GET',
             }),
             providesTags: ['transactionList'],
@@ -67,8 +95,12 @@ export const {
     useAddTransactionMutation,
     useGetTransactionQuery,
     useGetLastWeekTransactionsQuery,
+    useGetThisWeekTransactionsQuery,
     useGetThisMonthTransactionsQuery,
     useGetLastMonthTransactionsQuery,
+    useGetLastThreeMonthTransactionsQuery,
+    useGetLastSixMonthTransactionsQuery,
+    useGetThisYearQuery,
     useDeleteTransactionMutation,
     useUpdateIncomeMutation,
 } = transactionApiSlice;
