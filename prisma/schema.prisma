@@ -17,6 +17,7 @@ model User {
   income       Int
   transactions Transaction[]
   savings      Savings[]
+  loans        Loan[]
 }
 
 model Transaction {
@@ -44,4 +45,28 @@ model Savings {
   date           DateTime
   user           User     @relation(fields: [userId], references: [id])
   userId         Int
+}
+
+model Loan {
+  id           Int        @id @default(autoincrement())
+  totalAmount  Float
+  paid         Float      @default(0)
+  interestRate Float
+  startDate    DateTime   @default(now())
+  endDate      DateTime
+  status       LoanStatus @default(PENDING)
+  description  String?
+  userId       Int
+  user         User       @relation(fields: [userId], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@map("loans")
+}
+
+enum LoanStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  COMPLETED
 }
