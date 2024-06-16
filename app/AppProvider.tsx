@@ -23,7 +23,7 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
                 <AppAuthGuard>
                     <Menu />
 
-                    <div className="w-full py-6">
+                    <div className="flex flex-col w-full py-6">
                         <Header />
                         <div className="h-screen w-full overflow-auto p-4">{children}</div>
                     </div>

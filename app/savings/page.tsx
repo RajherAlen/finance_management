@@ -23,8 +23,8 @@ const Savings = () => {
     }, [data, userInfo, dispatch]);
 
     return (
-        <div className="flex items-start gap-10">
-            <div className="w-full">
+        <div className="flex items-start gap-10 h-full">
+            <div className="w-full h-full">
                 <SavingsListDisplay />
             </div>
 

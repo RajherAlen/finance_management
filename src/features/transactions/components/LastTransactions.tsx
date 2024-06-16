@@ -12,6 +12,8 @@ import { useGetTransactionQuery } from '../api/transactionsApi';
 import { transactionOptions } from '../model/transactionOptions';
 import {
     filterLastMonthTransactions,
+    filterLastSixMonthsTransactions,
+    filterLastThreeMonthsTransactions,
     filterLastWeekTransactions,
     filterThisMonthTransactions,
     filterThisWeekTransactions,
@@ -44,6 +46,12 @@ const LastTransactions = () => {
                     break;
                 case 'Last Month':
                     dispatch(filterLastMonthTransactions(data.transactions));
+                    break;
+                case 'Last 3 Months':
+                    dispatch(filterLastThreeMonthsTransactions(data.transactions));
+                    break;
+                case 'Last 6 Months':
+                    dispatch(filterLastSixMonthsTransactions(data.transactions));
                     break;
                 default:
                     break;

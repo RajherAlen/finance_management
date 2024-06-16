@@ -11,8 +11,9 @@ const AddExpenseModal = () => {
     return (
         <div className="flex justify-end">
             <Modal
-                title="Add your recurring expenses"
+                title="Add your expenses"
                 triggerAsChild
+                className="min-w-[660px]"
                 open={isOpen}
                 onOpenChange={setIsOpen}
                 trigger={

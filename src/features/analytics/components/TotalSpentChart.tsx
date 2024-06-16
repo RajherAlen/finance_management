@@ -18,11 +18,15 @@ const TotalSpentChart = () => {
     const nonEssential = transactions
         .filter((item) => item.category === 'wants')
         .reduce((accValue, currentValue) => accValue + currentValue.amount, 0);
+   
+        const savings = transactions
+        .filter((item) => item.category === 'savings')
+        .reduce((accValue, currentValue) => accValue + currentValue.amount, 0);
 
     const data = [
         { title: 'Essential', value: essential, color: '#F97939' },
         { title: 'Non-Essential', value: nonEssential, color: '#F8D0A0' },
-        { title: 'Savings', value: 300, color: '#4A9285' },
+        { title: 'Savings', value: savings, color: '#4A9285' },
     ];
 
     return (

@@ -14,9 +14,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
 import { useUpdateSavingMutation } from '../api/savingsApi';
+import { useAddTransactionMutation } from 'src/features/transactions/api/transactionsApi';
+import { useAppSelector } from 'src/store/hooks';
 
 const AddToSavingForm = ({ savings }: { savings: Saving[] }) => {
     const [updateSaving] = useUpdateSavingMutation();
+    const [addTransaction] = useAddTransactionMutation();
+    const { userInfo } = useAppSelector((state) => state.authStore);
 
     const defaultValues = {
         savingName: '',
@@ -32,6 +36,15 @@ const AddToSavingForm = ({ savings }: { savings: Saving[] }) => {
         const selectedSaving = savings.filter((saving) => saving.name === data.savingName);
 
         updateSaving({ ...selectedSaving[0], currentlySaved: selectedSaving[0].currentlySaved + data.amount });
+        
+        addTransaction({
+            amount: data.amount,
+            description: selectedSaving[0].name,
+            category: 'savings',
+            type: 'expense',
+            userId: userInfo.id,
+            date: new Date()
+        })
 
         form.reset(defaultValues);
     };

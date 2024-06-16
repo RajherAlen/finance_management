@@ -35,8 +35,8 @@ const SavingsListDisplay = () => {
     if (isLoading) return <GlobalLoader />;
 
     return (
-        <div className="flex items-start gap-5">
-            <div>
+        <div className="flex items-start gap-5 h-full">
+            <div className='h-full'>
                 <div className="mb-4 flex max-w-md items-center justify-between gap-4">
                     <p className="text-sm font-semibold text-gray-700">Savings</p>
                     <Modal
@@ -54,9 +54,11 @@ const SavingsListDisplay = () => {
                     </Modal>
                 </div>
 
-                {data?.savings.map((saving: Saving) => {
-                    return <SavingGoalCard key={saving.id} {...saving} />;
-                })}
+                <div className='flex flex-col h-full overflow-y-auto overflow-x-hidden pr-2'>
+                    {data?.savings.map((saving: Saving) => {
+                        return <SavingGoalCard key={saving.id} {...saving} />;
+                    })}
+                </div>
             </div>
 
             <AddToSavingForm savings={data?.savings} />

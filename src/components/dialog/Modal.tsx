@@ -90,6 +90,7 @@ interface ModalProps {
     title?: string;
     description?: string;
     triggerAsChild?: boolean;
+    className?: string
 }
 
 const Modal = (props: ModalProps) => {
@@ -97,7 +98,7 @@ const Modal = (props: ModalProps) => {
         <Dialog open={props.open} onOpenChange={props.onOpenChange}>
             <DialogTrigger asChild={props.triggerAsChild}>{props.trigger}</DialogTrigger>
             
-            <DialogContent>
+            <DialogContent className={props.className}>
                 <DialogHeader>
                     {props.title && <DialogTitle>{props.title}</DialogTitle>}
                     {props.description && <DialogDescription>{props.description}</DialogDescription>}
