@@ -48,25 +48,20 @@ model Savings {
 }
 
 model Loan {
-  id           Int        @id @default(autoincrement())
-  totalAmount  Float
-  paid         Float      @default(0)
-  interestRate Float
-  startDate    DateTime   @default(now())
-  endDate      DateTime
-  status       LoanStatus @default(PENDING)
-  description  String?
-  userId       Int
-  user         User       @relation(fields: [userId], references: [id])
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  id                Int      @id @default(autoincrement())
+  totalAmount       Float
+  name              String
+  paid              Float    @default(0)
+  startDate         DateTime @default(now())
+  endDate           DateTime
+  interestRate      Float?
+  totalInstalments  Int
+  currentInstalment Int
+  instalmentAmount  Float
+  userId            Int
+  user              User     @relation(fields: [userId], references: [id])
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   @@map("loans")
-}
-
-enum LoanStatus {
-  PENDING
-  APPROVED
-  REJECTED
-  COMPLETED
 }

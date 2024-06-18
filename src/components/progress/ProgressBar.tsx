@@ -37,9 +37,13 @@ export const ProgressBar = ({ label, value, total, additionalComponent, isFinish
                 {label && <p className="text-xs">{label}</p>}
 
                 <div className="flex gap-2">
-                    <p className="text-xs font-bold">
-                        {formatCurrency(value ? value : 0)}/{formatCurrency(total)}
-                    </p>
+                    <div className='text-right'>
+                        <p className="text-xs font-bold">
+                            {formatCurrency(value ? value : 0)}/{formatCurrency(total)}
+                        </p>
+
+                        {total - value > 0 && <p className="text-xs font-semibold text-red-400">-{formatCurrency(total - value)}</p>}
+                    </div>
 
                     {additionalComponent}
                 </div>

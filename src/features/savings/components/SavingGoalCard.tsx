@@ -31,7 +31,7 @@ const SavingGoalCard = (props: Saving) => {
     const handleDeleteSaving = () => {
         deleteSaving({ id, userId: userInfo.id });
 
-        handleCloseEditModal()
+        handleCloseEditModal();
     };
 
     const handleCloseEditModal = () => {
@@ -45,7 +45,7 @@ const SavingGoalCard = (props: Saving) => {
     const isFinished = goalAmount - currentlySaved === 0;
 
     return (
-        <Card className="mb-4 max-w-md w-96">
+        <Card className="mb-4 w-96 max-w-md">
             <ProgressBar
                 label={
                     <>
