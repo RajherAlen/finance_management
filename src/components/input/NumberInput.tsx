@@ -1,17 +1,28 @@
-import React from 'react';
-import { Controller, ControllerProps, FieldValues } from 'react-hook-form';
+import CurrencyInput from 'react-currency-input-field';
 
-interface NumberInputProps extends Omit<ControllerProps<FieldValues, 'input'>, 'render'> {
-    as?: React.ElementType;
+interface NumberInputProps {
+    id: string;
+    decimals?: number;
+    placeholder: string;
+    onChange: () => void;
+    suffix?: '€' | '%';
+    prefix?: '£' | '$';
 }
 
-const NumberInput: React.FC<NumberInputProps> = ({ as, ...rest }) => (
-    <Controller
-        {...rest}
-        render={({ field }) => (
-            <input {...field} onChange={(e) => field.onChange(Number.isNaN(parseFloat(e.target.value)) ? 0 : parseFloat(e.target.value))} />
-        )}
-    />
-);
+const NumberInput = (props: NumberInputProps) => {
+    return (
+        <CurrencyInput
+            id={props.id}
+            name="input-name"
+            placeholder={props.placeholder}
+            defaultValue={0}
+            // decimalsLimit={1}
+            prefix={props.prefix}
+            suffix={props.suffix}
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm leading-4 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            onValueChange={props.onChange}
+        />
+    );
+};
 
 export default NumberInput;

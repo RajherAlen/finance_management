@@ -22,7 +22,7 @@ export function DatePicker({ action }: { action?: (date: Date | undefined) => vo
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="outline" className={cn('h-12 justify-start text-left font-normal', !date && 'text-muted-foreground')}>
+                <Button variant="outline" className={cn('h-10 justify-start text-left font-normal', !date && 'text-muted-foreground')}>
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {date ? format(date, 'd-L-y') : <span>Add Date</span>}
                 </Button>

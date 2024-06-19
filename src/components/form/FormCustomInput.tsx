@@ -3,6 +3,7 @@ import React from 'react';
 import { InputType } from 'zlib';
 
 import { Input } from '../input/Input';
+import NumberInput from '../input/NumberInput';
 import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from './form';
 
 interface FormCustomInputProps {
@@ -27,7 +28,11 @@ const FormCustomInput = (props: FormCustomInputProps) => {
                 </FormLabel>
             )}
             <FormControl>
-                <Input placeholder={props.placeholder} type={props.type} className={props.inputClassName} {...props.field} />
+                {props.type === 'number' ? (
+                    <NumberInput className={props.inputClassName} {...props.field} />
+                ) : (
+                    <Input placeholder={props.placeholder} type={props.type} className={props.inputClassName} {...props.field} />
+                )}
             </FormControl>
             {props.description && <FormDescription>{props.description}</FormDescription>}
             {!props.hideErrorMessage && <FormMessage />}

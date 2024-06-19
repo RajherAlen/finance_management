@@ -7,13 +7,10 @@ export const loanSchema = z.object({
     totalAmount: z.coerce.number({
         required_error: 'Amount is required',
     }),
-    paid: z.coerce.number({
-        required_error: 'Amount is required',
-    }),
-    startDate: z.date({
+    startDate: z.string({
         required_error: 'Please set start date',
     }),
-    endDate: z.date({
+    endDate: z.string({
         required_error: 'Please set end date',
     }),
     totalInstalments: z.coerce.number({
@@ -24,8 +21,5 @@ export const loanSchema = z.object({
     }),
     instalmentAmount: z.coerce.number({
         required_error: 'Please set instalment amount',
-    }),
-    interestRate: z.coerce.number({
-        required_error: 'Please set interest rate',
     }),
 });

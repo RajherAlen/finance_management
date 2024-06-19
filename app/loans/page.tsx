@@ -1,13 +1,22 @@
-import React from 'react';
-import Card from 'src/components/card/Card';
-import { LoansListDisplay } from 'src/features/loans';
+'use client';
 
+import React from 'react';
+
+import Card from 'src/components/card/Card';
+
+import { LoansListDisplay } from 'src/features/loans';
+import { useGetLoansQuery } from 'src/features/loans/api/loansApi';
+
+import { useAppSelector } from 'src/store/hooks';
 
 const Loans = () => {
+    const { userInfo } = useAppSelector((state) => state.authStore);
+    const { data, isLoading } = useGetLoansQuery(userInfo?.id);
+
     return (
         <div className="flex h-full items-start gap-10">
             <div className="h-full w-full">
-                <LoansListDisplay />
+                {!isLoading && data && <LoansListDisplay loans={data?.loans} />}
             </div>
 
             <Card className="text-center">

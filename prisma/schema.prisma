@@ -51,10 +51,8 @@ model Loan {
   id                Int      @id @default(autoincrement())
   totalAmount       Float
   name              String
-  paid              Float    @default(0)
-  startDate         DateTime @default(now())
-  endDate           DateTime
-  interestRate      Float?
+  startDate         String
+  endDate           String
   totalInstalments  Int
   currentInstalment Int
   instalmentAmount  Float

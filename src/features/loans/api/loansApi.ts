@@ -2,6 +2,13 @@ import { apiSlice } from 'src/store/apiSlice';
 
 export const loansApiSlice = apiSlice.enhanceEndpoints({ addTagTypes: ['loansList'] }).injectEndpoints({
     endpoints: (builder) => ({
+        getLoans: builder.query({
+            query: (userId: string | number) => ({
+                url: `/loan/${userId}`,
+                method: 'GET',
+            }),
+            providesTags: ['loansList'],
+        }),
         addLoan: builder.mutation({
             query: (data) => ({
                 url: `/loan`,
@@ -13,4 +20,4 @@ export const loansApiSlice = apiSlice.enhanceEndpoints({ addTagTypes: ['loansLis
     }),
 });
 
-export const { useAddLoanMutation } = loansApiSlice;
+export const { useAddLoanMutation, useGetLoansQuery } = loansApiSlice;

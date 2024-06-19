@@ -21,15 +21,7 @@ const AddNewLoanForm = ({ additionalAction }: { additionalAction?: () => void })
     const { userInfo } = useAppSelector((state) => state.authStore);
     const [addLoan] = useAddLoanMutation();
 
-    const defaultValues = {
-        name: '',
-        totalAmount: 0,
-        paid: 0,
-        startDate: new Date(),
-        endDate: new Date(),
-        totalInstalments: 0,
-        interestRate: 0,
-    };
+    const defaultValues = {};
 
     const form = useForm<z.infer<typeof loanSchema>>({
         resolver: zodResolver(loanSchema),
@@ -40,13 +32,11 @@ const AddNewLoanForm = ({ additionalAction }: { additionalAction?: () => void })
         addLoan({
             name: data.name,
             totalAmount: data.totalAmount,
-            paid: data.paid,
             startDate: data.startDate,
             endDate: data.endDate,
             totalInstalments: data.totalInstalments,
             currentInstalment: data.currentInstalment,
             instalmentAmount: data.instalmentAmount,
-            interestRate: data.interestRate,
             userId: userInfo.id,
         });
 
@@ -64,106 +54,52 @@ const AddNewLoanForm = ({ additionalAction }: { additionalAction?: () => void })
                     <FormField
                         control={form.control}
                         name="name"
-                        render={({ field }) => (
-                            <FormCustomInput label="Enter loan name" placeholder="Enter loan name" className="w-full" field={field} />
-                        )}
+                        render={({ field }) => <FormCustomInput label="Enter loan name" className="w-full" field={field} />}
                     />
-                    <FormField
-                        control={form.control}
-                        name="totalAmount"
-                        render={({ field }) => (
-                            <FormCustomInput
-                                label="Enter total loan amount"
-                                placeholder="Enter total loan amount"
-                                className="w-full"
-                                type="number"
-                                field={field}
-                            />
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="paid"
-                        render={({ field }) => (
-                            <FormCustomInput
-                                label="Enter paid amount"
-                                placeholder="Enter paid amount"
-                                className="w-full"
-                                type="number"
-                                field={field}
-                            />
-                        )}
-                    />
-                    <div className="grid grid-cols-2">
-                        <div>
-                            <FormLabel>Start date</FormLabel>
+                    <div className="grid grid-cols-2 gap-3">
+                        <div className="col-span-2">
                             <FormField
                                 control={form.control}
-                                name="startDate"
-                                render={({ field }) => <FormDatePicker disableAfter field={field} />}
+                                name="totalAmount"
+                                render={({ field }) => (
+                                    <FormCustomInput label="Enter total loan amount" className="w-full" type="number" field={field} />
+                                )}
                             />
                         </div>
-                        <div>
-                            <FormLabel>End date</FormLabel>
-                            <FormField
-                                control={form.control}
-                                name="endDate"
-                                render={({ field }) => <FormDatePicker disableBefore field={field} />}
-                            />
-                        </div>
+                        <FormField
+                            control={form.control}
+                            name="startDate"
+                            render={({ field }) => (
+                                <FormCustomInput label="Enter start date" className="w-full" type="date" field={field} />
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="endDate"
+                            render={({ field }) => <FormCustomInput label="Enter end date" className="w-full" type="date" field={field} />}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="totalInstalments"
+                            render={({ field }) => (
+                                <FormCustomInput label="Enter total instalments" className="w-full" type="number" field={field} />
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="currentInstalment"
+                            render={({ field }) => (
+                                <FormCustomInput label="Enter current instalment" className="w-full" type="number" field={field} />
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="instalmentAmount"
+                            render={({ field }) => (
+                                <FormCustomInput label="Enter instalment amount" className="w-full" type="number" field={field} />
+                            )}
+                        />
                     </div>
-                    <FormField
-                        control={form.control}
-                        name="totalInstalments"
-                        render={({ field }) => (
-                            <FormCustomInput
-                                label="Enter total instalments"
-                                placeholder="Enter total instalments"
-                                className="w-full"
-                                type="number"
-                                field={field}
-                            />
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="currentInstalment"
-                        render={({ field }) => (
-                            <FormCustomInput
-                                label="Enter current instalment"
-                                placeholder="Enter current instalment"
-                                className="w-full"
-                                type="number"
-                                field={field}
-                            />
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="instalmentAmount"
-                        render={({ field }) => (
-                            <FormCustomInput
-                                label="Enter instalment amount"
-                                placeholder="Enter instalment amount"
-                                className="w-full"
-                                type="number"
-                                field={field}
-                            />
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="interestRate"
-                        render={({ field }) => (
-                            <FormCustomInput
-                                label="Enter interest rate"
-                                placeholder="Enter interest rate"
-                                className="w-full"
-                                type="number"
-                                field={field}
-                            />
-                        )}
-                    />
                 </div>
 
                 <Separator />

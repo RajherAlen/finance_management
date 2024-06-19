@@ -25,10 +25,10 @@ const FormDatePicker = (props: FormSelectProps) => {
                     <FormControl>
                         <Button
                             variant={'outline'}
-                            className={cn('h-12 justify-start text-left font-normal', !field.value && 'text-muted-foreground')}
+                            className={cn('h-10 w-full justify-start text-left font-normal', !field.value && 'text-muted-foreground')}
                         >
                             <CalendarIcon className="mr-2 h-4 w-4" />
-                            {field.value ? new Date(field.value).toLocaleDateString() : <span>Add Date</span>}
+                            {field.value ? new Date(field.value).toLocaleDateString() : <span className="text-xs">Add Date</span>}
                         </Button>
                     </FormControl>
                 </PopoverTrigger>
