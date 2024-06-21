@@ -2,10 +2,10 @@ export interface Transaction {
     id: number | string;
     amount: number;
     description: string;
-    category: 'savings' | 'wants' | 'needs';
+    category: 'savings' | 'wants' | 'needs' | 'loan';
     date: Date;
     type: 'income' | 'expense';
-    recuring?: boolean;
+    recurring?: boolean;
 }
 
 interface CategoryTotals {

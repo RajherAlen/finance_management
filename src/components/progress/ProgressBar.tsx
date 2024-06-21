@@ -48,7 +48,7 @@ export const ProgressBar = ({ label, value, total, additionalComponent, isFinish
                     {additionalComponent}
                 </div>
             </div>
-            <Progress value={calcPercentage(value, total)} className={isFinished ? 'bg-green-500' : ''} />
+            <Progress value={calcPercentage(value, total)} className={cn('rounded-full',isFinished ? 'bg-green-500' : '')} />
         </div>
     );
 };

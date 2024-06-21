@@ -15,7 +15,7 @@ import { Saving, Transaction } from '../model/transactionModel';
 import CategoryIcons from './CategoryIcons';
 
 const ExpenseCard = (props: Transaction) => {
-    const { description, amount, date, id, recuring, category } = props;
+    const { description, amount, date, id, recurring, category } = props;
 
     const { userInfo } = useAppSelector((state) => state.authStore);
     const { data } = useGetSavingsQuery(userInfo?.id);
@@ -46,7 +46,7 @@ const ExpenseCard = (props: Transaction) => {
                                 category === 'savings' ? 'bg-lime-300/50' : category === 'wants' ? 'bg-red-300/20' : ''
                             )}
                         >
-                            {recuring && <RefreshCwIcon size={10} />}
+                            {recurring && <RefreshCwIcon size={10} />}
                             {description}
                         </p>
                     </div>
