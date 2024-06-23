@@ -11,7 +11,7 @@ import TransactionIcons from 'src/features/transactions/components/TransactionIc
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import validationToast from 'src/lib/utils/validationToast';
-import { setCredentials } from 'src/store/authSlice';
+import { login as loginAction } from 'src/store/authSlice';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import * as z from 'zod';
 
@@ -21,6 +21,8 @@ import { loginSchema } from '../model/loginSchema';
 
 const LoginForm = () => {
     const loginStore = useAppSelector((state) => state.loginStore);
+
+    const [isLoading, setIsLoading] = React.useState(false);
 
     const dispatch = useAppDispatch();
     const [login] = useLoginMutation();
@@ -41,8 +43,10 @@ const LoginForm = () => {
             dispatch(setLoginInfo(data));
             dispatch(nextStep());
         } else if (loginData.data.isLoggedIn) {
-            dispatch(setCredentials(loginData));
+            setIsLoading(true)
+            dispatch(loginAction(loginData));
             router.push('/');
+            setIsLoading(false)
         } else {
             validationToast({
                 status: 'error',
@@ -90,7 +94,7 @@ const LoginForm = () => {
                             )}
                         />
 
-                        <Button type="submit" size="lg" className="mt-5 w-full">
+                        <Button type="submit" size="lg" className="mt-5 w-full" isLoading={isLoading}>
                             Sign In
                         </Button>
                     </form>

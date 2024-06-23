@@ -2,7 +2,7 @@ import React from 'react';
 
 import Card from 'src/components/card/Card';
 
-import { CarIcon, CoinsIcon, HomeIcon } from 'lucide-react';
+import { CarIcon, CoinsIcon, CreditCardIcon, HomeIcon, PiggyBankIcon } from 'lucide-react';
 
 interface CategoryIconsProps {
     category: string;
@@ -20,11 +20,17 @@ const CategoryIcons = ({ category, width = 18, height = 18 }: CategoryIconsProps
     };
 
     switch (category) {
-        case 'car':
-            transactionIcon = <CarIcon {...iconSize} />;
+        case 'savings':
+            transactionIcon = <PiggyBankIcon {...iconSize} />;
             break;
-        case 'house':
-            transactionIcon = <HomeIcon {...iconSize} />;
+        case 'needs':
+            transactionIcon = <CoinsIcon {...iconSize} />;
+            break;
+        case 'loan':
+            transactionIcon = <CreditCardIcon {...iconSize} />;
+            break;
+        case 'needs':
+            transactionIcon = <CarIcon {...iconSize} />;
             break;
         default:
             transactionIcon = <CoinsIcon {...iconSize} />;

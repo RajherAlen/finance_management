@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
 import { useRegisterMutation } from '../../api/loginApi';
 import { nextStep, prevStep } from '../../loginSlice';
-import { setCredentials } from 'src/store/authSlice';
+import { login } from 'src/store/authSlice';
 
 interface OnboardingLayoutProps {
     children: React.ReactNode;
@@ -37,7 +37,7 @@ const OnboardingLayout = ({ children, actionToContinue, formIsValid }: Onboardin
         if (formIsValid) {
             if (loginStore.currentStep === 3) {
                 register({ ...loginStore, income: transactionStore.income });
-                dispatch(setCredentials({ ...loginStore, income: transactionStore.income }));
+                dispatch(login({ ...loginStore, income: transactionStore.income }));
             }
 
             if (!isLoading) {

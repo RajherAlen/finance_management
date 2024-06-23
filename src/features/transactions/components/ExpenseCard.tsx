@@ -4,7 +4,7 @@ import Button from 'src/components/button/Button';
 
 import { useGetSavingsQuery, useUpdateSavingMutation } from 'src/features/savings/api/savingsApi';
 
-import { RefreshCwIcon, XIcon } from 'lucide-react';
+import { PiggyBankIcon, RefreshCwIcon, XIcon } from 'lucide-react';
 import { cn } from 'src/lib/utils/cn';
 import formatCurrency from 'src/lib/utils/formatCurrency';
 import { formatDate } from 'src/lib/utils/formatDate';
@@ -35,7 +35,7 @@ const ExpenseCard = (props: Transaction) => {
     return (
         <div className="flex items-center gap-5">
             <div className="flex flex-1 gap-3">
-                <CategoryIcons category="house" />
+                <CategoryIcons category={props.category} />
 
                 <div>
                     <div className="flex items-center gap-2">

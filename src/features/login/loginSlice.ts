@@ -27,7 +27,7 @@ const loginSlice = createSlice({
     reducers: {
         setLoginInfo: (state, { payload }) => {
             const { email, password } = payload;
-
+            
             state.email = email;
             state.password = password;
         },
