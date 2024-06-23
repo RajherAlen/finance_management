@@ -43,7 +43,13 @@ const ExpenseCard = (props: Transaction) => {
                         <p
                             className={cn(
                                 'mb-[2px] flex items-center gap-1.5 rounded-full bg-primary px-2 py-1 text-[11px] font-medium',
-                                category === 'savings' ? 'bg-lime-300/50' : category === 'wants' ? 'bg-red-300/20' : ''
+                                category === 'savings'
+                                    ? 'bg-lime-500/30'
+                                    : category === 'wants'
+                                    ? 'bg-red-500/30'
+                                    : category === 'loan'
+                                    ? 'bg-orange-500/30'
+                                    : ''
                             )}
                         >
                             {recurring && <RefreshCwIcon size={10} />}
