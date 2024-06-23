@@ -36,7 +36,7 @@ const addLoanToTransaction = ({ transactionData, loansData, addTransaction, user
         const loanDay = String(loan.endDate).split('-')[2];
 
         // Check if the loan should be added for the current month and year
-        if (currentYear <= loanYear) {
+        if (currentYear <= loanYear && filteredTransactions && filteredTransactions.length > 0) {
             // Check if transaction already exists for this loan in current month
             const transactionExists = filteredTransactions.find(
                 (transaction: Transaction) =>
