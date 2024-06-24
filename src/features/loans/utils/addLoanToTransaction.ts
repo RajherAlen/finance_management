@@ -35,17 +35,31 @@ const addLoanToTransaction = ({ transactionData, loansData, addTransaction, user
         const loanYear = String(loan.endDate).split('-')[0];
         const loanDay = String(loan.endDate).split('-')[2];
 
+        console.log(filteredTransactions);
         // Check if the loan should be added for the current month and year
-        if (currentYear <= loanYear && filteredTransactions && filteredTransactions.length > 0) {
-            // Check if transaction already exists for this loan in current month
-            const transactionExists = filteredTransactions.find(
-                (transaction: Transaction) =>
-                    transaction.description === `loan-${loan.name}` &&
-                    String(transaction.date).split('T')[0] === `${currentYear}-${currentMonth}-${loanDay}`
-            );
+        if (currentYear <= loanYear) {
+            if (filteredTransactions && filteredTransactions.length > 0) {
+                // Check if transaction already exists for this loan in current month
+                const transactionExists = filteredTransactions.find(
+                    (transaction: Transaction) =>
+                        transaction.description === `loan-${loan.name}` &&
+                        String(transaction.date).split('T')[0] === `${currentYear}-${currentMonth}-${loanDay}`
+                );
 
-            // If transaction does not exist, add it
-            if (!transactionExists) {
+                // If transaction does not exist, add it
+                if (!transactionExists) {
+                    addTransaction({
+                        amount: loan.instalmentAmount,
+                        // TODO: change this description/name
+                        description: `loan-${loan.name}`,
+                        category: 'loan',
+                        type: 'expense',
+                        userId: userId,
+                        date: new Date(`${currentYear}-${currentMonth}-${loanDay}`),
+                        recurring: true,
+                    });
+                }
+            } else {
                 addTransaction({
                     amount: loan.instalmentAmount,
                     // TODO: change this description/name

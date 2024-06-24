@@ -10,7 +10,6 @@ type UserState = {
     currentStep: number;
 };
 
-
 const initialState: UserState = {
     email: '',
     password: '',
@@ -27,7 +26,7 @@ const loginSlice = createSlice({
     reducers: {
         setLoginInfo: (state, { payload }) => {
             const { email, password } = payload;
-            
+
             state.email = email;
             state.password = password;
         },
@@ -48,8 +47,11 @@ const loginSlice = createSlice({
                 state.currentStep -= 1;
             }
         },
+        resetCurrentStep: (state) => {
+            state.currentStep = 0;
+        },
     },
 });
 
-export const { nextStep, prevStep, setAccountInfo, setLoginInfo } = loginSlice.actions;
+export const { nextStep, prevStep, setAccountInfo, setLoginInfo, resetCurrentStep } = loginSlice.actions;
 export default loginSlice.reducer;

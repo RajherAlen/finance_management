@@ -11,6 +11,7 @@ import { login as loginAction } from 'src/store/authSlice';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
 import { useLoginMutation } from '../../api/loginApi';
+import { resetCurrentStep } from '../../loginSlice';
 
 const OnboardingSuccess = () => {
     const router = useRouter();
@@ -18,13 +19,16 @@ const OnboardingSuccess = () => {
 
     const loginStore = useAppSelector((state) => state.loginStore);
 
-    const [login] = useLoginMutation();
+    const [login, { isLoading }] = useLoginMutation();
 
     const handleFinishLogin = async () => {
         const loginData: any = await login({ email: loginStore?.email, password: loginStore?.password });
 
         if (loginData.data.isLoggedIn) {
             dispatch(loginAction(loginData));
+
+            dispatch(resetCurrentStep());
+
             router.push('/');
         }
     };
@@ -34,7 +38,7 @@ const OnboardingSuccess = () => {
             <p className="mb-3 text-3xl font-bold">You are all set!</p>
             <p className="mb-5 text-sm text-muted">We have taken your data and personalized financial dashboard for you.</p>
 
-            <Button onClick={handleFinishLogin} className={buttonVariants({ size: 'lg' })}>
+            <Button onClick={handleFinishLogin} className={buttonVariants({ size: 'lg' })} isLoading={isLoading}>
                 Go to Dashboard
             </Button>
         </div>

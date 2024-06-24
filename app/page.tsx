@@ -25,12 +25,14 @@ const Dashboard = () => {
         dispatch(setTotalIncome(userInfo?.income));
         dispatch(updateSaving(savingData?.savings));
 
-        addLoanToTransaction({
-            transactionData: data?.transactions,
-            loansData: loansData?.loans,
-            addTransaction,
-            userId: userInfo?.id,
-        });
+        if (userInfo) {
+            addLoanToTransaction({
+                transactionData: data?.transactions,
+                loansData: loansData?.loans,
+                addTransaction,
+                userId: userInfo.id,
+            });
+        }
 
         dispatch(getAllTransactions(data?.transactions));
     }, [userInfo, data, loansData, dispatch, savingData]);
