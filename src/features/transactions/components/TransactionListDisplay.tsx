@@ -1,9 +1,6 @@
-
-import Card from 'src/components/card/Card';
 import ExpenseByCategoryChart from 'src/features/analytics/components/ExpenseByCategoryChart';
 import TotalSpentChart from 'src/features/analytics/components/TotalSpentChart';
 
-import AddExpense from './AddExpense';
 import LastTransactions from './LastTransactions';
 import TransactionListCard from './TransactionListCard';
 
@@ -13,7 +10,7 @@ const TransactionListDisplay = () => {
             <div className="flex flex-1 flex-col gap-5">
                 <TransactionListCard />
 
-                <div className="grid grid-cols-2">
+                <div className="grid grid-cols-2 gap-4">
                     <ExpenseByCategoryChart />
                     <TotalSpentChart />
                 </div>

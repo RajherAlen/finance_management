@@ -22,8 +22,6 @@ import { loginSchema } from '../model/loginSchema';
 const LoginForm = () => {
     const loginStore = useAppSelector((state) => state.loginStore);
 
-    const [isLoading, setIsLoading] = React.useState(false);
-
     const dispatch = useAppDispatch();
     const [login] = useLoginMutation();
     const router = useRouter();
@@ -43,10 +41,8 @@ const LoginForm = () => {
             dispatch(setLoginInfo(data));
             dispatch(nextStep());
         } else if (loginData.data.isLoggedIn) {
-            setIsLoading(true)
             dispatch(loginAction(loginData));
             router.push('/');
-            setIsLoading(false)
         } else {
             validationToast({
                 status: 'error',
@@ -94,7 +90,7 @@ const LoginForm = () => {
                             )}
                         />
 
-                        <Button type="submit" size="lg" className="mt-5 w-full" isLoading={isLoading}>
+                        <Button type="submit" size="lg" className="mt-5 w-full">
                             Sign In
                         </Button>
                     </form>

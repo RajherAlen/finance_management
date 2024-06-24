@@ -3,14 +3,11 @@
 import React, { useEffect } from 'react';
 
 import Card from 'src/components/card/Card';
-import { Progress } from 'src/components/progress/ProgressBar';
-import Separator from 'src/components/separator/Separator';
 
 import { SavingsListDisplay } from 'src/features/savings';
 import { useGetSavingsQuery } from 'src/features/savings/api/savingsApi';
 import { updateSaving } from 'src/features/transactions/transactionSlice';
 
-import { calcPercentage } from 'src/lib/utils/calcPercentage';
 import formatCurrency from 'src/lib/utils/formatCurrency';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 

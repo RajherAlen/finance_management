@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 
 import Button from 'src/components/button/Button';
+import EmptyState from 'src/components/card/EmptyState';
 import Modal from 'src/components/dialog/Modal';
 import GlobalLoader from 'src/components/loader/GlobalLoader';
 import AddSaving from 'src/features/savings/components/AddSaving';
@@ -35,8 +36,8 @@ const SavingsListDisplay = () => {
     if (isLoading) return <GlobalLoader />;
 
     return (
-        <div className="flex items-start gap-5 h-full">
-            <div className='h-full'>
+        <div className="flex h-full items-start gap-5">
+            <div className="h-full w-full max-w-md">
                 <div className="mb-4 flex max-w-md items-center justify-between gap-4">
                     <p className="text-sm font-semibold text-gray-700">Savings</p>
                     <Modal
@@ -54,10 +55,14 @@ const SavingsListDisplay = () => {
                     </Modal>
                 </div>
 
-                <div className='flex flex-col h-full overflow-y-auto overflow-x-hidden pr-2'>
-                    {data?.savings.map((saving: Saving) => {
-                        return <SavingGoalCard key={saving.id} {...saving} />;
-                    })}
+                <div className="flex h-full flex-col overflow-y-auto overflow-x-hidden pr-2">
+                    {data?.savings.length > 0 ? (
+                        data?.savings.map((saving: Saving) => {
+                            return <SavingGoalCard key={saving.id} {...saving} />;
+                        })
+                    ) : (
+                        <EmptyState title="No savings yet" />
+                    )}
                 </div>
             </div>
 

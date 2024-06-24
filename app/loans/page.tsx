@@ -16,7 +16,7 @@ const Loans = () => {
     return (
         <div className="flex h-full items-start gap-10">
             <div className="h-full w-full">
-                {!isLoading && data && <LoansListDisplay loans={data?.loans} />}
+                <LoansListDisplay loans={data?.loans} />
             </div>
 
             <Card className="text-center">

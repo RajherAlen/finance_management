@@ -2,9 +2,10 @@
 
 import React from 'react';
 
+import EmptyState from 'src/components/card/EmptyState';
 import CircularChart from 'src/components/charts/CircularChart';
+import AddExpenseModal from 'src/features/transactions/components/AddExpenseModal';
 
-import { cn } from 'src/lib/utils/cn';
 import formatCurrency from 'src/lib/utils/formatCurrency';
 import { useAppSelector } from 'src/store/hooks';
 
@@ -18,8 +19,8 @@ const TotalSpentChart = () => {
     const nonEssential = transactions
         .filter((item) => item.category === 'wants')
         .reduce((accValue, currentValue) => accValue + currentValue.amount, 0);
-   
-        const savings = transactions
+
+    const savings = transactions
         .filter((item) => item.category === 'savings')
         .reduce((accValue, currentValue) => accValue + currentValue.amount, 0);
 
@@ -29,11 +30,18 @@ const TotalSpentChart = () => {
         { title: 'Savings', value: savings, color: '#4A9285' },
     ];
 
+    if (transactions.length === 0)
+        return (
+            <EmptyState
+                title="No Transactions Yet"
+            />
+        );
+
     return (
         <div>
             <p className="mb-5 text-xl font-semibold">Total Spent</p>
 
-            <div className="flex flex-col items-center justify-center h-full">
+            <div className="flex h-full flex-col items-center justify-center">
                 <div className="mb-5 h-[220px] w-[220px]">
                     <CircularChart data={data} />
                 </div>
@@ -42,7 +50,7 @@ const TotalSpentChart = () => {
                     {data.map((item) => {
                         return (
                             <div key={item.title}>
-                                <div className="flex items-center gap-1 flex-wrap">
+                                <div className="flex flex-wrap items-center gap-1">
                                     <p className="h-3 w-3 rounded-full" style={{ backgroundColor: item.color }}></p>
                                     <p className="text-sm font-medium">{item.title}</p>
                                     <p className="text-center text-[10px]">({formatCurrency(item.value)})</p>

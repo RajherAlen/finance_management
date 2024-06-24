@@ -22,10 +22,10 @@ const LoginInfoCard = ({ currentStep }: { currentStep: number }) => {
             loginInfoCard = <FinancialFoundations />;
             break;
         case 3:
-            loginInfoCard = <GoalSettingExpedition />;
-            break;
-        case 4:
+            loginInfoCard = null;
             return null;
+        // case 4:
+        // return null;
         default:
             loginInfoCard = null;
     }

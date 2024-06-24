@@ -12,11 +12,21 @@ interface DropdownProps {
     className?: string;
     contentClassName?: string;
     asChild?: boolean;
+    allign?: 'start' | 'end' | 'center';
     variant?: 'default' | 'link' | 'destructive' | 'outline' | 'secondary' | 'ghost' | null | undefined;
     size?: 'reset' | 'default' | 'sm' | 'lg' | 'icon' | null | undefined;
 }
 
-const Dropdown = ({ trigger, children, className, asChild, variant = 'ghost', size = 'reset', contentClassName }: DropdownProps) => {
+const Dropdown = ({
+    trigger,
+    allign,
+    children,
+    className,
+    asChild,
+    variant = 'ghost',
+    size = 'reset',
+    contentClassName,
+}: DropdownProps) => {
     return (
         <Popover>
             <PopoverTrigger className={buttonVariants({ variant: variant, size: size, className: className })} asChild={asChild}>
@@ -27,7 +37,7 @@ const Dropdown = ({ trigger, children, className, asChild, variant = 'ghost', si
                 <PopoverContent
                     side="bottom"
                     sideOffset={5}
-                    align="end"
+                    align={allign || 'start'}
                     className={cn('flex flex-col rounded-lg bg-white p-2 shadow-sm', contentClassName)}
                 >
                     {children}

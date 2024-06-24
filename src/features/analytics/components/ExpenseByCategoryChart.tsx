@@ -2,14 +2,15 @@
 
 import React from 'react';
 
+import EmptyState from 'src/components/card/EmptyState';
 import CustomBubbleChart from 'src/components/charts/BubbleChart';
 
 import { useAppSelector } from 'src/store/hooks';
 
 const ExpenseByCategoryChart = () => {
     const { transactions } = useAppSelector((state) => state.transactionStore);
-    
-    if(transactions.length === 0) return null;
+
+    if (transactions.length === 0) return <EmptyState title="No Transactions Yet" />;
 
     return (
         <div>

@@ -11,7 +11,7 @@ const OnboardingStep3 = () => {
         <OnboardingLayout formIsValid={true}>
             <div className="grid h-full grid-cols-2 gap-10">
                 <AddSaving />
-                <SavingsListDisplay />
+                {/* <SavingsListDisplay /> */}
             </div>
         </OnboardingLayout>
     );

@@ -3,13 +3,13 @@
 import React from 'react';
 
 import { Avatar } from 'src/components/avatar/Avatar';
-
-import { usePathname } from 'next/navigation';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { Dropdown, DropdownItem } from 'src/components/dropdown';
+
 import { LogOutIcon, UserIcon } from 'lucide-react';
-import { logout } from 'src/store/authSlice';
+import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import { logout } from 'src/store/authSlice';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
 const Header = () => {
     const { userInfo } = useAppSelector((state) => state.authStore);
@@ -21,8 +21,7 @@ const Header = () => {
     const handleLogOut = () => {
         dispatch(logout());
         router.push('/login');
-
-    }
+    };
 
     return (
         <div className="flex items-center justify-between gap-3 px-4 py-3">
@@ -31,7 +30,19 @@ const Header = () => {
             </div>
 
             <div className="flex items-center justify-end gap-3">
-                <Dropdown trigger={<Avatar />} size="reset" variant="ghost">
+                <Dropdown
+                    trigger={
+                        <div className="flex items-center text-left gap-2">
+                            <Avatar />
+                            <div>
+                                <p className="text-sm font-bold text-slate-600">{userInfo?.fullName}</p>
+                                <p className="text-xs text-muted">{userInfo?.email}</p>
+                            </div>
+                        </div>
+                    }
+                    size="reset"
+                    variant="ghost"
+                >
                     <DropdownItem>
                         <UserIcon width={14} />
                         User Info
@@ -44,11 +55,6 @@ const Header = () => {
                         Logout
                     </DropdownItem>
                 </Dropdown>
-
-                <div>
-                    <p className="text-sm font-bold text-slate-600">{userInfo?.fullName}</p>
-                    <p className="text-xs text-muted">{userInfo?.email}</p>
-                </div>
             </div>
 
             <div className="mt-3 border-t"></div>
