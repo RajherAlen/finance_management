@@ -47,11 +47,11 @@ const OnboardingStep2 = () => {
                     )}
                 </Card>
 
-                <Card variant="outline" radius="xlg" size="xlrg">
+                {/* <Card variant="outline" radius="xlg" size="xlrg">
                     <AddExpense required={false} />
 
                     <LastTransactions />
-                </Card>
+                </Card> */}
             </div>
         </OnboardingLayout>
     );

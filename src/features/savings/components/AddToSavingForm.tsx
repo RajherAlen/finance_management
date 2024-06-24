@@ -62,7 +62,7 @@ const AddToSavingForm = ({ savings }: { savings: Saving[] }) => {
                                 label="Select saving you want to add money"
                                 placeholder="Enter amount"
                                 className="w-full"
-                                options={savings.map((saving) => {
+                                options={savings?.map((saving) => {
                                     return {
                                         id: +saving.id,
                                         value: saving.name,

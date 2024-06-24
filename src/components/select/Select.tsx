@@ -120,14 +120,14 @@ const Select = (props: SelectProps) => {
             <SelectTrigger
                 className={clsx(
                     props.fullWidth ? 'w-full' : 'w-[180px]',
-                    props.ghostSelect ? 'h-6 flex-1 border-0 shadow-none focus:ring-0' : ''
+                    props.ghostSelect ? 'h-610 flex-1 border-0 shadow-none focus:ring-0' : ''
                 )}
             >
                 {props.value ? <SelectValue placeholder={props.placeholder} /> : props.placeholder}
             </SelectTrigger>
             <SelectContent>
                 <SelectGroup>
-                    {props.options.map((item) => {
+                    {props.options?.map((item) => {
                         return (
                             <SelectItem value={item.value} key={item.id}>
                                 {item.value}

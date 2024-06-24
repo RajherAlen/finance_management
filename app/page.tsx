@@ -22,14 +22,14 @@ const Dashboard = () => {
     const { data: loansData, isLoading: loansLoading } = useGetLoansQuery(userInfo?.id);
 
     useEffect(() => {
-        dispatch(setTotalIncome(userInfo.income));
+        dispatch(setTotalIncome(userInfo?.income));
         dispatch(updateSaving(savingData?.savings));
 
         addLoanToTransaction({
             transactionData: data?.transactions,
             loansData: loansData?.loans,
             addTransaction,
-            userId: userInfo.id,
+            userId: userInfo?.id,
         });
 
         dispatch(getAllTransactions(data?.transactions));

@@ -27,10 +27,10 @@ const Login = () => {
         case 2:
             formContent = <OnboardingStep2 />;
             break;
+        // case 3:
+        //     formContent = <OnboardingStep3 />;
+        //     break;
         case 3:
-            formContent = <OnboardingStep3 />;
-            break;
-        case 4:
             formContent = <OnboardingSuccess />;
             break;
         default:

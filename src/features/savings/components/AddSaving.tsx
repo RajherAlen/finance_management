@@ -40,7 +40,7 @@ const AddSaving = ({ additionalAction }: { additionalAction?: () => void }) => {
             goalAmount: data.goalAmount,
             currentlySaved: data.currentlySaved,
             date: data.date,
-            userId: userInfo.id,
+            userId: userInfo?.id,
         });
 
         if (additionalAction !== undefined) {

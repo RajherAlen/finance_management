@@ -29,8 +29,8 @@ const authSlice = createSlice({
             state.userToken = null;
         },
         login: (state, { payload }) => {
-            state.userInfo = payload.data.userInfo;
-            state.userToken = payload.data.userToken;
+            state.userInfo = payload.data?.userInfo;
+            state.userToken = payload.data?.userToken;
 
             LocalStorageProvider.set('userInfo', state.userInfo);
             LocalStorageProvider.set('userToken', state.userToken);

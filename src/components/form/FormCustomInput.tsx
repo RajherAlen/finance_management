@@ -29,7 +29,7 @@ const FormCustomInput = (props: FormCustomInputProps) => {
             )}
             <FormControl>
                 {props.type === 'number' ? (
-                    <NumberInput className={props.inputClassName} {...props.field} />
+                    <NumberInput inputClassName={props.inputClassName} {...props.field} />
                 ) : (
                     <Input placeholder={props.placeholder} type={props.type} className={props.inputClassName} {...props.field} />
                 )}

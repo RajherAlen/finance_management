@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE `loans` MODIFY `status` ENUM('PENDING', 'COMPLETED') NULL DEFAULT 'PENDING';

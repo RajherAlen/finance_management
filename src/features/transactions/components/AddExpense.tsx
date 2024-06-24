@@ -80,7 +80,7 @@ const AddExpense = ({ required = true, additionalFn }: { required?: boolean; add
                                         <FormCustomInput
                                             requiered={required}
                                             field={field}
-                                            inputClassName="h-6 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                                            inputClassName="h-5 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                                             type="number"
                                             hideErrorMessage
                                         />
@@ -95,7 +95,7 @@ const AddExpense = ({ required = true, additionalFn }: { required?: boolean; add
                                             requiered={required}
                                             field={field}
                                             placeholder="Enter expense type"
-                                            inputClassName="h-6 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                                            inputClassName="h-5 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                                             type="text"
                                             hideErrorMessage
                                         />
@@ -103,7 +103,7 @@ const AddExpense = ({ required = true, additionalFn }: { required?: boolean; add
                                 />
                             </Card>
 
-                            <FormField control={form.control} name="date" render={({ field }) => <FormDatePicker field={field} />} />
+                            <FormField control={form.control} name="date" render={({ field }) => <FormDatePicker wrapperClassName={'h-[46px]'} field={field} />} />
                         </div>
                     </div>
 

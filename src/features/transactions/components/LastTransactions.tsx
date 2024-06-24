@@ -60,7 +60,7 @@ const LastTransactions = () => {
     };
 
     if (isLoading) return <GlobalLoader />;
-    if (data.transactions.length === 0) {
+    if (data?.transactions.length === 0) {
         return (
             <EmptyState
                 actionComponent={<AddExpenseModal />}
