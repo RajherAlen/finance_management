@@ -9,7 +9,7 @@ import { useAppSelector } from 'src/store/hooks';
 
 const Loans = () => {
     const { userInfo } = useAppSelector((state) => state.authStore);
-    const { data, isLoading } = useGetLoansQuery(userInfo?.id);
+    const { data } = useGetLoansQuery(userInfo?.id);
 
     return (
         <div className="flex h-full items-start gap-10">

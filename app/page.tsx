@@ -7,8 +7,12 @@ import TransactionListDisplay from 'src/features/transactions/components/Transac
 import { useGetLoansQuery } from 'src/features/loans/api/loansApi';
 import addLoanToTransaction from 'src/features/loans/utils/addLoanToTransaction';
 import { useGetSavingsQuery } from 'src/features/savings/api/savingsApi';
-import { useAddTransactionMutation, useGetThisMonthTransactionsQuery } from 'src/features/transactions/api/transactionsApi';
-import { filterThisMonthTransactions, getAllTransactions, setTotalIncome, updateSaving } from 'src/features/transactions/transactionSlice';
+import {
+    useAddTransactionMutation,
+    useGetLastMonthRecurringTransactionsQuery,
+    useGetThisMonthTransactionsQuery,
+} from 'src/features/transactions/api/transactionsApi';
+import { getAllTransactions, setTotalIncome, updateSaving } from 'src/features/transactions/transactionSlice';
 
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
@@ -19,11 +23,17 @@ const Dashboard = () => {
     const { userInfo } = useAppSelector((state) => state.authStore);
     const { data } = useGetThisMonthTransactionsQuery(userInfo?.id);
     const { data: savingData } = useGetSavingsQuery(userInfo?.id);
-    const { data: loansData, isLoading: loansLoading } = useGetLoansQuery(userInfo?.id);
+    const { data: loansData } = useGetLoansQuery(userInfo?.id);
+
+    // get recurring data from last month
+    const { data: recudingData } = useGetLastMonthRecurringTransactionsQuery(userInfo?.id);
+    // map current month data and find
+    // check by name and date is greater or equal than today
+    // check if that transaction is added to this month
 
     useEffect(() => {
-        dispatch(setTotalIncome(userInfo?.income));
         dispatch(updateSaving(savingData?.savings));
+        dispatch(setTotalIncome(userInfo?.income));
 
         if (userInfo) {
             addLoanToTransaction({
@@ -36,7 +46,7 @@ const Dashboard = () => {
 
         dispatch(getAllTransactions(data?.transactions));
     }, [userInfo, data, loansData, dispatch, savingData]);
-
+    
     return <TransactionListDisplay />;
 };
 

@@ -58,6 +58,13 @@ export const transactionApiSlice = apiSlice.enhanceEndpoints({ addTagTypes: ['tr
             }),
             providesTags: ['transactionList'],
         }),
+        getLastMonthRecurringTransactions: builder.query({
+            query: (userId: string | number) => ({
+                url: `/transaction/last-month-recurring/${userId}`,
+                method: 'GET',
+            }),
+            providesTags: ['transactionList'],
+        }),
         addTransaction: builder.mutation({
             query: (data) => ({
                 url: `/transaction`,
@@ -100,6 +107,7 @@ export const {
     useGetLastMonthTransactionsQuery,
     useGetLastThreeMonthTransactionsQuery,
     useGetLastSixMonthTransactionsQuery,
+    useGetLastMonthRecurringTransactionsQuery,
     useGetThisYearQuery,
     useDeleteTransactionMutation,
     useUpdateIncomeMutation,

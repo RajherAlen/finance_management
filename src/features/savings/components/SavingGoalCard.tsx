@@ -45,7 +45,7 @@ const SavingGoalCard = (props: Saving) => {
     const isFinished = goalAmount - currentlySaved === 0;
 
     return (
-        <Card className="mb-4 w-96 max-w-md">
+        <Card className="mb-4 w-100">
             <ProgressBar
                 label={
                     <>

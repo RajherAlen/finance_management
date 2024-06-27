@@ -21,26 +21,30 @@ const addLoanToTransaction = ({ transactionData, loansData, addTransaction, user
     const currentYear = formatDate({ date: new Date(), format: 'YYYY' });
     const currentMonth = formatDate({ date: new Date(), format: 'MM' });
     const currentDay = formatDate({ date: new Date(), format: 'DD' });
-    // Filter transactions that are loans
+
     const filteredTransactions = transactionData?.filter((transaction: Transaction) => transaction.category === 'loan');
-    // Iterate over loans
+
     loansData?.forEach((loan: Loan) => {
         const loanYear = String(loan.endDate).split('-')[0];
         const loanDay = String(loan.endDate).split('-')[2];
+
         // Check if the loan should be added for the current month and year
         if (currentYear <= loanYear && currentDay >= loanDay) {
-            if (filteredTransactions?.length === 0) {
-                addTransaction({
-                    amount: loan.instalmentAmount,
-                    // TODO: change this description/name
-                    description: `loan-${loan.name}`,
-                    category: 'loan',
-                    type: 'expense',
-                    userId: userId,
-                    date: new Date(`${currentYear}-${currentMonth}-${loanDay}`),
-                    recurring: true,
-                });
+            const loanData = {
+                amount: loan.instalmentAmount,
+                // TODO: change this description/name
+                description: `loan-${loan.name}`,
+                category: 'loan',
+                type: 'expense',
+                userId: userId,
+                date: new Date(`${currentYear}-${currentMonth}-${loanDay}`),
+                recurring: true,
             }
+
+            if (filteredTransactions?.length === 0) {
+                addTransaction(loanData);
+            }
+            
             // Check if transaction already exists for this loan in current month
             if (filteredTransactions && filteredTransactions.length > 0) {
                 const transactionExists = filteredTransactions.find(
@@ -48,18 +52,10 @@ const addLoanToTransaction = ({ transactionData, loansData, addTransaction, user
                         transaction.description === `loan-${loan.name}` &&
                         String(transaction.date).split('T')[0] === `${currentYear}-${currentMonth}-${loanDay}`
                 );
+            
                 // If transaction does not exist, add it
                 if (!transactionExists) {
-                    addTransaction({
-                        amount: loan.instalmentAmount,
-                        // TODO: change this description/name
-                        description: `loan-${loan.name}`,
-                        category: 'loan',
-                        type: 'expense',
-                        userId: userId,
-                        date: new Date(`${currentYear}-${currentMonth}-${loanDay}`),
-                        recurring: true,
-                    });
+                    addTransaction(loanData);
                 }
             }
         }

@@ -9,6 +9,8 @@ import FormCustomInput from 'src/components/form/FormCustomInput';
 import FormDatePicker from 'src/components/form/FormDatePicker';
 import FormError from 'src/components/form/FormError';
 import { Form, FormField } from 'src/components/form/form';
+import { Label } from 'src/components/label/label';
+import { Switch } from 'src/components/switch/Switch';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PlusCircleIcon } from 'lucide-react';
@@ -22,6 +24,7 @@ const AddExpense = ({ required = true, additionalFn }: { required?: boolean; add
     const [category, setCategory] = useState<'needs' | 'wants'>('needs');
     const [addTransaction] = useAddTransactionMutation();
     const { userInfo } = useAppSelector((state) => state.authStore);
+    const [isRecurring, setIsRecurring] = useState(false);
 
     const form = useForm<z.infer<typeof expenseSchema>>({
         resolver: zodResolver(expenseSchema),
@@ -38,6 +41,7 @@ const AddExpense = ({ required = true, additionalFn }: { required?: boolean; add
         addTransaction({
             ...data,
             category: category,
+            recurring: isRecurring,
             type: 'expense',
             userId: userInfo.id,
         });
@@ -53,9 +57,13 @@ const AddExpense = ({ required = true, additionalFn }: { required?: boolean; add
         });
     };
 
+    const handleIsRecurring = () => {
+        setIsRecurring((prev) => !prev);
+    };
+
     return (
         <div>
-            <div className="mb-5 flex items-center justify-between">
+            <div className="mb-5 flex items-center gap-6">
                 <Card variant="outline" size="sml" radius="md">
                     <div className="flex gap-1">
                         <Button size="sm" variant={category === 'needs' ? 'secondary' : 'ghost'} onClick={() => setCategory('needs')}>
@@ -66,6 +74,14 @@ const AddExpense = ({ required = true, additionalFn }: { required?: boolean; add
                         </Button>
                     </div>
                 </Card>
+
+                {/* // TODO: ADD TOGGLE */}
+                <div className="flex items-center space-x-2">
+                    <Switch id="is-recurring" onCheckedChange={handleIsRecurring} checked={isRecurring} />
+                    <Label className="cursor-pointer" htmlFor="is-recurring">
+                        Is recurring?
+                    </Label>
+                </div>
             </div>
 
             <Form {...form}>
@@ -103,7 +119,11 @@ const AddExpense = ({ required = true, additionalFn }: { required?: boolean; add
                                 />
                             </Card>
 
-                            <FormField control={form.control} name="date" render={({ field }) => <FormDatePicker wrapperClassName={'h-[46px]'} field={field} />} />
+                            <FormField
+                                control={form.control}
+                                name="date"
+                                render={({ field }) => <FormDatePicker wrapperClassName={'h-[46px]'} field={field} />}
+                            />
                         </div>
                     </div>
 

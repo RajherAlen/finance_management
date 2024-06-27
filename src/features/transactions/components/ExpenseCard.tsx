@@ -29,8 +29,10 @@ const ExpenseCard = (props: Transaction) => {
             updateSaving({ ...selectedSaving[0], currentlySaved: selectedSaving[0].currentlySaved - amount });
         }
 
-        deleteTransaction({ userId: 1, transactionId: id });
+        deleteTransaction({ userId: userInfo.id, transactionId: id });
     };
+
+    const transactionName = category === 'loan' ? description.split('loan-')[1] : description;
 
     return (
         <div className="flex items-center gap-5">
@@ -53,7 +55,7 @@ const ExpenseCard = (props: Transaction) => {
                             )}
                         >
                             {recurring && <RefreshCwIcon size={10} />}
-                            {description}
+                            {transactionName}
                         </p>
                     </div>
 
