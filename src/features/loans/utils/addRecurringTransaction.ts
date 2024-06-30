@@ -22,7 +22,6 @@ interface RecurringTransactionProps {
 export const addRecurringTransaction = ({ recurringData, userId, currentMonthData, addTransaction }: RecurringTransactionProps) => {
     const currentYear = formatDate({ date: new Date(), format: 'YYYY' });
     const currentMonth = formatDate({ date: new Date(), format: 'MM' });
-    const currentDay = formatDate({ date: new Date(), format: 'DD' });
 
     const filteredPreviousMonthTransactions = recurringData?.filter((transaction: Transaction) => transaction.recurring === true);
     const filteredCurrentMonthTransactions = currentMonthData?.filter((transaction: Transaction) => transaction.recurring === true);

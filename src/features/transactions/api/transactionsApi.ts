@@ -66,8 +66,8 @@ export const transactionApiSlice = apiSlice.enhanceEndpoints({ addTagTypes: ['tr
             providesTags: ['transactionList'],
         }),
         addTransaction: builder.mutation({
-            query: (data) => ({
-                url: `/transaction`,
+            query: ({ data, userId }) => ({
+                url: `/transaction/${userId}`,
                 method: 'POST',
                 body: data,
             }),

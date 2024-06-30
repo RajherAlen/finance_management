@@ -3,6 +3,32 @@ import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
+export async function POST(req: Request, { params }: { params: { slug: string } }) {
+    try {
+        const data = await req.json();
+        const slug = params.slug;
+
+        const transactions = await prisma.transaction.findFirst({
+            where: {
+                userId: { in: [+slug] },
+                description: data.description,
+            },
+        });
+
+        if (transactions) {
+            return NextResponse.json({ error: 'Transaction already exists' }, { status: 400 });
+        }
+
+        const newTransaction = await prisma.transaction.create({ data });
+
+        return NextResponse.json({ newTransaction });
+    } catch (error) {
+        return NextResponse.json({ error: error }, { status: 500 });
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
 export async function GET(req: Request, { params }: { params: { slug: string } }) {
     try {
         const slug = params.slug;

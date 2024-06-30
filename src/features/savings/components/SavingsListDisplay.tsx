@@ -37,8 +37,8 @@ const SavingsListDisplay = () => {
 
     return (
         <div className="flex h-full items-start gap-5">
-            <div className="h-full w-full max-w-md">
-                <div className="mb-4 flex max-w-md items-center justify-between gap-4">
+            <div className="h-full w-full max-w-lg">
+                <div className="mb-4 flex items-center justify-between gap-4">
                     <p className="text-sm font-semibold text-gray-700">Savings</p>
                     <Modal
                         open={isOpen}

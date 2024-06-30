@@ -38,13 +38,15 @@ const AddExpense = ({ required = true, additionalFn }: { required?: boolean; add
     const { amount, description } = form.formState.errors;
 
     const onSubmit = (data: z.infer<typeof expenseSchema>) => {
-        addTransaction({
+        const transactionData = {
             ...data,
             category: category,
             recurring: isRecurring,
             type: 'expense',
             userId: userInfo.id,
-        });
+        };
+
+        addTransaction({ data: transactionData, userId: userInfo.id });
 
         if (additionalFn !== undefined) {
             additionalFn();
