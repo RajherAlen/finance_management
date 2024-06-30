@@ -112,6 +112,7 @@ interface SelectProps {
     options: SelectItem[];
     onChange: (value: string) => void;
     ghostSelect?: boolean;
+    className?: string
 }
 
 const Select = (props: SelectProps) => {
@@ -120,7 +121,8 @@ const Select = (props: SelectProps) => {
             <SelectTrigger
                 className={clsx(
                     props.fullWidth ? 'w-full' : 'w-[180px]',
-                    props.ghostSelect ? 'h-610 flex-1 border-0 shadow-none focus:ring-0' : ''
+                    props.ghostSelect ? 'h-610 flex-1 border-0 shadow-none focus:ring-0' : '',
+                    props.className
                 )}
             >
                 {props.value ? <SelectValue placeholder={props.placeholder} /> : props.placeholder}

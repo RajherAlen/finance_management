@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { endOfWeek, isWithinInterval, parseISO, startOfDay, startOfWeek, subMonths, subWeeks } from 'date-fns';
 import { formatDate } from 'src/lib/utils/formatDate';
 import LocalStorageProvider from 'src/lib/utils/storage/LocalStorageProvider';
-import { subMonths, startOfDay } from 'date-fns';
 
 import { FinancialState, Saving, Transaction } from './model/transactionModel';
 
@@ -47,6 +47,9 @@ const transactionSlice = createSlice({
             updateTotalSaving(state);
             updatetotalGoalSaving(state);
         },
+        filterByCategory: () => {
+            
+        },
         updateSaving: (state: FinancialState, action: PayloadAction<any>) => {
             if (action.payload) {
                 state.savings = action.payload;
@@ -55,31 +58,45 @@ const transactionSlice = createSlice({
             updatetotalGoalSaving(state);
         },
         filterThisWeekTransactions: (state: FinancialState, action) => {
-            const currentWeek = formatDate({ date: new Date(), format: 'w' });
+            const now = new Date();
+            const startOfCurrentWeek = startOfWeek(now, { weekStartsOn: 1 }); // Assuming week starts on Monday
+            const endOfCurrentWeek = endOfWeek(now, { weekStartsOn: 1 });
 
-            state.transactions = action.payload.filter((transaction: any) => currentWeek === formatDate({ date: transaction.date, format: 'w' }));
+            state.transactions = action.payload.filter((transaction: any) => {
+                const transactionDate = parseISO(transaction.date); // Assuming transaction.date is in ISO format
+                return isWithinInterval(transactionDate, { start: startOfCurrentWeek, end: endOfCurrentWeek });
+            });
         },
         filterLastWeekTransactions: (state: FinancialState, action) => {
-            const currentWeek = formatDate({ date: new Date(), format: 'w' });
-            const lastWeek = +currentWeek - 1;
+            const now = new Date();
+            const startOfCurrentWeek = startOfWeek(now, { weekStartsOn: 1 }); // Assuming week starts on Monday
+            const startOfLastWeek = subWeeks(startOfCurrentWeek, 1);
+            const endOfLastWeek = endOfWeek(startOfLastWeek, { weekStartsOn: 1 });
 
-            state.transactions = action.payload.filter((transaction: any) => lastWeek.toString() === formatDate({ date: transaction.date, format: 'w' }));
+            state.transactions = action.payload.filter((transaction: any) => {
+                const transactionDate = parseISO(transaction.date); // Assuming transaction.date is in ISO format
+                return isWithinInterval(transactionDate, { start: startOfLastWeek, end: endOfLastWeek });
+            });
         },
         filterThisMonthTransactions: (state: FinancialState, action) => {
             const currentMonth = formatDate({ date: new Date(), format: 'M' });
-            
-            state.transactions = action.payload.filter((transaction: any) => currentMonth === formatDate({ date: transaction.date, format: 'M' }));
+
+            state.transactions = action.payload.filter(
+                (transaction: any) => currentMonth === formatDate({ date: transaction.date, format: 'M' })
+            );
         },
         filterLastMonthTransactions: (state: FinancialState, action) => {
             const currentMonth = formatDate({ date: new Date(), format: 'M' });
             const lastMonth = +currentMonth - 1;
 
-            state.transactions = action.payload.filter((transaction: any) => lastMonth.toString() === formatDate({ date: transaction.date, format: 'M' }));
+            state.transactions = action.payload.filter(
+                (transaction: any) => lastMonth.toString() === formatDate({ date: transaction.date, format: 'M' })
+            );
         },
         filterLastThreeMonthsTransactions: (state: FinancialState, action) => {
             const now = new Date();
             const threeMonthsAgo = subMonths(startOfDay(now), 3); // Using date-fns for accurate date manipulation
-            
+
             state.transactions = action.payload.filter((transaction: any) => {
                 const transactionDate = new Date(transaction.date);
                 return transactionDate >= threeMonthsAgo && transactionDate <= now;
@@ -88,7 +105,7 @@ const transactionSlice = createSlice({
         filterLastSixMonthsTransactions: (state: FinancialState, action) => {
             const now = new Date();
             const sixMonthsAgo = subMonths(startOfDay(now), 6); // Using date-fns for accurate date manipulation
-            
+
             state.transactions = action.payload.filter((transaction: any) => {
                 const transactionDate = new Date(transaction.date);
                 return transactionDate >= sixMonthsAgo && transactionDate <= now;
@@ -117,7 +134,7 @@ export const {
     filterThisMonthTransactions,
     filterLastMonthTransactions,
     filterLastThreeMonthsTransactions,
-    filterLastSixMonthsTransactions
+    filterLastSixMonthsTransactions,
 } = transactionSlice.actions;
 
 export default transactionSlice.reducer;

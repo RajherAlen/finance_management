@@ -1,13 +1,14 @@
-import React from 'react';
 import { Transaction } from 'src/features/transactions/model/transactionModel';
 import { formatDate } from 'src/lib/utils/formatDate';
 import { Loan } from '../model/loanModel';
+
 interface DataProps {
     transactionData: Transaction[];
     loansData: Loan[];
     addTransaction: (transaction: TransactionProps) => void;
     userId: number;
 }
+
 interface TransactionProps {
     amount: number;
     description: string;
@@ -17,6 +18,7 @@ interface TransactionProps {
     date: Date;
     recurring: boolean;
 }
+
 const addLoanToTransaction = ({ transactionData, loansData, addTransaction, userId }: DataProps) => {
     const currentYear = formatDate({ date: new Date(), format: 'YYYY' });
     const currentMonth = formatDate({ date: new Date(), format: 'MM' });

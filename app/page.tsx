@@ -6,6 +6,7 @@ import TransactionListDisplay from 'src/features/transactions/components/Transac
 
 import { useGetLoansQuery } from 'src/features/loans/api/loansApi';
 import addLoanToTransaction from 'src/features/loans/utils/addLoanToTransaction';
+import addRecurringTransaction from 'src/features/loans/utils/addRecurringTransaction';
 import { useGetSavingsQuery } from 'src/features/savings/api/savingsApi';
 import {
     useAddTransactionMutation,
@@ -26,27 +27,35 @@ const Dashboard = () => {
     const { data: loansData } = useGetLoansQuery(userInfo?.id);
 
     // get recurring data from last month
-    const { data: recudingData } = useGetLastMonthRecurringTransactionsQuery(userInfo?.id);
-    // map current month data and find
-    // check by name and date is greater or equal than today
-    // check if that transaction is added to this month
+    const { data: recurringData } = useGetLastMonthRecurringTransactionsQuery(userInfo?.id);
 
     useEffect(() => {
         dispatch(updateSaving(savingData?.savings));
         dispatch(setTotalIncome(userInfo?.income));
 
         if (userInfo) {
-            addLoanToTransaction({
-                transactionData: data?.transactions,
-                loansData: loansData?.loans,
-                addTransaction,
-                userId: userInfo.id,
-            });
+            if (recurringData) {
+                addRecurringTransaction({
+                    recurringData: recurringData?.transactions,
+                    userId: userInfo.id,
+                    currentMonthData: data?.transactions,
+                    addTransaction,
+                });
+            }
+
+            if (loansData) {
+                addLoanToTransaction({
+                    transactionData: data?.transactions,
+                    loansData: loansData?.loans,
+                    addTransaction,
+                    userId: userInfo.id,
+                });
+            }
         }
 
         dispatch(getAllTransactions(data?.transactions));
-    }, [userInfo, data, loansData, dispatch, savingData]);
-    
+    }, [userInfo, data, loansData, dispatch, savingData, recurringData]);
+
     return <TransactionListDisplay />;
 };
 
