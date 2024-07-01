@@ -12,6 +12,7 @@ export async function POST(req: Request, { params }: { params: { slug: string } 
             where: {
                 userId: { in: [+slug] },
                 description: data.description,
+                date: data.date
             },
         });
 

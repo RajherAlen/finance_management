@@ -1,11 +1,13 @@
 import { Transaction } from 'src/features/transactions/model/transactionModel';
+
 import { formatDate } from 'src/lib/utils/formatDate';
+
 import { Loan } from '../model/loanModel';
 
 interface DataProps {
     transactionData: Transaction[];
     loansData: Loan[];
-    addTransaction: (transaction: TransactionProps) => void;
+    addTransaction: ({ data, userId }: { data: TransactionProps; userId: number }) => void;
     userId: number;
 }
 
@@ -41,12 +43,12 @@ const addLoanToTransaction = ({ transactionData, loansData, addTransaction, user
                 userId: userId,
                 date: new Date(`${currentYear}-${currentMonth}-${loanDay}`),
                 recurring: true,
-            }
+            };
 
             if (filteredTransactions?.length === 0) {
-                addTransaction(loanData);
+                addTransaction({ data: loanData, userId: userId });
             }
-            
+
             // Check if transaction already exists for this loan in current month
             if (filteredTransactions && filteredTransactions.length > 0) {
                 const transactionExists = filteredTransactions.find(
@@ -54,10 +56,10 @@ const addLoanToTransaction = ({ transactionData, loansData, addTransaction, user
                         transaction.description === `loan-${loan.name}` &&
                         String(transaction.date).split('T')[0] === `${currentYear}-${currentMonth}-${loanDay}`
                 );
-            
+
                 // If transaction does not exist, add it
                 if (!transactionExists) {
-                    addTransaction(loanData);
+                    addTransaction({ data: loanData, userId: userId });
                 }
             }
         }
