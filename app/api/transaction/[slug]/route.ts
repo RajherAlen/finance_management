@@ -12,16 +12,15 @@ export async function POST(req: Request, { params }: { params: { slug: string } 
             where: {
                 userId: { in: [+slug] },
                 description: data.description,
-                date: data.date
+                date: data.date,
             },
         });
 
         if (transactions) {
             return NextResponse.json({ error: 'Transaction already exists' }, { status: 400 });
         }
-
         const newTransaction = await prisma.transaction.create({ data });
-
+        
         return NextResponse.json({ newTransaction });
     } catch (error) {
         return NextResponse.json({ error: error }, { status: 500 });

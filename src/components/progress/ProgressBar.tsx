@@ -28,9 +28,10 @@ interface ProgressBarProps {
     total: number;
     additionalComponent?: React.ReactNode;
     isFinished?: boolean;
+    hideDifferencValue?: boolean;
 }
 
-export const ProgressBar = ({ label, value, total, additionalComponent, isFinished }: ProgressBarProps) => {
+export const ProgressBar = ({ label, value, total, additionalComponent, isFinished, hideDifferencValue }: ProgressBarProps) => {
     return (
         <div className="flex flex-col gap-1">
             <div className="flex justify-between gap-3">
@@ -42,7 +43,7 @@ export const ProgressBar = ({ label, value, total, additionalComponent, isFinish
                             {formatCurrency(value ? value : 0)}/{formatCurrency(total)}
                         </p>
 
-                        {total - value > 0 && <p className="text-xs font-semibold text-red-400">-{formatCurrency(total - value)}</p>}
+                        {!hideDifferencValue && total - value > 0 && <p className="text-xs font-semibold text-red-400">-{formatCurrency(total - value)}</p>}
                     </div>
 
                     {additionalComponent}

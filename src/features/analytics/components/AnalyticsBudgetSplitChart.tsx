@@ -24,12 +24,11 @@ export const options = {
 };
 
 const AnalyticsBudgetSplitChart = () => {
-    const {
-        spendByCategory,
-        budgetCategory: { needs, wants, savings },
-    } = useAppSelector((state) => state.transactionStore);
+    const { transactions, budgetCategory: { needs, wants, savings }, } = useAppSelector((state) => state.transactionStore);
 
-    if (!spendByCategory) return null;
+    const needsSpent = transactions.filter((item) => item.category === 'needs').reduce((accValue, currentValue) => accValue + currentValue.amount, 0);
+    const wantsSpent = transactions.filter((item) => item.category === 'wants').reduce((accValue, currentValue) => accValue + currentValue.amount, 0);
+    const savingsSpent = transactions.filter((item) => item.category === 'savings').reduce((accValue, currentValue) => accValue + currentValue.amount, 0);
 
     const labels = [`${formatCurrency(needs)} - Needs`, `${formatCurrency(wants)} - Wants`, `${formatCurrency(savings)} - Savings`];
 
@@ -43,7 +42,7 @@ const AnalyticsBudgetSplitChart = () => {
             },
             {
                 label: 'Spent',
-                data: [spendByCategory.needs, spendByCategory.wants, spendByCategory.savings],
+                data: [needsSpent, wantsSpent, savingsSpent],
                 backgroundColor: 'rgba(244, 63, 94, 0.9)',
             },
         ],
