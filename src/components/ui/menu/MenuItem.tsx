@@ -10,7 +10,7 @@ interface SvgIconProps {
 type SvgIconComponent = React.FC<SvgIconProps>;
 
 interface MenuItemProps {
-    icon?: SvgIconComponent;
+    icon?: any;
     title: string;
     to: string;
 }
