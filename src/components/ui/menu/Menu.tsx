@@ -1,12 +1,24 @@
-import React from 'react'
-import { cn } from 'src/lib/utils/cn'
+import { BarChartBig, CreditCardIcon, LayoutDashboardIcon, PiggyBankIcon } from 'lucide-react';
+
+import MenuItem from './MenuItem';
 
 const Menu = () => {
     return (
-        <div className={cn('w-52 p-4 border-r')}>
-            Menu
-        </div>
-    )
-}
+        <div className="h-screen p-6">
+            <div className="h-full w-52 rounded-lg bg-white px-4">
+                <div className="py-5 font-bold">FM</div>
 
-export default Menu
+                <div className="border-t py-6">
+                    <div>
+                        <MenuItem to="/" title="Dashboard" icon={LayoutDashboardIcon} />
+                        <MenuItem to="/analytics" title="Analytics" icon={BarChartBig} />
+                        <MenuItem to="/savings" title="Savings" icon={PiggyBankIcon} />
+                        <MenuItem to="/loans" title="Loans" icon={CreditCardIcon} />
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Menu;

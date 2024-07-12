@@ -1,21 +1,26 @@
-"use client";
-import React from "react";
-import TransactionCard from "./TransactionCard";
-import { useAppSelector } from "src/store/hooks";
+import ExpenseByCategoryChart from 'src/features/analytics/components/ExpenseByCategoryChart';
+import TotalSpentChart from 'src/features/analytics/components/TotalSpentChart';
+
+import LastTransactions from './LastTransactions';
+import TransactionListCard from './TransactionListCard';
 
 const TransactionListDisplay = () => {
-	const transactionStore = useAppSelector((state) => state.transactionStore);
+    return (
+        <div className="flex flex-wrap gap-5">
+            <div className="flex flex-1 flex-col gap-5">
+                <TransactionListCard />
 
-	const totalExpense = transactionStore.transactions
-		.filter((transaction: any) => transaction.type === "expense")
-		.reduce((sum: number, transaction: any) => sum + transaction.amount, 0);
+                <div className="grid grid-cols-2 gap-4">
+                    <ExpenseByCategoryChart />
+                    <TotalSpentChart />
+                </div>
+            </div>
 
-	return (
-		<div className="flex gap-3">
-			<TransactionCard amount={transactionStore.income} type="income" />
-			<TransactionCard amount={totalExpense} type="expense" />
-		</div>
-	);
+            <div className="l-aside flex flex-col">
+                <LastTransactions />
+            </div>
+        </div>
+    );
 };
 
 export default TransactionListDisplay;

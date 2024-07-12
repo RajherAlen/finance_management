@@ -1,32 +1,38 @@
-'use client'
-import React from 'react'
-import { store } from 'src/store/store'
+'use client';
+
+import React from 'react';
 import { Provider } from 'react-redux';
 import { ToastContainer, Zoom } from 'react-toastify';
+
 import { Header, Menu } from 'src/components/ui';
 
-const AppProvider = ({ children }: { children: React.ReactNode }) =>
-{
+import { usePathname } from 'next/navigation';
+import { store } from 'src/store/store';
+
+import AppAuthGuard from './AppAuthGuard';
+
+const AppProvider = ({ children }: { children: React.ReactNode }) => {
+    const pathname = usePathname();
+    const isLoginPage = pathname.includes('login');
+    
     return (
         <Provider store={store}>
-            <Menu />
+            {isLoginPage ? (
+                <div className="h-screen w-full overflow-auto p-12">{children}</div>
+            ) : (
+                <AppAuthGuard>
+                    <Menu />
 
-            <div className='w-full'>
-                <Header />
-                <div className='w-full h-screen p-4 overflow-auto bg-indigo-50 bg-opacity-50'>
-                    {children}
-                </div>
-            </div>
+                    <div className="flex flex-col w-full py-6">
+                        <Header />
+                        <div className="h-screen w-full p-4 overflow-auto">{children}</div>
+                    </div>
+                </AppAuthGuard>
+            )}
 
-            <ToastContainer
-                theme="colored"
-                hideProgressBar
-                autoClose={1500}
-                transition={Zoom}
-                draggable
-            />
+            <ToastContainer theme="colored" hideProgressBar autoClose={1500} transition={Zoom} draggable />
         </Provider>
-    )
-}
+    );
+};
 
-export default AppProvider
+export default AppProvider;

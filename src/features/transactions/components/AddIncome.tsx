@@ -1,61 +1,63 @@
-"use client";
+'use client';
 
-import React from "react";
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { Form, FormField } from "src/components/form/form";
-import Button from "src/components/button/Button";
-import FormCustomInput from "src/components/form/FormCustomInput";
+import Button from 'src/components/button/Button';
+import FormCustomInput from 'src/components/form/FormCustomInput';
+import { Form, FormField } from 'src/components/form/form';
 
-const incomeSchema = z.object({
-	amount: z.coerce
-		.number({
-			required_error: "Amount is required",
-			invalid_type_error: "Amount must be a number"
-		})
-		.positive({ message: "Amount must be positive number" }),
-	description: z.string().max(200)
-});
+import { zodResolver } from '@hookform/resolvers/zod';
+import { PlusCircleIcon } from 'lucide-react';
+import { useAppDispatch } from 'src/store/hooks';
+import * as z from 'zod';
 
-const AddIncome = () => {
-	const form = useForm<z.infer<typeof incomeSchema>>({
-		resolver: zodResolver(incomeSchema),
-		defaultValues: {
-			amount: 0,
-			description: ""
-		}
-	});
+import { incomeSchema } from '../model/incomeSchema';
+import { setTotalIncome } from '../transactionSlice';
 
-	const onSubmit = (values: z.infer<typeof incomeSchema>) => {
-		console.log(values);
-	};
+const AddIncome = ({ checkValidation, additionalAction }: { checkValidation?: boolean; additionalAction?: () => void }) => {
+    const dispatch = useAppDispatch();
 
-	return (
-		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-				<FormField
-					control={form.control}
-					name="amount"
-					render={({ field }) => (
-						<FormCustomInput requiered label="Amount" field={field} type="number" />
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name="description"
-					render={({ field }) => (
-                        <FormCustomInput label="Description" field={field} />
+    const form = useForm<z.infer<typeof incomeSchema>>({
+        resolver: zodResolver(incomeSchema),
+        defaultValues: {
+            amount: 0,
+        },
+    });
 
-					)}
-				/>
-				<Button type="submit" className="mt-5">
-					Submit
-				</Button>
-			</form>
-		</Form>
-	);
+    const onSubmit = (values: z.infer<typeof incomeSchema>) => {
+        dispatch(setTotalIncome(values.amount));
+
+        if (additionalAction !== undefined) {
+            additionalAction();
+        }
+    };
+
+    useEffect(() => {
+        if (checkValidation) {
+            form.trigger('amount');
+        }
+    }, [checkValidation, form]);
+
+    return (
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+                <div className="flex flex-col gap-2">
+                    <FormField
+                        control={form.control}
+                        name="amount"
+                        render={({ field }) => <FormCustomInput requiered className="flex-1 mb-2" label="Amount" field={field} type="number" />}
+                    />
+                    <div>
+                        <Button variant="outline" className="flex items-center gap-2">
+                            <PlusCircleIcon width={16} height={16} stroke="#1B2327" />
+                            Add
+                        </Button>
+                    </div>
+                </div>
+            </form>
+        </Form>
+    );
 };
 
 export default AddIncome;

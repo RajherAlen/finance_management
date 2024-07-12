@@ -1,46 +1,43 @@
-import React from "react";
-import {
-	FormControl,
-	FormDescription,
-	FormItem,
-	FormLabel,
-	FormMessage
-} from "./form";
-import { Input } from "../input/Input";
+import React from 'react';
+
+import { InputType } from 'zlib';
+
+import { Input } from '../input/Input';
+import NumberInput from '../input/NumberInput';
+import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from './form';
 
 interface FormCustomInputProps {
-	label: string;
-	placeholder?: string;
-	description?: string;
-	requiered?: boolean;
-	field: any;
-	type?: "number" | "string";
+    label?: string;
+    placeholder?: string;
+    description?: string;
+    requiered?: boolean;
+    field: any;
+    className?: string;
+    inputClassName?: string;
+    type?: InputType;
+    hideErrorMessage?: boolean;
 }
 
 const FormCustomInput = (props: FormCustomInputProps) => {
-	return (
-		<FormItem>
-			{props.label && (
-				<FormLabel>
-					{props.label}
-					{props.requiered && (
-						<span className="text-sky-600 ml-1">*</span>
-					)}
-				</FormLabel>
-			)}
-			<FormControl>
-				<Input
-					placeholder={props.placeholder}
-					type={props.type}
-					{...props.field}
-				/>
-			</FormControl>
-			{props.description && (
-				<FormDescription>{props.description}</FormDescription>
-			)}
-			<FormMessage />
-		</FormItem>
-	);
+    return (
+        <FormItem className={props.className}>
+            {props.label && (
+                <FormLabel>
+                    {props.label}
+                    {props.requiered && <span className="ml-1 text-sky-600">*</span>}
+                </FormLabel>
+            )}
+            <FormControl>
+                {props.type === 'number' ? (
+                    <NumberInput inputClassName={props.inputClassName} {...props.field} />
+                ) : (
+                    <Input placeholder={props.placeholder} type={props.type} className={props.inputClassName} {...props.field} />
+                )}
+            </FormControl>
+            {props.description && <FormDescription>{props.description}</FormDescription>}
+            {!props.hideErrorMessage && <FormMessage />}
+        </FormItem>
+    );
 };
 
 export default FormCustomInput;
