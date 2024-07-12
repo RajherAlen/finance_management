@@ -3,7 +3,6 @@
 import React from 'react';
 
 import EmptyState from 'src/components/card/EmptyState';
-// import CustomBubbleChart from 'src/components/charts/BubbleChart';
 
 import { useAppSelector } from 'src/store/hooks';
 
@@ -15,7 +14,6 @@ const ExpenseByCategoryChart = () => {
     return (
         <div>
             <p className="mb-5 text-xl font-semibold">Expenses by category</p>
-            <div className="flex justify-center p-5">{/* <CustomBubbleChart data={transactions} /> */}</div>
         </div>
     );
 };
