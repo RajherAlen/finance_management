@@ -9,10 +9,10 @@ import TotalSpentChart from './TotalSpentChart';
 const AnalyticsListDisplay = () => {
     return (
         <div className="flex flex-col gap-5">
-            <div className="grid grid-cols-2 gap-4">
+            {/* <div className="grid grid-cols-2 gap-4">
                 <ExpenseByCategoryChart />
                 <TotalSpentChart />
-            </div>
+            </div> */}
 
             <div className="flex flex-wrap items-start gap-5">
                 {/* <AnalyticsBudgetList /> */}

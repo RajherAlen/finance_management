@@ -24,8 +24,8 @@ export const addRecurringTransaction = ({ recurringData, userId, currentMonthDat
     const currentMonth = formatDate({ date: new Date(), format: 'MM' });
     const currentDay = formatDate({ date: new Date(), format: 'DD' });
 
-    const filteredPreviousMonthTransactions = recurringData?.filter((transaction: Transaction) => transaction.recurring === true);
-    const filteredCurrentMonthTransactions = currentMonthData?.filter((transaction: Transaction) => transaction.recurring === true);
+    const filteredPreviousMonthTransactions = recurringData?.filter((transaction: Transaction) => transaction.recurring === true && transaction.category !== "loan");
+    const filteredCurrentMonthTransactions = currentMonthData?.filter((transaction: Transaction) => transaction.recurring === true && transaction.category !== "loan");
 
     // Function to check if a transaction exists in the current month's transactions
     function transactionExistsInCurrentMonth(previousTransaction: Transaction, currentTransactions: Transaction[]): boolean {
