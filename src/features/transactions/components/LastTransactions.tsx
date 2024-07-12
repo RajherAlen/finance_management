@@ -1,14 +1,27 @@
 import React, { useEffect, useState } from 'react';
 
+import Button from 'src/components/button/Button';
 import Card from 'src/components/card/Card';
 import EmptyState from 'src/components/card/EmptyState';
+import { Dropdown, DropdownItem } from 'src/components/dropdown';
 import GlobalLoader from 'src/components/loader/GlobalLoader';
 import Select from 'src/components/select/Select';
 import Separator from 'src/components/separator/Separator';
 
+import {
+    Banknote,
+    BanknoteIcon,
+    CreditCardIcon,
+    FilterIcon,
+    PartyPopperIcon,
+    PiggyBank,
+    PiggyBankIcon,
+    ShoppingBasket,
+} from 'lucide-react';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
 import { useGetTransactionQuery } from '../api/transactionsApi';
+import { Transaction } from '../model/transactionModel';
 import { transactionOptions } from '../model/transactionOptions';
 import {
     filterLastMonthTransactions,
@@ -20,15 +33,23 @@ import {
 } from '../transactionSlice';
 import AddExpenseModal from './AddExpenseModal';
 import ExpenseCard from './ExpenseCard';
+import formatCurrency from 'src/lib/utils/formatCurrency';
 
 const LastTransactions = () => {
     const dispatch = useAppDispatch();
     const [period, setPeriod] = useState<string>('');
+    const [transactionData, setTransactionData] = useState<Transaction[]>([]);
 
     const { userInfo } = useAppSelector((state) => state.authStore);
 
     const { data, isLoading } = useGetTransactionQuery(userInfo?.id);
     const { transactions } = useAppSelector((state) => state.transactionStore);
+
+    useEffect(() => {
+        if (transactions) {
+            setTransactionData(transactions);
+        }
+    }, [transactions]);
 
     const handlePeriod = (value: string) => {
         setPeriod(value);
@@ -36,7 +57,7 @@ const LastTransactions = () => {
         if (data) {
             switch (value) {
                 case 'This Week':
-                    dispatch(filterThisWeekTransactions(data.transactions));
+                    dispatch(data.transactions);
                     break;
                 case 'Last Week':
                     dispatch(filterLastWeekTransactions(data.transactions));
@@ -59,16 +80,34 @@ const LastTransactions = () => {
         }
     };
 
+    type FilterTypes = 'essentials' | 'non-essentials' | 'savings' | 'loans';
+
+    const handleFilterTransactions = (value: FilterTypes) => {
+        switch (value) {
+            case 'essentials':
+                setTransactionData(transactions.filter((transaction) => transaction.category === 'needs'));
+                break;
+            case 'non-essentials':
+                setTransactionData(transactions.filter((transaction) => transaction.category === 'wants'));
+                break;
+            case 'savings':
+                setTransactionData(transactions.filter((transaction) => transaction.category === 'savings'));
+                break;
+            case 'loans':
+                setTransactionData(transactions.filter((transaction) => transaction.category === 'loan'));
+                break;
+            default:
+                break;
+        }
+    };
+
     if (isLoading) return <GlobalLoader />;
-    if (data?.transactions.length === 0) {
-        return (
-            <EmptyState
-                actionComponent={<AddExpenseModal />}
-                title="No Transactions Yet"
-                description="It looks like you haven't made any transactions yet. Start adding transactions to track your financial activity."
-            />
-        );
-    }
+
+    const iconStyle = {
+        size: 16,
+        stroke: '#1f1f1f',
+        opacity: 0.8,
+    };
 
     return (
         <>
@@ -76,23 +115,43 @@ const LastTransactions = () => {
                 <div className="flex items-center justify-between">
                     <p className="text-base font-semibold leading-4">Last Transactions</p>
 
-                    <Select onChange={handlePeriod} options={transactionOptions} value={period} placeholder="Select Period" />
+                    <div className="flex gap-2">
+                        <Dropdown allign="end" variant="outline" size="default" trigger={<FilterIcon {...iconStyle} />}>
+                            <DropdownItem onClick={() => handleFilterTransactions('essentials')}>
+                                <ShoppingBasket {...iconStyle} />
+                                Essentials
+                            </DropdownItem>
+                            <DropdownItem onClick={() => handleFilterTransactions('non-essentials')}>
+                                <PartyPopperIcon {...iconStyle} />
+                                Non-Essentials
+                            </DropdownItem>
+                            <DropdownItem onClick={() => handleFilterTransactions('savings')}>
+                                <PiggyBankIcon {...iconStyle} />
+                                Savings
+                            </DropdownItem>
+                            <DropdownItem onClick={() => handleFilterTransactions('loans')}>
+                                <CreditCardIcon {...iconStyle} />
+                                Loans
+                            </DropdownItem>
+                        </Dropdown>
+                        <Select onChange={handlePeriod} options={transactionOptions} value={period} placeholder="Select Period" />
+                    </div>
                 </div>
 
                 <Separator />
 
                 <div className="h-full overflow-auto pr-4">
-                    {transactions.length === 0 ? (
+                    {transactionData.length === 0 ? (
                         <EmptyState
                             title="No Transactions Found"
                             description="Looks like there are no transactions recorded for the selected period. Start making transactions to populate your history."
                         />
                     ) : (
-                        transactions.map((transaction, i) => {
+                        transactionData.map((transaction, i) => {
                             return (
                                 <div key={Math.random()}>
                                     <ExpenseCard {...transaction} />
-                                    {transactions.length !== i + 1 && <Separator />}
+                                    {transactionData.length !== i + 1 && <Separator />}
                                 </div>
                             );
                         })
@@ -101,7 +160,13 @@ const LastTransactions = () => {
 
                 <Separator />
 
-                <AddExpenseModal />
+                <div className="flex items-center justify-between">
+                    <p className="text-sm text-black/70">
+                        Total:
+                        <span className="ml-1.5 text-lg font-bold text-black">{formatCurrency(transactionData.reduce((a, b) => a + b.amount, 0))}</span>
+                    </p>
+                    <AddExpenseModal />
+                </div>
             </Card>
         </>
     );
