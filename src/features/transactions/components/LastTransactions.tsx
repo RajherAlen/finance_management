@@ -13,10 +13,13 @@ import {
     BanknoteIcon,
     CreditCardIcon,
     FilterIcon,
+    ListChecks,
     PartyPopperIcon,
     PiggyBank,
     PiggyBankIcon,
+    RefreshCcwDotIcon,
     ShoppingBasket,
+    TimerResetIcon,
 } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
@@ -80,10 +83,14 @@ const LastTransactions = () => {
         }
     };
 
-    type FilterTypes = 'essentials' | 'non-essentials' | 'savings' | 'loans';
+    type FilterTypes = 'all' | 'essentials' | 'non-essentials' | 'savings' | 'loans';
 
     const handleFilterTransactions = (value: FilterTypes) => {
         switch (value) {
+            case 'all': {
+                setTransactionData(transactions);
+                break;
+            }
             case 'essentials':
                 setTransactionData(transactions.filter((transaction) => transaction.category === 'needs'));
                 break;
@@ -117,6 +124,13 @@ const LastTransactions = () => {
 
                     <div className="flex gap-2">
                         <Dropdown allign="end" variant="outline" size="default" trigger={<FilterIcon {...iconStyle} />}>
+                            <DropdownItem onClick={() => handleFilterTransactions('all')}>
+                                <ListChecks {...iconStyle} />
+                                All Transactions
+                            </DropdownItem>
+
+                            <Separator className='my-1' />
+
                             <DropdownItem onClick={() => handleFilterTransactions('essentials')}>
                                 <ShoppingBasket {...iconStyle} />
                                 Essentials

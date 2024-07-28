@@ -18,7 +18,7 @@ const BudgetProgressList = () => {
 
     if (!budgetCategory) return null;
 
-    const needsSpent = transactions.filter((item) => item.category === 'needs').reduce((accValue, currentValue) => accValue + currentValue.amount, 0);
+    const needsSpent = transactions.filter((item) => item.category === 'needs' || item.category === 'loan').reduce((accValue, currentValue) => accValue + currentValue.amount, 0);
     const wantsSpent = transactions.filter((item) => item.category === 'wants').reduce((accValue, currentValue) => accValue + currentValue.amount, 0);
     const savingsSpent = transactions.filter((item) => item.category === 'savings').reduce((accValue, currentValue) => accValue + currentValue.amount, 0);
 
