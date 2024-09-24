@@ -37,6 +37,8 @@ export const addRecurringTransaction = ({ recurringData, userId, currentMonthDat
     filteredPreviousMonthTransactions?.forEach((previousTransaction: Transaction) => {
         const transactionExists = transactionExistsInCurrentMonth(previousTransaction, filteredCurrentMonthTransactions);
         const transactionDay = String(previousTransaction.date).split('T')[0].split('-')[2];
+        
+        if(transactionExists) return;
 
         if (!transactionExists) {
             if (currentDay >= transactionDay) {

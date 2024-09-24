@@ -23,16 +23,20 @@ const Header = () => {
         router.push('/login');
     };
 
+    const handleRouteTo = (route: string) => {
+        router.push(`/${route}`);
+    };
+
     return (
         <div className="flex items-center justify-between gap-3 px-4 py-3">
             <div className="flex-1">
-                <p className="text-xl capitalize">{pathName.replace('/', '')}</p>
+                <p className="text-xl capitalize">{pathName.replace('/', '').replace('-', ' ')}</p>
             </div>
 
             <div className="flex items-center justify-end gap-3">
                 <Dropdown
                     trigger={
-                        <div className="flex items-center text-left gap-2">
+                        <div className="flex items-center gap-2 text-left">
                             <Avatar />
                             <div>
                                 <p className="text-sm font-bold text-slate-600">{userInfo?.fullName}</p>
@@ -43,7 +47,7 @@ const Header = () => {
                     size="reset"
                     variant="ghost"
                 >
-                    <DropdownItem>
+                    <DropdownItem onClick={() => handleRouteTo('user-info')}>
                         <UserIcon width={14} />
                         User Info
                     </DropdownItem>
