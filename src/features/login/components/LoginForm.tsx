@@ -46,7 +46,7 @@ const LoginForm = () => {
         } else {
             validationToast({
                 status: 'error',
-                message: loginData.data.data,
+                message: loginData.data?.data,
             });
         }
     };
