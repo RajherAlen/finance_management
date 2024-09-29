@@ -37,10 +37,10 @@ const LoginForm = () => {
     const onSubmit = async (data: z.infer<typeof loginSchema>) => {
         const loginData: any = await login(data);
 
-        if (!loginData.data.isLoggedIn && loginData.data.success) {
+        if (!loginData.data?.isLoggedIn && loginData.data?.success) {
             dispatch(setLoginInfo(data));
             dispatch(nextStep());
-        } else if (loginData.data.isLoggedIn) {
+        } else if (loginData.data?.isLoggedIn) {
             dispatch(loginAction(loginData));
             router.push('/');
         } else {

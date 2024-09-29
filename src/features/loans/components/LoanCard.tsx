@@ -10,8 +10,25 @@ import { formatDate } from 'src/lib/utils/formatDate';
 import { Loan } from '../model/loanModel';
 
 const LoanCard = (props: Loan) => {
-    const { startDate, endDate, instalmentAmount, name, totalAmount, currentInstalment, totalInstalments } = props;
+    const { startDate, endDate, instalmentAmount, name, totalAmount, totalInstalments } = props;
 
+    // Convert startDate to a Date object
+    const start = new Date(startDate);
+    // Get the current date
+    const currentDate = new Date();
+
+    // Calculate the difference in months between startDate and currentDate
+    const diffInMonths = (currentDate.getFullYear() - start.getFullYear()) * 12 + (currentDate.getMonth() - start.getMonth());
+
+    // Calculate the current installment
+    let currentInstalment = diffInMonths;
+
+    // Ensure the currentInstalment doesn't exceed the total number of installments
+    if (currentInstalment > totalInstalments) {
+        currentInstalment = totalInstalments;
+    }
+
+    // Check if the payment is completed
     const isCompleted = totalInstalments <= currentInstalment;
     const status = isCompleted ? 'Completed' : 'Ongoing';
 
