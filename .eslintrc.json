@@ -1,12 +1,3 @@
 {
-    "extends": ["eslint:recommended", "plugin:react/recommended"],
-    "plugins": ["react"],
-    "rules": {
-        "react/no-unknown-property": ["error", { "ignore": ["class"] }]
-    },
-    "settings": {
-        "react": {
-            "version": "detect"
-        }
-    }
+    "extends": "next/core-web-vitals"
 }
