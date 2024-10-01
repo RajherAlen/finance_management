@@ -70,3 +70,32 @@ export async function DELETE(req: Request, { params }: { params: { slug: string 
         await prisma.$disconnect();
     }
 }
+
+export async function PATCH(req: Request, { params }: { params: { slug: string } }) {
+    try {
+        const data = await req.json();
+        const slug = params.slug;
+
+        const transactionUptade = await prisma.transaction.findUnique({
+            where: { id: +data.transactionId, userId: +slug },
+        });
+
+        if (!transactionUptade) {
+            console.error(`Transaction with ID ${data.transactionId} not found for user ${slug}.`);
+            return;
+        }
+        
+        const updateTransaction = await prisma.transaction.update({
+            where: { id: data.transactionId, userId: +slug },
+            data: {
+                recurring: false,
+            },
+        });
+
+        return NextResponse.json({ updateTransaction });
+    } catch (error) {
+        return NextResponse.json({ error: error }, { status: 500 });
+    } finally {
+        await prisma.$disconnect();
+    }
+}
