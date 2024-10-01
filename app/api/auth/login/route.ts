@@ -1,22 +1,23 @@
-import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { NextResponse } from 'next/server';
+import { prisma } from 'src/lib/utils/db';
 import { generateToken } from 'src/lib/utils/generateToken';
-
-const prisma = new PrismaClient();
 
 export async function GET() {
     try {
         const users = await prisma.user.findMany();
-
         return NextResponse.json({ success: true, data: users });
     } catch (error) {
-        return NextResponse.json({
-            success: false,
-            error: 'Failed to test database connection',
-        });
+        console.error('Error fetching users:', error); // Log error
+        return NextResponse.json(
+            {
+                success: false,
+                error: 'Failed to fetch users from the database',
+            },
+            { status: 500 }
+        );
     } finally {
-        await prisma.$disconnect();
+        await prisma.$disconnect(); // Ensure Prisma disconnects after query
     }
 }
 
