@@ -7,6 +7,7 @@ import TransactionListDisplay from 'src/features/transactions/components/Transac
 import { useGetLoansQuery } from 'src/features/loans/api/loansApi';
 import addLoanToTransaction from 'src/features/loans/utils/addLoanToTransaction';
 import addRecurringTransaction from 'src/features/loans/utils/addRecurringTransaction';
+import { useGetNotificationsQuery } from 'src/features/notification/api/notificationApi';
 import { useGetSavingsQuery } from 'src/features/savings/api/savingsApi';
 import {
     useAddTransactionMutation,

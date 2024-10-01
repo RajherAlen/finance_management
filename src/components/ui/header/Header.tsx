@@ -12,6 +12,7 @@ import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { logout } from 'src/store/authSlice';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import Notifications from 'src/features/notification/component/Notifications';
 
 const Header = () => {
     const { userInfo } = useAppSelector((state) => state.authStore);
@@ -49,22 +50,7 @@ const Header = () => {
             </div>
 
             <div className='flex items-center justify-end gap-3'>
-                <Dropdown allign='end' trigger={<BellIcon width={18} />}>
-                    <div className='flex flex-col gap-2'>
-                        {notifications.map((notification, index) => (
-                            <>
-                                <div key={notification.id} className='flex items-start justify-between gap-2'>
-                                    <div className=''>
-                                        <p className='text-xs font-semibold'>{notification.title}</p>
-                                        <p className='text-xs'>{notification.message}</p>
-                                    </div>
-                                </div>
-                                
-                                {notifications.length - 1 !== index && <Separator className='my-2' />}
-                            </>
-                        ))}
-                    </div>
-                </Dropdown>
+                <Notifications />
 
                 <Dropdown
                     trigger={
