@@ -1,53 +1,24 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import Card from 'src/components/card/Card';
 import { ProgressBar } from 'src/components/progress/ProgressBar';
 
-import { useSendNotificationMutation } from 'src/features/notification/api/notificationApi';
-import { NotificationProps } from 'src/features/notification/model/notificationModel';
-import { setNotifications } from 'src/features/notification/notificationSlice';
+import 'src/features/notification/notificationSlice';
 
 import { cn } from 'src/lib/utils/cn';
 import formatCurrency from 'src/lib/utils/formatCurrency';
 import { formatDate } from 'src/lib/utils/formatDate';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
 import { Loan } from '../model/loanModel';
 import { checkIsLoanCompleted } from '../utils/checkIsLoanCompleted';
 
 const LoanCard = (props: Loan) => {
-    const dispatch = useAppDispatch();
-
     const { startDate, endDate, instalmentAmount, name, totalAmount, totalInstalments } = props;
-    const { userInfo } = useAppSelector((state) => state.authStore);
-    const [sendNotification] = useSendNotificationMutation();
-    const { notifications } = useAppSelector((state) => state.notificationStore);
 
     const { isCompleted, status, currentInstalment } = checkIsLoanCompleted({
         startDate,
         totalInstalments,
     });
-
-    useEffect(() => {
-        if (isCompleted && userInfo) {
-            const notificationMessage = `Your loan (${name}) of ${formatCurrency(totalAmount)} has been completed.`;
-
-            const notificationExists = notifications?.find(
-                (notification: NotificationProps) => notification.description === notificationMessage
-            );
-
-            if (notificationExists) return;
-
-            const notificationData = {
-                userId: userInfo.id,
-                title: 'Loan Completed',
-                description: notificationMessage,
-            };
-
-            sendNotification(notificationData);
-            dispatch(setNotifications(notificationData));
-        }
-    }, [isCompleted, notifications]);
 
     return (
         <Card className='max-w-lg'>
