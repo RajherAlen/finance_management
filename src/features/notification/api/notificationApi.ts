@@ -9,7 +9,15 @@ export const notificationApiSlice = apiSlice.enhanceEndpoints({ addTagTypes: ['n
             }),
             providesTags: ['notificationList'],
         }),
+        sendNotification: builder.mutation({
+            query: (data) => ({
+                url: '/notification',
+                method: 'POST',
+                body: data,
+            }),
+            invalidatesTags: ['notificationList'],
+        }),
     }),
 });
 
-export const { useGetNotificationsQuery } = notificationApiSlice;
+export const { useGetNotificationsQuery, useSendNotificationMutation } = notificationApiSlice;

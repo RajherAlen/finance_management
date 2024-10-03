@@ -8,6 +8,8 @@ import { useGetLoansQuery } from 'src/features/loans/api/loansApi';
 import addLoanToTransaction from 'src/features/loans/utils/addLoanToTransaction';
 import addRecurringTransaction from 'src/features/loans/utils/addRecurringTransaction';
 import { useGetNotificationsQuery } from 'src/features/notification/api/notificationApi';
+import { NotificationProps } from 'src/features/notification/model/notificationModel';
+import { setNotifications } from 'src/features/notification/notificationSlice';
 import { useGetSavingsQuery } from 'src/features/savings/api/savingsApi';
 import {
     useAddTransactionMutation,
@@ -26,6 +28,7 @@ const Dashboard = () => {
     const { data } = useGetThisMonthTransactionsQuery(userInfo?.id);
     const { data: savingData } = useGetSavingsQuery(userInfo?.id);
     const { data: loansData } = useGetLoansQuery(userInfo?.id);
+    // const { data: notificationsData } = useGetNotificationsQuery(userInfo?.id);
 
     // get recurring data from last month
     const { data: recurringData } = useGetLastMonthRecurringTransactionsQuery(userInfo?.id);

@@ -3,6 +3,7 @@ import { Transaction } from 'src/features/transactions/model/transactionModel';
 import { formatDate } from 'src/lib/utils/formatDate';
 
 import { Loan } from '../model/loanModel';
+import { checkIsLoanCompleted } from './checkIsLoanCompleted';
 
 interface DataProps {
     transactionData: Transaction[];

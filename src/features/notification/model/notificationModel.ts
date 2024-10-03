@@ -3,4 +3,5 @@ export interface NotificationProps {
     title: string;
     description: string;
     isRead: boolean;
+    userId: number;
 }
