@@ -17,6 +17,7 @@ const LoanCard = (props: Loan) => {
 
     const { isCompleted, status, currentInstalment } = checkIsLoanCompleted({
         startDate,
+        endDate,
         totalInstalments,
     });
 

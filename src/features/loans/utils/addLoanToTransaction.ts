@@ -67,6 +67,7 @@ const addLoanToTransaction = ({ transactionData, loansData, addTransaction, user
 
                 const { isCompleted } = checkIsLoanCompleted({
                     startDate: loan.startDate,
+                    endDate: loan.endDate,
                     totalInstalments: loan.totalInstalments,
                 });
 
