@@ -52,38 +52,18 @@ const Dashboard = () => {
             }
 
             if (loansData) {
-                addLoanToTransaction({
+                const { notificationData } = addLoanToTransaction({
                     transactionData: data?.transactions,
                     loansData: loansData?.loans,
                     addTransaction,
                     userId: userInfo.id,
+                    notifications: notifications,
                 });
 
-                loansData?.loans?.map((loan: Loan) => {
-                    const { isCompleted } = checkIsLoanCompleted({
-                        startDate: loan.startDate,
-                        totalInstalments: loan.totalInstalments,
-                    });
-
-                    if (isCompleted && userInfo) {
-                        const notificationMessage = `Your loan (${name}) of ${formatCurrency(loan.totalAmount)} has been completed.`;
-
-                        const notificationExists = notifications?.find(
-                            (notification: NotificationProps) => notification.description === notificationMessage
-                        );
-
-                        if (notificationExists) return;
-
-                        const notificationData = {
-                            userId: userInfo.id,
-                            title: 'Loan Completed',
-                            description: notificationMessage,
-                        };
-
-                        sendNotification(notificationData);
-                        dispatch(setNotifications(notificationData));
-                    }
-                });
+                if (notificationData) {
+                    sendNotification(notificationData);
+                    dispatch(setNotifications(notificationData));
+                }
             }
         }
 
