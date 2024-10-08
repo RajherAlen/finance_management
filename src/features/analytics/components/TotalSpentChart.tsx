@@ -38,7 +38,7 @@ const TotalSpentChart = () => {
         );
 
     return (
-        <div>
+        <div className="flex flex-col">
             <p className="mb-5 text-xl font-semibold">Total Spent</p>
 
             <div className="flex h-full flex-col items-center justify-center">

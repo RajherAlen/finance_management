@@ -73,6 +73,16 @@ export const transactionApiSlice = apiSlice.enhanceEndpoints({ addTagTypes: ['tr
             }),
             invalidatesTags: ['transactionList'],
         }),
+        updateTransaction: builder.mutation({
+            query: ({ transactionId, userId }) => ({
+                url: `/transaction/${userId}`,
+                method: 'PATCH',
+                body: {
+                    transactionId,
+                },
+            }),
+            invalidatesTags: ['transactionList'],
+        }),
         deleteTransaction: builder.mutation({
             query: ({ userId, transactionId }) => ({
                 url: `/transaction/${userId}`,
@@ -110,5 +120,6 @@ export const {
     useGetLastMonthRecurringTransactionsQuery,
     useGetThisYearQuery,
     useDeleteTransactionMutation,
+    useUpdateTransactionMutation,
     useUpdateIncomeMutation,
 } = transactionApiSlice;

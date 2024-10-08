@@ -1,14 +1,18 @@
+import { NotificationProps } from 'src/features/notification/model/notificationModel';
 import { Transaction } from 'src/features/transactions/model/transactionModel';
 
+import formatCurrency from 'src/lib/utils/formatCurrency';
 import { formatDate } from 'src/lib/utils/formatDate';
 
 import { Loan } from '../model/loanModel';
+import { checkIsLoanCompleted } from './checkIsLoanCompleted';
 
 interface DataProps {
     transactionData: Transaction[];
     loansData: Loan[];
     addTransaction: ({ data, userId }: { data: TransactionProps; userId: number }) => void;
     userId: number;
+    notifications: NotificationProps[];
 }
 
 interface TransactionProps {
@@ -21,22 +25,23 @@ interface TransactionProps {
     recurring: boolean;
 }
 
-const addLoanToTransaction = ({ transactionData, loansData, addTransaction, userId }: DataProps) => {
+const addLoanToTransaction = ({ transactionData, loansData, addTransaction, userId, notifications }: DataProps) => {
     const currentYear = formatDate({ date: new Date(), format: 'YYYY' });
     const currentMonth = formatDate({ date: new Date(), format: 'MM' });
     const currentDay = formatDate({ date: new Date(), format: 'DD' });
+    let notificationMessage: string;
 
     const filteredTransactions = transactionData?.filter((transaction: Transaction) => transaction.category === 'loan');
+
+    let notificationData = null;
 
     loansData?.forEach((loan: Loan) => {
         const loanYear = String(loan.endDate).split('-')[0];
         const loanDay = String(loan.endDate).split('-')[2];
 
-        // Check if the loan should be added for the current month and year
         if (currentYear <= loanYear && currentDay >= loanDay) {
             const loanData = {
                 amount: loan.instalmentAmount,
-                // TODO: change this description/name
                 description: `loan-${loan.name}`,
                 category: 'loan',
                 type: 'expense',
@@ -49,7 +54,6 @@ const addLoanToTransaction = ({ transactionData, loansData, addTransaction, user
                 addTransaction({ data: loanData, userId: userId });
             }
 
-            // Check if transaction already exists for this loan in current month
             if (filteredTransactions && filteredTransactions.length > 0) {
                 const transactionExists = filteredTransactions.find(
                     (transaction: Transaction) =>
@@ -57,12 +61,35 @@ const addLoanToTransaction = ({ transactionData, loansData, addTransaction, user
                         String(transaction.date).split('T')[0] === `${currentYear}-${currentMonth}-${loanDay}`
                 );
 
-                // If transaction does not exist, add it
                 if (!transactionExists) {
                     addTransaction({ data: loanData, userId: userId });
+                }
+
+                const { isCompleted } = checkIsLoanCompleted({
+                    startDate: loan.startDate,
+                    endDate: loan.endDate,
+                    totalInstalments: loan.totalInstalments,
+                });
+
+                if (isCompleted) {
+                    notificationMessage = `Your loan (${loan.name}) of ${formatCurrency(loan.totalAmount)} has been completed.`;
+
+                    const notificationExists = notifications?.find(
+                        (notification: NotificationProps) => notification.description === notificationMessage
+                    );
+
+                    if (!notificationExists) {
+                        notificationData = {
+                            userId,
+                            title: 'Loan Completed',
+                            description: notificationMessage,
+                        };
+                    }
                 }
             }
         }
     });
+
+    return { notificationData };
 };
 export default addLoanToTransaction;
