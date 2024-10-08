@@ -28,8 +28,6 @@ const AnalyticsBudgetSplitChart = () => {
         const now = new Date();
         const threeMonthsAgo = subMonths(startOfDay(now), 3);
 
-        console.log(transactions);
-
         // Filter transactions from the last 3 months
         const filtered = transactions.filter((transaction) => {
             const transactionDate = new Date(transaction.date);
@@ -61,52 +59,41 @@ const AnalyticsBudgetSplitChart = () => {
         Loans: '#06b6d4',
     };
 
-    const data = React.useMemo(
+    const seriesData = React.useMemo(
         () =>
-            Object.keys(filteredTransactions)
-                .map((monthKey) => {
-                    const monthIndex = new Date(monthKey + '-01').getMonth();
-                    return [
-                        {
-                            label: 'Needs',
-                            data: [
-                                {
-                                    date: months[monthIndex],
-                                    value: filteredTransactions[monthKey].needs,
-                                },
-                            ],
-                        },
-                        {
-                            label: 'Wants',
-                            data: [
-                                {
-                                    date: months[monthIndex],
-                                    value: filteredTransactions[monthKey].wants,
-                                },
-                            ],
-                        },
-                        {
-                            label: 'Savings',
-                            data: [
-                                {
-                                    date: months[monthIndex],
-                                    value: filteredTransactions[monthKey].savings,
-                                },
-                            ],
-                        },
-                        {
-                            label: 'Loans',
-                            data: [
-                                {
-                                    date: months[monthIndex],
-                                    value: filteredTransactions[monthKey].loan,
-                                },
-                            ],
-                        },
-                    ];
-                })
-                .flat(),
+            Object.keys(filteredTransactions).map((monthKey) => {
+                const monthIndex = new Date(monthKey + '-01').getMonth();
+                return {
+                    month: months[monthIndex],
+                    needs: filteredTransactions[monthKey].needs,
+                    wants: filteredTransactions[monthKey].wants,
+                    savings: filteredTransactions[monthKey].savings,
+                    loans: filteredTransactions[monthKey].loan,
+                };
+            }),
         [filteredTransactions]
+    );
+
+    const data = React.useMemo(
+        () => [
+            {
+                label: 'Needs',
+                data: seriesData.map((item) => ({ date: item.month, value: item.needs })),
+            },
+            {
+                label: 'Wants',
+                data: seriesData.map((item) => ({ date: item.month, value: item.wants })),
+            },
+            {
+                label: 'Savings',
+                data: seriesData.map((item) => ({ date: item.month, value: item.savings })),
+            },
+            {
+                label: 'Loans',
+                data: seriesData.map((item) => ({ date: item.month, value: item.loans })),
+            },
+        ],
+        [seriesData]
     );
 
     const primaryAxis = React.useMemo<AxisOptions<(typeof data)[number]['data'][number]>>(
