@@ -1,69 +1,157 @@
-import React from 'react';
-import { Bar } from 'react-chartjs-2';
+import React, { useEffect, useState } from 'react';
+import { AxisOptions, Chart } from 'react-charts';
 
 import Card from 'src/components/card/Card';
 
-import { CategoryTotals, Transaction } from 'src/features/transactions/model/transactionModel';
+import { useGetTransactionQuery } from 'src/features/transactions/api/transactionsApi';
 
-import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js';
-import formatCurrency from 'src/lib/utils/formatCurrency';
+import { format, startOfDay, subMonths } from 'date-fns';
+import { useAppSelector } from 'src/store/hooks';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-interface AnalyticsBudgetSplitChartProps {
-    transactions: Transaction[];
-    budgetCategory: CategoryTotals;
-}
+const AnalyticsBudgetSplitChart = () => {
+    const [filteredTransactions, setFilteredTransactions] = useState<{
+        [key: string]: { wants: number; needs: number; savings: number; loan: number };
+    }>({});
 
-const AnalyticsBudgetSplitChart = ({ transactions, budgetCategory }: AnalyticsBudgetSplitChartProps) => {
-    const { needs, wants, savings } = budgetCategory;
+    const { userInfo } = useAppSelector((state) => state.authStore);
+    const { data: transactionsData, isLoading } = useGetTransactionQuery(userInfo?.id);
 
-    const needsSpent = transactions
-        .filter((item) => item.category === 'needs' || item.category === 'loan')
-        .reduce((accValue, currentValue) => accValue + currentValue.amount, 0);
-    const wantsSpent = transactions
-        .filter((item) => item.category === 'wants')
-        .reduce((accValue, currentValue) => accValue + currentValue.amount, 0);
-    const savingsSpent = transactions
-        .filter((item) => item.category === 'savings')
-        .reduce((accValue, currentValue) => accValue + currentValue.amount, 0);
+    useEffect(() => {
+        if (!isLoading && transactionsData) {
+            filterLastThreeMonthsTransactions(transactionsData.transactions);
+        }
+    }, [isLoading, transactionsData]);
 
-    const labels = [`${formatCurrency(needs)} - Needs`, `${formatCurrency(wants)} - Wants`, `${formatCurrency(savings)} - Savings`];
+    const filterLastThreeMonthsTransactions = (transactions: any[]) => {
+        const now = new Date();
+        const threeMonthsAgo = subMonths(startOfDay(now), 3);
 
-    const data = {
-        labels,
-        datasets: [
-            {
-                label: 'Budget',
-                data: [needs, wants, savings],
-                backgroundColor: 'rgba(16, 185, 129, 0.9)',
-            },
-            {
-                label: 'Spent',
-                data: [needsSpent, wantsSpent, savingsSpent],
-                backgroundColor: 'rgba(244, 63, 94, 0.9)',
-            },
-        ],
+        console.log(transactions);
+
+        // Filter transactions from the last 3 months
+        const filtered = transactions.filter((transaction) => {
+            const transactionDate = new Date(transaction.date);
+            return transactionDate >= threeMonthsAgo && transactionDate <= now;
+        });
+
+        // Group transactions by month
+        const groupedByMonth = filtered.reduce((acc, transaction) => {
+            const transactionDate = new Date(transaction.date);
+            const monthKey = format(transactionDate, 'yyyy-MM'); // e.g., '2024-07'
+
+            if (!acc[monthKey]) {
+                acc[monthKey] = { wants: 0, needs: 0, savings: 0, loan: 0 };
+            }
+
+            // Add values based on the category
+            acc[monthKey][transaction.category] += transaction.amount;
+            return acc;
+        }, {} as Record<string, { wants: number; needs: number; savings: number; loan: number }>);
+
+        setFilteredTransactions(groupedByMonth);
     };
 
-    return (
-        <div className='flex-1'>
-            <p className='mb-2 text-sm font-semibold text-gray-700'>Budget vs Actual</p>
-            <Card>
-                <Bar
-                    options={{
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'top' as const,
-                            },
-                            title: {
-                                display: false,
-                            },
+    // Define default colors for each section
+    const colors: Record<string, string> = {
+        Needs: '#fdba74',
+        Wants: '#F97939',
+        Savings: '#10b981',
+        Loans: '#06b6d4',
+    };
+
+    const data = React.useMemo(
+        () =>
+            Object.keys(filteredTransactions)
+                .map((monthKey) => {
+                    const monthIndex = new Date(monthKey + '-01').getMonth();
+                    return [
+                        {
+                            label: 'Needs',
+                            data: [
+                                {
+                                    date: months[monthIndex],
+                                    value: filteredTransactions[monthKey].needs,
+                                },
+                            ],
                         },
-                    }}
-                    data={data}
-                />
+                        {
+                            label: 'Wants',
+                            data: [
+                                {
+                                    date: months[monthIndex],
+                                    value: filteredTransactions[monthKey].wants,
+                                },
+                            ],
+                        },
+                        {
+                            label: 'Savings',
+                            data: [
+                                {
+                                    date: months[monthIndex],
+                                    value: filteredTransactions[monthKey].savings,
+                                },
+                            ],
+                        },
+                        {
+                            label: 'Loans',
+                            data: [
+                                {
+                                    date: months[monthIndex],
+                                    value: filteredTransactions[monthKey].loan,
+                                },
+                            ],
+                        },
+                    ];
+                })
+                .flat(),
+        [filteredTransactions]
+    );
+
+    const primaryAxis = React.useMemo<AxisOptions<(typeof data)[number]['data'][number]>>(
+        () => ({
+            getValue: (data) => data.date,
+            scaleType: 'band',
+        }),
+        []
+    );
+
+    const secondaryAxes = React.useMemo<AxisOptions<(typeof data)[number]['data'][number]>[]>(
+        () => [
+            {
+                getValue: (data) => data.value,
+                scaleType: 'linear',
+            },
+        ],
+        []
+    );
+
+    const getSeriesStyle = React.useCallback(
+        (series: any) => {
+            return {
+                color: colors[series.label],
+            };
+        },
+        [colors]
+    );
+
+    return (
+        <div className='w-full'>
+            <p className='mb-2 text-sm font-semibold text-gray-700'>Actual spent by category</p>
+
+            <Card>
+                <div className='h-[500px]'>
+                    <Chart
+                        options={{
+                            data,
+                            primaryAxis,
+                            secondaryAxes,
+                            getSeriesStyle,
+                            padding: { top: 10, bottom: 10, left: 10, right: 10 },
+                        }}
+                    />
+                </div>
             </Card>
         </div>
     );
