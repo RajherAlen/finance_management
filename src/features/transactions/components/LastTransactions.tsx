@@ -60,7 +60,7 @@ const LastTransactions = () => {
         if (data) {
             switch (value) {
                 case 'This Week':
-                    dispatch(data.transactions);
+                    dispatch(filterThisWeekTransactions(data.transactions));
                     break;
                 case 'Last Week':
                     dispatch(filterLastWeekTransactions(data.transactions));

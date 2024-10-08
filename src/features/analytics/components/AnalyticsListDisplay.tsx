@@ -2,21 +2,17 @@ import React from 'react';
 
 import BudgetProgressList from 'src/features/transactions/components/BudgetProgressList';
 
+import { useAppSelector } from 'src/store/hooks';
+
 import AnalyticsBudgetSplitChart from './AnalyticsBudgetSplitChart';
-import ExpenseByCategoryChart from './ExpenseByCategoryChart';
-import TotalSpentChart from './TotalSpentChart';
 
 const AnalyticsListDisplay = () => {
-    return (
-        <div className="flex flex-col gap-5">
-            {/* <div className="grid grid-cols-2 gap-4">
-                <ExpenseByCategoryChart />
-                <TotalSpentChart />
-            </div> */}
+    const { transactions, budgetCategory } = useAppSelector((state) => state.transactionStore);
 
-            <div className="flex flex-wrap items-start gap-5">
-                {/* <AnalyticsBudgetList /> */}
-                <AnalyticsBudgetSplitChart />
+    return (
+        <div className='flex flex-col gap-5'>
+            <div className='flex flex-wrap items-start gap-5'>
+                <AnalyticsBudgetSplitChart transactions={transactions} budgetCategory={budgetCategory} />
 
                 <BudgetProgressList />
             </div>

@@ -25,7 +25,19 @@ const Notifications = () => {
     }
 
     return (
-        <Dropdown allign='end' trigger={<BellIcon width={18} />}>
+        <Dropdown
+            allign='end'
+            trigger={
+                notifications && notifications.length > 0 ? (
+                    <div className='relative'>
+                        <div className='absolute right-0 top-0 h-2 w-2 rounded-full bg-green-500'></div>
+                        <BellIcon width={18} />
+                    </div>
+                ) : (
+                    <BellIcon width={18} />
+                )
+            }
+        >
             <div className='flex flex-col gap-2'>
                 {notifications.length > 0 ? (
                     notifications?.map((notification: NotificationProps, index: number) => {

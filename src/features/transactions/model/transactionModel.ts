@@ -8,7 +8,7 @@ export interface Transaction {
     recurring?: boolean;
 }
 
-interface CategoryTotals {
+export interface CategoryTotals {
     [key: string]: number; // Index signature
 }
 

@@ -1,34 +1,32 @@
-'use client';
-
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import Card from 'src/components/card/Card';
 
+import { CategoryTotals, Transaction } from 'src/features/transactions/model/transactionModel';
+
 import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js';
 import formatCurrency from 'src/lib/utils/formatCurrency';
-import { useAppSelector } from 'src/store/hooks';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export const options = {
-    responsive: true,
-    plugins: {
-        legend: {
-            position: 'top' as const,
-        },
-        title: {
-            display: false,
-        },
-    },
-};
+interface AnalyticsBudgetSplitChartProps {
+    transactions: Transaction[];
+    budgetCategory: CategoryTotals;
+}
 
-const AnalyticsBudgetSplitChart = () => {
-    const { transactions, budgetCategory: { needs, wants, savings }, } = useAppSelector((state) => state.transactionStore);
+const AnalyticsBudgetSplitChart = ({ transactions, budgetCategory }: AnalyticsBudgetSplitChartProps) => {
+    const { needs, wants, savings } = budgetCategory;
 
-    const needsSpent = transactions.filter((item) => item.category === 'needs' || item.category === 'loan').reduce((accValue, currentValue) => accValue + currentValue.amount, 0);
-    const wantsSpent = transactions.filter((item) => item.category === 'wants').reduce((accValue, currentValue) => accValue + currentValue.amount, 0);
-    const savingsSpent = transactions.filter((item) => item.category === 'savings').reduce((accValue, currentValue) => accValue + currentValue.amount, 0);
+    const needsSpent = transactions
+        .filter((item) => item.category === 'needs' || item.category === 'loan')
+        .reduce((accValue, currentValue) => accValue + currentValue.amount, 0);
+    const wantsSpent = transactions
+        .filter((item) => item.category === 'wants')
+        .reduce((accValue, currentValue) => accValue + currentValue.amount, 0);
+    const savingsSpent = transactions
+        .filter((item) => item.category === 'savings')
+        .reduce((accValue, currentValue) => accValue + currentValue.amount, 0);
 
     const labels = [`${formatCurrency(needs)} - Needs`, `${formatCurrency(wants)} - Wants`, `${formatCurrency(savings)} - Savings`];
 
@@ -49,10 +47,23 @@ const AnalyticsBudgetSplitChart = () => {
     };
 
     return (
-        <div className="flex-1">
-            <p className="mb-2 text-sm font-semibold text-gray-700">Budget vs Actual</p>
+        <div className='flex-1'>
+            <p className='mb-2 text-sm font-semibold text-gray-700'>Budget vs Actual</p>
             <Card>
-                <Bar options={options} data={data} />
+                <Bar
+                    options={{
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top' as const,
+                            },
+                            title: {
+                                display: false,
+                            },
+                        },
+                    }}
+                    data={data}
+                />
             </Card>
         </div>
     );
