@@ -64,7 +64,7 @@ const Dashboard = () => {
         }
 
         dispatch(getAllTransactions(data?.transactions));
-    }, [userInfo, data, loansData, dispatch, savingData, recurringData]);
+    }, [userInfo, data, loansData, savingData, recurringData]);
 
     return <TransactionListDisplay />;
 };

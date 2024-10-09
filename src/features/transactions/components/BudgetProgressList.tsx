@@ -21,7 +21,7 @@ const BudgetProgressList = () => {
         .reduce((accValue, currentValue) => accValue + currentValue.amount, 0);
 
     return (
-        <div className='flex min-w-[300px] max-w-[600px] flex-1 flex-col'>
+        <div className='flex min-w-[300px] max-w-[800px] flex-1 flex-col'>
             <p className='mb-2 text-sm font-semibold text-gray-700'>Your budget</p>
 
             <Card className='flex flex-1 flex-col gap-5'>

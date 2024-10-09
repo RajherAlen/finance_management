@@ -30,19 +30,6 @@ const Header = () => {
         router.push(`/${route}`);
     };
 
-    const notifications = [
-        {
-            id: 1,
-            title: 'Notification Title 1',
-            message: 'Notification 1',
-        },
-        {
-            id: 2,
-            title: 'Notification Title 2',
-            message: 'Notification 2',
-        },
-    ];
-
     return (
         <div className='flex items-center justify-between gap-3 px-4 py-3'>
             <div className='flex-1'>
@@ -78,8 +65,6 @@ const Header = () => {
                     </DropdownItem>
                 </Dropdown>
             </div>
-
-            <div className='mt-3 border-t'></div>
         </div>
     );
 };
