@@ -30,35 +30,26 @@ const TotalSpentChart = () => {
         { title: 'Savings', value: savings, color: '#4A9285' },
     ];
 
-    if (transactions.length === 0)
-        return (
-            <EmptyState
-                title="No Transactions Yet"
-            />
-        );
+    if (transactions.length === 0) return <EmptyState title='No Transactions Yet' />;
 
     return (
-        <div className="flex flex-col">
-            <p className="mb-5 text-xl font-semibold">Total Spent</p>
+        <div className='flex h-full flex-col items-center justify-center'>
+            <div className='mb-5 h-[220px] w-[220px]'>
+                <CircularChart data={data} />
+            </div>
 
-            <div className="flex h-full flex-col items-center justify-center">
-                <div className="mb-5 h-[220px] w-[220px]">
-                    <CircularChart data={data} />
-                </div>
-
-                <div className="flex gap-4">
-                    {data.map((item) => {
-                        return (
-                            <div key={item.title}>
-                                <div className="flex flex-wrap items-center gap-1">
-                                    <p className="h-3 w-3 rounded-full" style={{ backgroundColor: item.color }}></p>
-                                    <p className="text-sm font-medium">{item.title}</p>
-                                    <p className="text-center text-[10px]">({formatCurrency(item.value)})</p>
-                                </div>
+            <div className='flex gap-4'>
+                {data.map((item) => {
+                    return (
+                        <div key={item.title}>
+                            <div className='flex flex-wrap items-center gap-1'>
+                                <p className='h-3 w-3 rounded-full' style={{ backgroundColor: item.color }}></p>
+                                <p className='text-sm font-medium'>{item.title}</p>
+                                <p className='text-center text-[10px]'>({formatCurrency(item.value)})</p>
                             </div>
-                        );
-                    })}
-                </div>
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );
