@@ -8,7 +8,6 @@ import { useAppSelector } from 'src/store/hooks';
 
 const UserInfo = () => {
     const { userInfo } = useAppSelector((state) => state.authStore);
-    console.log(userInfo);
 
     return (
         <div className="max-w-lg rounded-lg bg-white p-6">

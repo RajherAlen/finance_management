@@ -5,12 +5,9 @@ import { useEffect } from 'react';
 import TransactionListDisplay from 'src/features/transactions/components/TransactionListDisplay';
 
 import { useGetLoansQuery } from 'src/features/loans/api/loansApi';
-import { Loan } from 'src/features/loans/model/loanModel';
 import addLoanToTransaction from 'src/features/loans/utils/addLoanToTransaction';
 import addRecurringTransaction from 'src/features/loans/utils/addRecurringTransaction';
-import { checkIsLoanCompleted } from 'src/features/loans/utils/checkIsLoanCompleted';
-import { useGetNotificationsQuery, useSendNotificationMutation } from 'src/features/notification/api/notificationApi';
-import { NotificationProps } from 'src/features/notification/model/notificationModel';
+import { useSendNotificationMutation } from 'src/features/notification/api/notificationApi';
 import { setNotifications } from 'src/features/notification/notificationSlice';
 import { useGetSavingsQuery } from 'src/features/savings/api/savingsApi';
 import {
@@ -20,7 +17,6 @@ import {
 } from 'src/features/transactions/api/transactionsApi';
 import { getAllTransactions, setTotalIncome, updateSaving } from 'src/features/transactions/transactionSlice';
 
-import formatCurrency from 'src/lib/utils/formatCurrency';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
 const Dashboard = () => {
