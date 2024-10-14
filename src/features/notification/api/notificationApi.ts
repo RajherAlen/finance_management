@@ -17,7 +17,15 @@ export const notificationApiSlice = apiSlice.enhanceEndpoints({ addTagTypes: ['n
             }),
             invalidatesTags: ['notificationList'],
         }),
+        markAsRead: builder.mutation({
+            query: (data) => ({
+                url: '/notification',
+                method: 'PATCH',
+                body: data,
+            }),
+            invalidatesTags: ['notificationList'],
+        }),
     }),
 });
 
-export const { useGetNotificationsQuery, useSendNotificationMutation } = notificationApiSlice;
+export const { useGetNotificationsQuery, useSendNotificationMutation, useMarkAsReadMutation } = notificationApiSlice;

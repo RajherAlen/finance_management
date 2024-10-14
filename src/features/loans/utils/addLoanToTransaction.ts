@@ -74,16 +74,20 @@ const addLoanToTransaction = ({ transactionData, loansData, addTransaction, user
                 if (isCompleted) {
                     notificationMessage = `Your loan (${loan.name}) of ${formatCurrency(loan.totalAmount)} has been completed.`;
 
-                    const notificationExists = notifications?.find(
-                        (notification: NotificationProps) => notification.description === notificationMessage
-                    );
+                    const filteredData = notifications && notifications.filter((notification: NotificationProps) => !notification.isRead);
+                    
+                    if (filteredData && filteredData.length > 0) {
+                        const notificationExists = filteredData?.find(
+                            (notification: NotificationProps) => notification.description === notificationMessage
+                        );
 
-                    if (!notificationExists) {
-                        notificationData = {
-                            userId,
-                            title: 'Loan Completed',
-                            description: notificationMessage,
-                        };
+                        if (!notificationExists) {
+                            notificationData = {
+                                userId,
+                                title: 'Loan Completed',
+                                description: notificationMessage,
+                            };
+                        }
                     }
                 }
             }

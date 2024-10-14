@@ -8,7 +8,7 @@ export const filterLastTransactions = (transactions: any[], months = 3) => {
         const transactionDate = new Date(transaction.date);
         return transactionDate >= threeMonthsAgo && transactionDate <= now;
     });
-    console.log(filtered)
+
     const groupedByMonth = filtered.reduce((acc, transaction) => {
         const transactionDate = new Date(transaction.date);
         const monthKey = format(transactionDate, 'yyyy-MM'); // e.g., '2024-07'

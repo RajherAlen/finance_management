@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 
+import Button from 'src/components/button/Button';
 import { Dropdown } from 'src/components/dropdown';
 import Separator from 'src/components/separator/Separator';
 
-import { BellIcon } from 'lucide-react';
+import { BellIcon, CheckCheck } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
-import { useGetNotificationsQuery } from '../api/notificationApi';
+import { useGetNotificationsQuery, useMarkAsReadMutation } from '../api/notificationApi';
 import { NotificationProps } from '../model/notificationModel';
 import { setNotifications } from '../notificationSlice';
 
@@ -15,20 +16,33 @@ const Notifications = () => {
 
     const { userInfo } = useAppSelector((state) => state.authStore);
     const { notifications } = useAppSelector((state) => state.notificationStore);
-
+    const [markAsRead] = useMarkAsReadMutation();
     const { data: notificationsData } = useGetNotificationsQuery(userInfo?.id);
 
-    if (notificationsData) {
-        notificationsData.notifications.map((notification: NotificationProps) => {
-            dispatch(setNotifications(notification));
+    const filteredData =
+        notificationsData && notificationsData.notifications.filter((notification: NotificationProps) => !notification.isRead);
+
+    if (filteredData?.length > 0) {
+        filteredData.map((notification: NotificationProps) => {
+            if (!notification.isRead) {
+                dispatch(setNotifications(notification));
+            }
         });
     }
+
+    const handleMarkAsRead = async (id: number) => {
+        await markAsRead({
+            userId: userInfo?.id,
+            id,
+        });
+    };
 
     return (
         <Dropdown
             allign='end'
+            contentClassName='transition-all duration-200'
             trigger={
-                notifications && notifications.length > 0 ? (
+                filteredData && filteredData.length > 0 ? (
                     <div className='relative'>
                         <div className='absolute right-0 top-0 h-2 w-2 rounded-full bg-green-500'></div>
                         <BellIcon width={18} />
@@ -39,17 +53,27 @@ const Notifications = () => {
             }
         >
             <div className='flex flex-col gap-2'>
-                {notifications.length > 0 ? (
-                    notifications?.map((notification: NotificationProps, index: number) => {
-                        if (!notification) return null;
+                {filteredData && filteredData.length > 0 ? (
+                    filteredData?.map((notification: NotificationProps, index: number) => {
+                        if (!notification || notification.isRead) return null;
 
                         return (
                             <React.Fragment key={Math.random()}>
-                                <div className='flex items-start justify-between gap-2'>
+                                <div className='group flex items-center justify-between gap-2 overflow-hidden'>
                                     <div className=''>
                                         <p className='text-xs font-semibold'>{notification.title}</p>
-                                        <p className='text-xs'>{notification.description}</p>
+                                        <p className='line-clamp-2 max-w-[220px] text-xs'>{notification.description}</p>
                                     </div>
+
+                                    <Button
+                                        variant='outline'
+                                        size='sm'
+                                        disabled={notification.isRead}
+                                        onClick={() => handleMarkAsRead(notification.id)}
+                                        title='Mark as read'
+                                    >
+                                        <CheckCheck />
+                                    </Button>
                                 </div>
 
                                 {notifications.length - 1 !== index && <Separator className='my-2' />}
