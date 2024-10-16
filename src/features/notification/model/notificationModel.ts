@@ -1,5 +1,5 @@
 export interface NotificationProps {
-    id: number;
+    id?: number;
     title: string;
     description: string;
     isRead: boolean;

@@ -25,70 +25,71 @@ interface TransactionProps {
     recurring: boolean;
 }
 
+// Helper function to create a new loan transaction
+const createLoanTransaction = (loan: Loan, userId: number, date: string): TransactionProps => ({
+    amount: loan.instalmentAmount,
+    description: `loan-${loan.name}`,
+    category: 'loan',
+    type: 'expense',
+    userId,
+    date: new Date(date),
+    recurring: true,
+});
+
+// Helper function to check if a transaction already exists
+const transactionExists = (transactions: Transaction[], loan: Loan, year: string, month: string, day: string) =>
+    transactions?.some(
+        (transaction: Transaction) =>
+            transaction.description === `loan-${loan.name}` && String(transaction.date).split('T')[0] === `${year}-${month}-${day}`
+    );
+
+// Helper function to check if a notification already exists
+const notificationExists = (notifications: NotificationProps[], message: string) =>
+    notifications?.some((notification: NotificationProps) => notification.description === message && !notification.isRead);
+
 const addLoanToTransaction = ({ transactionData, loansData, addTransaction, userId, notifications }: DataProps) => {
-    const currentYear = formatDate({ date: new Date(), format: 'YYYY' });
-    const currentMonth = formatDate({ date: new Date(), format: 'MM' });
-    const currentDay = formatDate({ date: new Date(), format: 'DD' });
-    let notificationMessage: string;
+    const currentDate = new Date();
+    const currentYear = formatDate({ date: currentDate, format: 'YYYY' });
+    const currentMonth = formatDate({ date: currentDate, format: 'MM' });
+    const currentDay = formatDate({ date: currentDate, format: 'DD' });
 
-    const filteredTransactions = transactionData?.filter((transaction: Transaction) => transaction.category === 'loan');
+    let notificationData: NotificationProps | null = null;
 
-    let notificationData = null;
-
-    loansData?.forEach((loan: Loan) => {
-        const loanYear = String(loan.endDate).split('-')[0];
-        const loanDay = String(loan.endDate).split('-')[2];
+    loansData.forEach((loan: Loan) => {
+        const [loanYear, , loanDay] = String(loan.endDate).split('-');
 
         if (currentYear <= loanYear && currentDay >= loanDay) {
-            const loanData = {
-                amount: loan.instalmentAmount,
-                description: `loan-${loan.name}`,
-                category: 'loan',
-                type: 'expense',
-                userId: userId,
-                date: new Date(`${currentYear}-${currentMonth}-${loanDay}`),
-                recurring: true,
-            };
+            const loanData = createLoanTransaction(loan, userId, `${currentYear}-${currentMonth}-${loanDay}`);
 
-            if (filteredTransactions?.length === 0) {
-                addTransaction({ data: loanData, userId: userId });
+            // Add transaction if it doesn't exist
+            if (!transactionExists(transactionData, loan, currentYear, currentMonth, loanDay)) {
+                addTransaction({ data: loanData, userId });
             }
 
-            if (filteredTransactions && filteredTransactions.length > 0) {
-                const transactionExists = filteredTransactions.find(
-                    (transaction: Transaction) =>
-                        transaction.description === `loan-${loan.name}` &&
-                        String(transaction.date).split('T')[0] === `${currentYear}-${currentMonth}-${loanDay}`
-                );
+            // Check if the loan is completed
+            const { isCompleted } = checkIsLoanCompleted({
+                startDate: loan.startDate,
+                endDate: loan.endDate,
+                totalInstalments: loan.totalInstalments,
+            });
 
-                if (!transactionExists) {
-                    addTransaction({ data: loanData, userId: userId });
+            if (isCompleted) {
+                const notificationMessage = `Your loan (${loan.name}) of ${formatCurrency(loan.totalAmount)} has been completed.`;
+
+                const filteredData = notifications && notifications.filter((notification: NotificationProps) => !notification.isRead);
+
+                if (filteredData?.length === 0) {
+                    return null;
                 }
 
-                const { isCompleted } = checkIsLoanCompleted({
-                    startDate: loan.startDate,
-                    endDate: loan.endDate,
-                    totalInstalments: loan.totalInstalments,
-                });
-
-                if (isCompleted) {
-                    notificationMessage = `Your loan (${loan.name}) of ${formatCurrency(loan.totalAmount)} has been completed.`;
-
-                    const filteredData = notifications && notifications.filter((notification: NotificationProps) => !notification.isRead);
-                    
-                    if (filteredData && filteredData.length > 0) {
-                        const notificationExists = filteredData?.find(
-                            (notification: NotificationProps) => notification.description === notificationMessage
-                        );
-
-                        if (!notificationExists) {
-                            notificationData = {
-                                userId,
-                                title: 'Loan Completed',
-                                description: notificationMessage,
-                            };
-                        }
-                    }
+                // Add notification if it doesn't exist
+                if (!notificationExists(notifications, notificationMessage)) {
+                    notificationData = {
+                        userId,
+                        title: 'Loan Completed',
+                        description: notificationMessage,
+                        isRead: false, // Assuming new notifications are unread by default
+                    };
                 }
             }
         }
@@ -96,4 +97,5 @@ const addLoanToTransaction = ({ transactionData, loansData, addTransaction, user
 
     return { notificationData };
 };
+
 export default addLoanToTransaction;

@@ -22,49 +22,60 @@ import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 const Dashboard = () => {
     const dispatch = useAppDispatch();
     const [addTransaction] = useAddTransactionMutation();
-
-    const { userInfo } = useAppSelector((state) => state.authStore);
-    const { data } = useGetThisMonthTransactionsQuery(userInfo?.id);
-    const { data: savingData } = useGetSavingsQuery(userInfo?.id);
-    const { data: loansData } = useGetLoansQuery(userInfo?.id);
-    const { notifications } = useAppSelector((state) => state.notificationStore);
-
-    // get recurring data from last month
-    const { data: recurringData } = useGetLastMonthRecurringTransactionsQuery(userInfo?.id);
     const [sendNotification] = useSendNotificationMutation();
 
-    useEffect(() => {
-        dispatch(updateSaving(savingData?.savings));
-        dispatch(setTotalIncome(userInfo?.income));
+    const { userInfo } = useAppSelector((state) => state.authStore);
+    const { notifications } = useAppSelector((state) => state.notificationStore);
 
-        if (userInfo) {
-            if (recurringData) {
-                addRecurringTransaction({
-                    recurringData: recurringData?.transactions,
-                    userId: userInfo.id,
-                    currentMonthData: data?.transactions,
-                    addTransaction,
-                });
-            }
+    const { data: transactionsData } = useGetThisMonthTransactionsQuery(userInfo?.id);
+    const { data: savingsData } = useGetSavingsQuery(userInfo?.id);
+    const { data: loansData } = useGetLoansQuery(userInfo?.id);
+    const { data: recurringData } = useGetLastMonthRecurringTransactionsQuery(userInfo?.id);
 
-            if (loansData) {
-                const { notificationData } = addLoanToTransaction({
-                    transactionData: data?.transactions,
-                    loansData: loansData?.loans,
-                    addTransaction,
-                    userId: userInfo.id,
-                    notifications: notifications,
-                });
+    // Helper function to handle recurring transactions
+    const handleRecurringTransactions = () => {
+        if (!recurringData || !userInfo) return;
 
-                if (notificationData) {
-                    sendNotification(notificationData);
-                    dispatch(setNotifications(notificationData));
-                }
-            }
+        addRecurringTransaction({
+            recurringData: recurringData.transactions,
+            userId: userInfo.id,
+            currentMonthData: transactionsData?.transactions,
+            addTransaction,
+        });
+    };
+
+    // Helper function to handle loan transactions and notifications
+    const handleLoanTransactions = () => {
+        if (!loansData || !userInfo) return;
+
+        const { notificationData } = addLoanToTransaction({
+            transactionData: transactionsData?.transactions,
+            loansData: loansData.loans,
+            addTransaction,
+            userId: userInfo.id,
+            notifications,
+        });
+
+        if (notificationData) {
+            sendNotification(notificationData);
+            dispatch(setNotifications(notificationData));
         }
+    };
 
-        dispatch(getAllTransactions(data?.transactions));
-    }, [userInfo, data, loansData, savingData, recurringData]);
+    useEffect(() => {
+        if (!userInfo) return;
+
+        // Update savings and income
+        dispatch(updateSaving(savingsData?.savings));
+        dispatch(setTotalIncome(userInfo.income));
+
+        // Handle recurring and loan transactions
+        handleRecurringTransactions();
+        handleLoanTransactions();
+
+        // Fetch all transactions
+        dispatch(getAllTransactions(transactionsData?.transactions));
+    }, [userInfo, transactionsData, loansData, savingsData, recurringData]);
 
     return <TransactionListDisplay />;
 };
