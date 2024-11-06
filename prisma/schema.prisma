@@ -9,16 +9,17 @@ datasource db {
 }
 
 model User {
-  id           Int           @id @default(autoincrement())
-  email        String        @unique
-  fullName     String
-  jobRole      String
-  password     String
-  username     String
-  income       Int
-  transactions Transaction[]
-  savings      Savings[]
-  loans        Loan[]
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  fullName      String
+  jobRole       String
+  password      String
+  username      String
+  income        Int
+  transactions  Transaction[]
+  savings       Savings[]
+  loans         Loan[]
+  notifications Notification[]
 }
 
 model Transaction {
@@ -28,7 +29,7 @@ model Transaction {
   category    String
   date        DateTime
   type        TransactionType
-  user        User            @relation(fields: [userId], references: [id])
+  User        User            @relation(fields: [userId], references: [id])
   userId      Int
   recurring   Boolean?
 }
@@ -44,7 +45,7 @@ model Savings {
   currentlySaved Float
   name           String
   date           DateTime
-  user           User     @relation(fields: [userId], references: [id])
+  User           User     @relation(fields: [userId], references: [id])
   userId         Int
 }
 
@@ -58,9 +59,18 @@ model Loan {
   currentInstalment Int
   instalmentAmount  Float
   userId            Int
-  user              User     @relation(fields: [userId], references: [id])
+  User              User     @relation(fields: [userId], references: [id])
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
   @@map("loans")
+}
+
+model Notification {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String
+  isRead      Boolean @default(false)
+  userId      Int
+  User        User    @relation(fields: [userId], references: [id])
 }

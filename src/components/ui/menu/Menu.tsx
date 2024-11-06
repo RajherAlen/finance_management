@@ -11,7 +11,7 @@ const Menu = () => {
                 <div className="border-t py-6">
                     <div>
                         <MenuItem to="/" title="Dashboard" icon={LayoutDashboardIcon} />
-                        <MenuItem to="/analytics" title="Analytics" icon={BarChartBig} />
+                        {/* <MenuItem to="/analytics" title="Analytics" icon={BarChartBig} /> */}
                         <MenuItem to="/savings" title="Savings" icon={PiggyBankIcon} />
                         <MenuItem to="/loans" title="Loans" icon={CreditCardIcon} />
                     </div>

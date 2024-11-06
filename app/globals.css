@@ -15,11 +15,15 @@
 
     .l-aside {
         width: 100%;
-        max-width: 520px;
-        
-        max-height: calc(100vh - 144px);
 
         overflow: hidden;
+    }
+
+    @media (min-width: 1048px) {
+        .l-aside {
+            max-width: 520px;
+            max-height: calc(100vh - 144px);
+        }
     }
 
     :root {

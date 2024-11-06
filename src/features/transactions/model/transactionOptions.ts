@@ -23,8 +23,8 @@ export const transactionOptions = [
         id: 'last-6-months',
         value: 'Last 6 Months',
     },
-    {
-        id: 'this-year',
-        value: 'This year',
-    },
+    // {
+    //     id: 'this-year',
+    //     value: 'This year',
+    // },
 ];

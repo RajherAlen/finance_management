@@ -35,7 +35,7 @@ export const ProgressBar = ({ label, value, total, additionalComponent, isFinish
     return (
         <div className="flex flex-col gap-1">
             <div className="flex justify-between gap-3">
-                {label && <p className="text-xs">{label}</p>}
+                {label && <div className="text-xs">{label}</div>}
 
                 <div className="flex gap-2">
                     <div className='text-right'>
