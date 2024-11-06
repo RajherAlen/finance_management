@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { prisma } from 'src/lib/utils/db';
 
-export async function POST(req: Request, { params }: { params: { slug: string } }) {
+export async function POST(req: Request, props: { params: Promise<{ slug: string }> }) {
+    const params = await props.params;
     try {
         const data = await req.json();
         const slug = params.slug;
@@ -27,7 +28,8 @@ export async function POST(req: Request, { params }: { params: { slug: string } 
     }
 }
 
-export async function GET(req: Request, { params }: { params: { slug: string } }) {
+export async function GET(req: Request, props: { params: Promise<{ slug: string }> }) {
+    const params = await props.params;
     try {
         const slug = params.slug;
 
@@ -45,7 +47,8 @@ export async function GET(req: Request, { params }: { params: { slug: string } }
     }
 }
 
-export async function DELETE(req: Request, { params }: { params: { slug: string } }) {
+export async function DELETE(req: Request, props: { params: Promise<{ slug: string }> }) {
+    const params = await props.params;
     try {
         const data = await req.json();
         const slug = params.slug;
@@ -71,7 +74,8 @@ export async function DELETE(req: Request, { params }: { params: { slug: string 
     }
 }
 
-export async function PATCH(req: Request, { params }: { params: { slug: string } }) {
+export async function PATCH(req: Request, props: { params: Promise<{ slug: string }> }) {
+    const params = await props.params;
     try {
         const data = await req.json();
         const slug = params.slug;

@@ -22,13 +22,20 @@ export const checkIsLoanCompleted = ({
     const diffInMonths = (currentDate.getFullYear() - start.getFullYear()) * 12 + (currentDate.getMonth() - start.getMonth());
     // Calculate the current installment
     let currentInstalment = diffInMonths;
+    const isCompleted = currentInstalment >= totalInstalments;
+
+    if (isCompleted) {
+        return {
+            isCompleted: true,
+            status: 'Completed',
+            currentInstalment: totalInstalments,
+        };
+    }
 
     if (currentYear <= loanYear && currentDay >= loanDay) {
         if (currentInstalment > totalInstalments) {
             currentInstalment = totalInstalments;
         }
-
-        const isCompleted = totalInstalments <= currentInstalment;
         const status = isCompleted ? 'Completed' : 'Ongoing';
 
         return { isCompleted, status, currentInstalment };

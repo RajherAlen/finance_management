@@ -30,6 +30,7 @@ const LoanCard = (props: Loan) => {
                         <span className='ml-1 text-[10px] font-medium'>({formatCurrency(totalAmount)})</span>
                     </p>
                 }
+                isFinished={isCompleted}
                 value={currentInstalment * instalmentAmount}
                 total={totalInstalments * instalmentAmount}
             />
@@ -41,7 +42,7 @@ const LoanCard = (props: Loan) => {
                 </div>
 
                 <p className='text-xs font-bold text-muted'>
-                    {currentInstalment}/{totalInstalments}
+                    {isCompleted ? totalInstalments : currentInstalment}/{totalInstalments}
                 </p>
             </div>
 

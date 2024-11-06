@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import Button from 'src/components/button/Button';
 import { Dropdown } from 'src/components/dropdown';
@@ -30,7 +30,7 @@ const Notifications = () => {
         });
     }
 
-    const handleMarkAsRead = async (id: number) => {
+    const handleMarkAsRead = async (id: number | undefined) => {
         await markAsRead({
             userId: userInfo?.id,
             id,
