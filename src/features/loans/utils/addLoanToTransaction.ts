@@ -61,11 +61,6 @@ const addLoanToTransaction = ({ transactionData, loansData, addTransaction, user
         if (currentYear <= loanYear && currentDay >= loanDay) {
             const loanData = createLoanTransaction(loan, userId, `${currentYear}-${currentMonth}-${loanDay}`);
 
-            // Add transaction if it doesn't exist
-            if (!transactionExists(transactionData, loan, currentYear, currentMonth, loanDay)) {
-                addTransaction({ data: loanData, userId });
-            }
-
             // Check if the loan is completed
             const { isCompleted } = checkIsLoanCompleted({
                 startDate: loan.startDate,
@@ -91,6 +86,11 @@ const addLoanToTransaction = ({ transactionData, loansData, addTransaction, user
                         isRead: false, // Assuming new notifications are unread by default
                     };
                 }
+            }
+
+            // Add transaction if it doesn't exist
+            if (!transactionExists(transactionData, loan, currentYear, currentMonth, loanDay)) {
+                addTransaction({ data: loanData, userId });
             }
         }
     });

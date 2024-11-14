@@ -56,7 +56,7 @@ const LoginForm = () => {
             <TransactionIcons type="login" width={48} height={48} />
             <h1 className="mb-3 mt-5 text-3xl font-bold">Login</h1>
 
-            <p className="mb-8 text-sm font-normal text-muted">Enter your credensialts to sign in to application</p>
+            <p className="mb-8 text-sm font-normal text-muted">Enter your credentials to sign in to application</p>
 
             <div className="w-full max-w-[400px]">
                 <Form {...form}>
