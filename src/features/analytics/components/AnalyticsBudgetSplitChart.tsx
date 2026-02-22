@@ -17,7 +17,7 @@ const AnalyticsBudgetSplitChart = ({ filterMonths = 3 }: { filterMonths?: number
     >({});
 
     const { userInfo } = useAppSelector((state) => state.authStore);
-    const { data: transactionsData, isLoading } = useGetTransactionQuery(userInfo?.id);
+    const { data: transactionsData, isLoading } = useGetTransactionQuery(userInfo!.id, { skip: !userInfo });
 
     useEffect(() => {
         if (!isLoading && transactionsData) {

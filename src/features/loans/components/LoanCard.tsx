@@ -13,9 +13,9 @@ import { Loan } from '../model/loanModel';
 import { checkIsLoanCompleted } from '../utils/checkIsLoanCompleted';
 
 const LoanCard = (props: Loan) => {
-    const { startDate, endDate, instalmentAmount, name, totalAmount, totalInstalments } = props;
+    const { startDate, endDate, instalmentAmount, name, totalAmount, totalInstalments, currentInstalment } = props;
 
-    const { isCompleted, status, currentInstalment } = checkIsLoanCompleted({
+    const { isCompleted, status } = checkIsLoanCompleted({
         startDate,
         endDate,
         totalInstalments,

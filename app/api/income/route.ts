@@ -16,9 +16,7 @@ export async function PATCH(req: Request) {
 
         return NextResponse.json({ updateIncome });
     } catch (error) {
-        return NextResponse.json({ error: error }, { status: 500 });
-    } finally {
-        await prisma.$disconnect();
+        return NextResponse.json({ error: 'An unexpected error occurred' }, { status: 500 });
     }
 }
 

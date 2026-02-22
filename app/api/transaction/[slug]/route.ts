@@ -7,7 +7,7 @@ export async function POST(req: Request, props: { params: Promise<{ slug: string
         const data = await req.json();
         const slug = params.slug;
 
-        const transactions = await prisma.transaction.findFirst({
+        const existing = await prisma.transaction.findFirst({
             where: {
                 userId: { in: [+slug] },
                 description: data.description,
@@ -15,16 +15,15 @@ export async function POST(req: Request, props: { params: Promise<{ slug: string
             },
         });
 
-        if (transactions) {
+        if (existing) {
             return NextResponse.json({ error: 'Transaction already exists' }, { status: 400 });
         }
-        const newTransaction = await prisma.transaction.create({ data });
 
+        const newTransaction = await prisma.transaction.create({ data });
         return NextResponse.json({ newTransaction });
     } catch (error) {
-        return NextResponse.json({ error: error }, { status: 500 });
-    } finally {
-        await prisma.$disconnect();
+        console.error('POST /transaction error:', error);
+        return NextResponse.json({ error: 'Failed to create transaction' }, { status: 500 });
     }
 }
 
@@ -41,9 +40,8 @@ export async function GET(req: Request, props: { params: Promise<{ slug: string 
 
         return NextResponse.json({ transactions });
     } catch (error) {
-        return NextResponse.json({ error: error }, { status: 500 });
-    } finally {
-        await prisma.$disconnect();
+        console.error('GET /transaction error:', error);
+        return NextResponse.json({ error: 'Failed to fetch transactions' }, { status: 500 });
     }
 }
 
@@ -58,8 +56,10 @@ export async function DELETE(req: Request, props: { params: Promise<{ slug: stri
         });
 
         if (!transactionToDelete) {
-            console.error(`Transaction with ID ${data.transactionId} not found for user ${slug}.`);
-            return;
+            return NextResponse.json(
+                { error: `Transaction with ID ${data.transactionId} not found for user ${slug}` },
+                { status: 404 }
+            );
         }
 
         const deletedTransaction = await prisma.transaction.delete({
@@ -68,9 +68,8 @@ export async function DELETE(req: Request, props: { params: Promise<{ slug: stri
 
         return NextResponse.json({ deletedTransaction });
     } catch (error) {
-        return NextResponse.json({ error: error }, { status: 500 });
-    } finally {
-        await prisma.$disconnect();
+        console.error('DELETE /transaction error:', error);
+        return NextResponse.json({ error: 'Failed to delete transaction' }, { status: 500 });
     }
 }
 
@@ -80,26 +79,27 @@ export async function PATCH(req: Request, props: { params: Promise<{ slug: strin
         const data = await req.json();
         const slug = params.slug;
 
-        const transactionUptade = await prisma.transaction.findUnique({
+        const transactionToUpdate = await prisma.transaction.findUnique({
             where: { id: +data.transactionId, userId: +slug },
         });
 
-        if (!transactionUptade) {
-            console.error(`Transaction with ID ${data.transactionId} not found for user ${slug}.`);
-            return;
+        if (!transactionToUpdate) {
+            return NextResponse.json(
+                { error: `Transaction with ID ${data.transactionId} not found for user ${slug}` },
+                { status: 404 }
+            );
         }
-        
-        const updateTransaction = await prisma.transaction.update({
+
+        const updatedTransaction = await prisma.transaction.update({
             where: { id: data.transactionId, userId: +slug },
             data: {
                 recurring: false,
             },
         });
 
-        return NextResponse.json({ updateTransaction });
+        return NextResponse.json({ updatedTransaction });
     } catch (error) {
-        return NextResponse.json({ error: error }, { status: 500 });
-    } finally {
-        await prisma.$disconnect();
+        console.error('PATCH /transaction error:', error);
+        return NextResponse.json({ error: 'Failed to update transaction' }, { status: 500 });
     }
 }

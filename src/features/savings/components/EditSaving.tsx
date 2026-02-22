@@ -41,6 +41,8 @@ const EditSaving = (props: EditSavingProps) => {
     });
 
     const onSubmit = (data: z.infer<typeof savingSchema>) => {
+        if (!userInfo) return;
+
         updateSaving({
             id: id,
             name: data.name,

@@ -9,6 +9,7 @@ import { Form, FormField } from 'src/components/form/form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PlusCircleIcon } from 'lucide-react';
+import LocalStorageProvider from 'src/lib/utils/storage/LocalStorageProvider';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import * as z from 'zod';
 
@@ -32,24 +33,26 @@ const EditIncome = ({ additionalAction }: { additionalAction: () => void }) => {
         dispatch(setTotalIncome(values.amount));
         updateIncome({ userId: userInfo?.id, income: values.amount });
 
+        LocalStorageProvider.set('userInfo', { ...userInfo, income: values.amount });
+
         if (additionalAction !== undefined) {
             additionalAction();
         }
     };
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-                <div className="flex flex-col gap-2">
+            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-3'>
+                <div className='flex flex-col gap-2'>
                     <FormField
                         control={form.control}
-                        name="amount"
+                        name='amount'
                         render={({ field }) => (
-                            <FormCustomInput requiered className="mb-2 flex-1" label="Amount" field={field} type="number" />
+                            <FormCustomInput requiered className='mb-2 flex-1' label='Amount' field={field} type='number' />
                         )}
                     />
                     <div>
-                        <Button variant="outline" className="flex items-center gap-2">
-                            <PlusCircleIcon width={16} height={16} stroke="#1B2327" />
+                        <Button variant='outline' className='flex items-center gap-2'>
+                            <PlusCircleIcon width={16} height={16} stroke='#1B2327' />
                             Add
                         </Button>
                     </div>

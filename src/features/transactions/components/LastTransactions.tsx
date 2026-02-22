@@ -45,7 +45,7 @@ const LastTransactions = () => {
 
     const { userInfo } = useAppSelector((state) => state.authStore);
 
-    const { data, isLoading } = useGetTransactionQuery(userInfo?.id);
+    const { data, isLoading } = useGetTransactionQuery(userInfo!.id, { skip: !userInfo });
     const { transactions } = useAppSelector((state) => state.transactionStore);
 
     useEffect(() => {

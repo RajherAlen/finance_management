@@ -10,4 +10,5 @@ export interface Loan {
     userId: number;
     createdAt: Date;
     updatedAt: Date;
+    isCompleted?: boolean
   }

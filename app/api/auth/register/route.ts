@@ -8,7 +8,7 @@ export async function POST(req: Request) {
         const { email, password, fullName, username, jobRole, income } = await req.json();
         const hashedPassword = bcrypt.hashSync(password, 10);
 
-        const newUser = await prisma.user.create({
+        const createdUser = await prisma.user.create({
             data: {
                 email,
                 password: hashedPassword,
@@ -21,10 +21,12 @@ export async function POST(req: Request) {
 
         const userToken = generateToken(username);
 
+        // Exclude password from response
+        const { password: _password, ...newUser } = createdUser;
+
         return NextResponse.json({ newUser, userToken });
     } catch (error) {
-        return NextResponse.json({ error: error }, { status: 500 });
-    } finally {
-        await prisma.$disconnect();
+        console.error('Register error:', error);
+        return NextResponse.json({ error: 'Registration failed' }, { status: 500 });
     }
 }

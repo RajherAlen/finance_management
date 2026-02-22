@@ -29,6 +29,8 @@ const SavingGoalCard = (props: Saving) => {
     const savingDateOfPayment = calculateSavingDateOfPayment(date);
 
     const handleDeleteSaving = () => {
+        if (!userInfo) return;
+
         deleteSaving({ id, userId: userInfo.id });
 
         handleCloseEditModal();
@@ -45,20 +47,20 @@ const SavingGoalCard = (props: Saving) => {
     const isFinished = goalAmount - currentlySaved === 0;
 
     return (
-        <Card className="mb-4 w-100">
+        <Card className='w-100 mb-4'>
             <ProgressBar
                 label={
                     <>
-                        <span className="block text-sm font-semibold">{name}</span>
+                        <span className='block text-sm font-semibold'>{name}</span>
                         {isFinished ? (
-                            <p className="my-1 inline-block rounded-full bg-green-500/80 px-3 py-1 text-xs font-semibold text-white">
+                            <p className='my-1 inline-block rounded-full bg-green-500/80 px-3 py-1 text-xs font-semibold text-white'>
                                 Finished
                             </p>
                         ) : (
                             <>
-                                <span className="mr-1 text-xs text-muted">{savingDateOfPayment.message}</span>
-                                <span className="mr-1 text-xs text-muted">/</span>
-                                <span className="mr-1 text-xs font-bold text-muted">
+                                <span className='mr-1 text-xs text-muted'>{savingDateOfPayment.message}</span>
+                                <span className='mr-1 text-xs text-muted'>/</span>
+                                <span className='mr-1 text-xs font-bold text-muted'>
                                     {formatCurrency(
                                         calculateMonthlySavings(
                                             goalAmount - currentlySaved,
@@ -66,7 +68,7 @@ const SavingGoalCard = (props: Saving) => {
                                         )
                                     )}
                                 </span>
-                                <span className="text-xs text-muted">per month</span>
+                                <span className='text-xs text-muted'>per month</span>
                             </>
                         )}
                     </>
@@ -76,14 +78,14 @@ const SavingGoalCard = (props: Saving) => {
                 total={goalAmount}
             />
 
-            <div className="mt-3 flex justify-end gap-2">
+            <div className='mt-3 flex justify-end gap-2'>
                 <Modal
                     open={editIsOpen}
                     triggerAsChild
                     onOpenChange={setEditIsOpen}
                     trigger={
-                        <Button variant="ghost" size="sm" className="flex items-center gap-2">
-                            <Edit3Icon width={16} height={16} cursor="pointer" />
+                        <Button variant='ghost' size='sm' className='flex items-center gap-2'>
+                            <Edit3Icon width={16} height={16} cursor='pointer' />
                             Edit
                         </Button>
                     }
@@ -94,34 +96,34 @@ const SavingGoalCard = (props: Saving) => {
                     open={deleteIsOpen}
                     onOpenChange={setDeleteIsOpen}
                     triggerAsChild
-                    title="Delete saving"
-                    description="Are you sure you want to delete this saving?"
+                    title='Delete saving'
+                    description='Are you sure you want to delete this saving?'
                     footer={
-                        <div className="flex gap-2">
-                            <Button variant="ghost" onClick={handleCloseDeleteModal}>
+                        <div className='flex gap-2'>
+                            <Button variant='ghost' onClick={handleCloseDeleteModal}>
                                 Cancel
                             </Button>
-                            <Button onClick={handleDeleteSaving} variant="destructive">
+                            <Button onClick={handleDeleteSaving} variant='destructive'>
                                 Delete
                             </Button>
                         </div>
                     }
                     trigger={
-                        <Button variant="ghost" size="sm" className="flex items-center gap-2">
-                            <Trash width={16} height={16} cursor="pointer" />
+                        <Button variant='ghost' size='sm' className='flex items-center gap-2'>
+                            <Trash width={16} height={16} cursor='pointer' />
                             Delete
                         </Button>
                     }
                 >
                     <div>
-                        <p className="flex justify-between text-sm">
-                            Name: <span className="font-semibold">{name}</span>
+                        <p className='flex justify-between text-sm'>
+                            Name: <span className='font-semibold'>{name}</span>
                         </p>
-                        <p className="flex justify-between text-sm">
-                            Amount: <span className="font-semibold">{formatCurrency(goalAmount)}</span>
+                        <p className='flex justify-between text-sm'>
+                            Amount: <span className='font-semibold'>{formatCurrency(goalAmount)}</span>
                         </p>
-                        <p className="flex justify-between text-sm">
-                            Currently Saved: <span className="font-semibold">{formatCurrency(currentlySaved)}</span>
+                        <p className='flex justify-between text-sm'>
+                            Currently Saved: <span className='font-semibold'>{formatCurrency(currentlySaved)}</span>
                         </p>
                     </div>
                 </Modal>

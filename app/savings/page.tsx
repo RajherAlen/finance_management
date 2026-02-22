@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 const Savings = () => {
     const { totalSavings, totalGoalSaving } = useAppSelector((state) => state.transactionStore);
     const { userInfo } = useAppSelector((state) => state.authStore);
-    const { data } = useGetSavingsQuery(userInfo?.id);
+    const { data } = useGetSavingsQuery(userInfo!.id, { skip: !userInfo });
 
     const dispatch = useAppDispatch();
 

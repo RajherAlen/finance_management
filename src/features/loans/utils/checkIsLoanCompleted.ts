@@ -38,7 +38,7 @@ export const checkIsLoanCompleted = ({
         }
         const status = isCompleted ? 'Completed' : 'Ongoing';
 
-        return { isCompleted, status, currentInstalment };
+        return { isCompleted, status };
     } else {
         return {
             isCompleted: false,

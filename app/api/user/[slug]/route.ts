@@ -15,8 +15,6 @@ export async function GET(req: Request, props: { params: Promise<{ slug: string 
 
         return NextResponse.json({ userInfo });
     } catch (error) {
-        return NextResponse.json({ error: error }, { status: 500 });
-    } finally {
-        await prisma.$disconnect();
+        return NextResponse.json({ error: 'An unexpected error occurred' }, { status: 500 });
     }
 }

@@ -4,6 +4,7 @@ import { formatDate } from 'src/lib/utils/formatDate';
 import LocalStorageProvider from 'src/lib/utils/storage/LocalStorageProvider';
 
 import { FinancialState, Saving, Transaction } from './model/transactionModel';
+import { UserInfo } from 'src/store/authSlice';
 
 const initialState: FinancialState = {
     income: 0,
@@ -25,11 +26,11 @@ const initialState: FinancialState = {
 };
 
 const updateTotalSaving = (state: FinancialState) => {
-    state.totalSavings = state.savings.reduce((accumulator, currentValue) => accumulator + currentValue.currentlySaved, 0);
+    state.totalSavings = state.savings.reduce((acc, s) => acc + s.currentlySaved, 0);
 };
 
-const updatetotalGoalSaving = (state: FinancialState) => {
-    state.totalGoalSaving = state.savings.reduce((accumulator, currentValue) => accumulator + currentValue.goalAmount, 0);
+const updateTotalGoalSaving = (state: FinancialState) => {
+    state.totalGoalSaving = state.savings.reduce((acc, s) => acc + s.goalAmount, 0);
 };
 
 const transactionSlice = createSlice({
@@ -40,82 +41,81 @@ const transactionSlice = createSlice({
             if (action.payload) {
                 state.transactions = action.payload;
             }
-            state.totalExpense = state.transactions.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
+            state.totalExpense = state.transactions.reduce((acc, t) => acc + t.amount, 0);
         },
         addToSavings: (state: FinancialState, action: PayloadAction<Saving>) => {
             state.savings = [...state.savings, action.payload];
             updateTotalSaving(state);
-            updatetotalGoalSaving(state);
+            updateTotalGoalSaving(state);
         },
-        filterByCategory: () => {
-            
-        },
-        updateSaving: (state: FinancialState, action: PayloadAction<any>) => {
+        updateSaving: (state: FinancialState, action: PayloadAction<Saving[] | undefined>) => {
             if (action.payload) {
                 state.savings = action.payload;
             }
             updateTotalSaving(state);
-            updatetotalGoalSaving(state);
+            updateTotalGoalSaving(state);
         },
-        filterThisWeekTransactions: (state: FinancialState, action) => {
+        filterThisWeekTransactions: (state: FinancialState, action: PayloadAction<Transaction[]>) => {
             const now = new Date();
-            const startOfCurrentWeek = startOfWeek(now, { weekStartsOn: 1 }); // Assuming week starts on Monday
+            const startOfCurrentWeek = startOfWeek(now, { weekStartsOn: 1 });
             const endOfCurrentWeek = endOfWeek(now, { weekStartsOn: 1 });
 
-            state.transactions = action.payload.filter((transaction: any) => {
-                const transactionDate = parseISO(transaction.date); // Assuming transaction.date is in ISO format
+            state.transactions = action.payload.filter((transaction: Transaction) => {
+                const transactionDate = parseISO(String(transaction.date));
                 return isWithinInterval(transactionDate, { start: startOfCurrentWeek, end: endOfCurrentWeek });
             });
         },
-        filterLastWeekTransactions: (state: FinancialState, action) => {
+        filterLastWeekTransactions: (state: FinancialState, action: PayloadAction<Transaction[]>) => {
             const now = new Date();
-            const startOfCurrentWeek = startOfWeek(now, { weekStartsOn: 1 }); // Assuming week starts on Monday
+            const startOfCurrentWeek = startOfWeek(now, { weekStartsOn: 1 });
             const startOfLastWeek = subWeeks(startOfCurrentWeek, 1);
             const endOfLastWeek = endOfWeek(startOfLastWeek, { weekStartsOn: 1 });
 
-            state.transactions = action.payload.filter((transaction: any) => {
-                const transactionDate = parseISO(transaction.date); // Assuming transaction.date is in ISO format
+            state.transactions = action.payload.filter((transaction: Transaction) => {
+                const transactionDate = parseISO(String(transaction.date));
                 return isWithinInterval(transactionDate, { start: startOfLastWeek, end: endOfLastWeek });
             });
         },
-        filterThisMonthTransactions: (state: FinancialState, action) => {
+        filterThisMonthTransactions: (state: FinancialState, action: PayloadAction<Transaction[]>) => {
             const currentMonth = formatDate({ date: new Date(), format: 'M' });
 
             state.transactions = action.payload.filter(
-                (transaction: any) => currentMonth === formatDate({ date: transaction.date, format: 'M' })
+                (transaction: Transaction) => currentMonth === formatDate({ date: transaction.date, format: 'M' })
             );
         },
-        filterLastMonthTransactions: (state: FinancialState, action) => {
+        filterLastMonthTransactions: (state: FinancialState, action: PayloadAction<Transaction[]>) => {
             const currentMonth = formatDate({ date: new Date(), format: 'M' });
             const lastMonth = +currentMonth - 1;
 
             state.transactions = action.payload.filter(
-                (transaction: any) => lastMonth.toString() === formatDate({ date: transaction.date, format: 'M' })
+                (transaction: Transaction) => lastMonth.toString() === formatDate({ date: transaction.date, format: 'M' })
             );
         },
-        filterLastThreeMonthsTransactions: (state: FinancialState, action) => {
+        filterLastThreeMonthsTransactions: (state: FinancialState, action: PayloadAction<Transaction[]>) => {
             const now = new Date();
-            const threeMonthsAgo = subMonths(startOfDay(now), 3); // Using date-fns for accurate date manipulation
+            const threeMonthsAgo = subMonths(startOfDay(now), 3);
 
-            state.transactions = action.payload.filter((transaction: any) => {
-                const transactionDate = new Date(transaction.date);
+            state.transactions = action.payload.filter((transaction: Transaction) => {
+                const transactionDate = new Date(String(transaction.date));
                 return transactionDate >= threeMonthsAgo && transactionDate <= now;
             });
         },
-        filterLastSixMonthsTransactions: (state: FinancialState, action) => {
+        filterLastSixMonthsTransactions: (state: FinancialState, action: PayloadAction<Transaction[]>) => {
             const now = new Date();
-            const sixMonthsAgo = subMonths(startOfDay(now), 6); // Using date-fns for accurate date manipulation
+            const sixMonthsAgo = subMonths(startOfDay(now), 6);
 
-            state.transactions = action.payload.filter((transaction: any) => {
-                const transactionDate = new Date(transaction.date);
+            state.transactions = action.payload.filter((transaction: Transaction) => {
+                const transactionDate = new Date(String(transaction.date));
                 return transactionDate >= sixMonthsAgo && transactionDate <= now;
             });
         },
         setTotalIncome: (state, action: PayloadAction<number>) => {
-            const userInfo: any = LocalStorageProvider.get('userInfo').value;
+            const userInfo = LocalStorageProvider.get<UserInfo>('userInfo').value;
 
             state.income = action.payload;
-            LocalStorageProvider.set('userInfo', { ...userInfo, income: action.payload });
+            if (userInfo) {
+                LocalStorageProvider.set('userInfo', { ...userInfo, income: action.payload });
+            }
 
             state.budgetCategory.needs = state.income * 0.5;
             state.budgetCategory.wants = state.income * 0.3;

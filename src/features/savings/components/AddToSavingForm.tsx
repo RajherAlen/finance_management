@@ -33,6 +33,8 @@ const AddToSavingForm = ({ savings }: { savings: Saving[] }) => {
     });
 
     const onSubmit = (data: z.infer<typeof addToSavingSchema>) => {
+        if (!userInfo) return;
+
         const selectedSaving = savings.filter((saving) => saving.name === data.savingName);
 
         updateSaving({ ...selectedSaving[0], currentlySaved: selectedSaving[0].currentlySaved + data.amount });
@@ -56,17 +58,17 @@ const AddToSavingForm = ({ savings }: { savings: Saving[] }) => {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1">
-                <p className="mb-4 text-sm font-semibold text-gray-700">Add to savings</p>
-                <Card className="flex-1 space-y-5">
+            <form onSubmit={form.handleSubmit(onSubmit)} className='flex-1'>
+                <p className='mb-4 text-sm font-semibold text-gray-700'>Add to savings</p>
+                <Card className='flex-1 space-y-5'>
                     <FormField
                         control={form.control}
-                        name="savingName"
+                        name='savingName'
                         render={({ field }) => (
                             <FormSelect
-                                label="Select saving you want to add money"
-                                placeholder="Enter amount"
-                                className="w-full"
+                                label='Select saving you want to add money'
+                                placeholder='Enter amount'
+                                className='w-full'
                                 options={savings?.map((saving) => {
                                     return {
                                         id: +saving.id,
@@ -79,20 +81,20 @@ const AddToSavingForm = ({ savings }: { savings: Saving[] }) => {
                     />
                     <FormField
                         control={form.control}
-                        name="amount"
+                        name='amount'
                         render={({ field }) => (
                             <FormCustomInput
-                                label="Enter your amount you want to add"
-                                placeholder="Enter amount"
-                                className="w-full"
-                                type="number"
+                                label='Enter your amount you want to add'
+                                placeholder='Enter amount'
+                                className='w-full'
+                                type='number'
                                 field={field}
                             />
                         )}
                     />
 
-                    <div className="flex justify-end">
-                        <Button variant="outline" className="flex items-center gap-2">
+                    <div className='flex justify-end'>
+                        <Button variant='outline' className='flex items-center gap-2'>
                             Add
                         </Button>
                     </div>

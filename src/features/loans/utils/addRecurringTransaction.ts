@@ -24,36 +24,33 @@ export const addRecurringTransaction = ({ recurringData, userId, currentMonthDat
     const currentMonth = formatDate({ date: new Date(), format: 'MM' });
     const currentDay = formatDate({ date: new Date(), format: 'DD' });
 
-    const filteredPreviousMonthTransactions = recurringData?.filter((transaction: Transaction) => transaction.recurring === true && transaction.category !== "loan");
-    const filteredCurrentMonthTransactions = currentMonthData?.filter((transaction: Transaction) => transaction.recurring === true && transaction.category !== "loan");
+    const filteredPreviousMonthTransactions = recurringData?.filter(
+        (transaction: Transaction) => transaction.recurring === true && transaction.category !== 'loan'
+    );
+    const filteredCurrentMonthTransactions = currentMonthData?.filter(
+        (transaction: Transaction) => transaction.recurring === true && transaction.category !== 'loan'
+    );
 
-    // Function to check if a transaction exists in the current month's transactions
-    function transactionExistsInCurrentMonth(previousTransaction: Transaction, currentTransactions: Transaction[]): boolean {
-        return currentTransactions?.some((currentTransaction) => {
-            return currentTransaction.description === previousTransaction.description;
-        });
-    }
-    // Check for each transaction in the previous month if it exists in the current month
+    const transactionExistsInCurrentMonth = (previousTransaction: Transaction, currentTransactions: Transaction[]): boolean =>
+        currentTransactions?.some((current) => current.description === previousTransaction.description);
+
     filteredPreviousMonthTransactions?.forEach((previousTransaction: Transaction) => {
-        const transactionExists = transactionExistsInCurrentMonth(previousTransaction, filteredCurrentMonthTransactions);
+        if (transactionExistsInCurrentMonth(previousTransaction, filteredCurrentMonthTransactions)) return;
+
         const transactionDay = String(previousTransaction.date).split('T')[0].split('-')[2];
-        
-        if(transactionExists) return;
 
-        if (!transactionExists) {
-            if (currentDay >= transactionDay) {
-                const transactionData = {
-                    amount: previousTransaction.amount,
-                    description: previousTransaction.description,
-                    category: previousTransaction.category,
-                    type: 'expense',
-                    userId: userId,
-                    date: new Date(`${currentYear}-${currentMonth}-${transactionDay}`),
-                    recurring: true,
-                };
+        if (currentDay >= transactionDay) {
+            const transactionData: TransactionProps = {
+                amount: previousTransaction.amount,
+                description: previousTransaction.description,
+                category: previousTransaction.category,
+                type: 'expense',
+                userId,
+                date: new Date(`${currentYear}-${currentMonth}-${transactionDay}`),
+                recurring: true,
+            };
 
-                addTransaction({ data: transactionData, userId: userId });
-            }
+            addTransaction({ data: transactionData, userId });
         }
     });
 };

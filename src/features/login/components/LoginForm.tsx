@@ -21,6 +21,7 @@ import { loginSchema } from '../model/loginSchema';
 
 const LoginForm = () => {
     const loginStore = useAppSelector((state) => state.loginStore);
+    const [isLoading, setIsLoading] = React.useState(false);
 
     const dispatch = useAppDispatch();
     const [login] = useLoginMutation();
@@ -35,6 +36,8 @@ const LoginForm = () => {
     });
 
     const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+        setIsLoading(true);
+
         const loginData: any = await login(data);
 
         if (!loginData.data?.isLoggedIn && loginData.data?.success) {
@@ -49,48 +52,50 @@ const LoginForm = () => {
                 message: loginData.data?.data,
             });
         }
+
+        setIsLoading(false);
     };
 
     return (
         <>
-            <TransactionIcons type="login" width={48} height={48} />
-            <h1 className="mb-3 mt-5 text-3xl font-bold">Login</h1>
+            <TransactionIcons type='login' width={48} height={48} />
+            <h1 className='mb-3 mt-5 text-3xl font-bold'>Login</h1>
 
-            <p className="mb-8 text-sm font-normal text-muted">Enter your credentials to sign in to application</p>
+            <p className='mb-8 text-sm font-normal text-muted'>Enter your credentials to sign in to application</p>
 
-            <div className="w-full max-w-[400px]">
+            <div className='w-full max-w-[400px]'>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5'>
                         <FormField
                             control={form.control}
-                            name="email"
+                            name='email'
                             render={({ field }) => (
                                 <FormCustomInput
                                     requiered
-                                    placeholder="Enter email address"
-                                    label="Enter email"
-                                    className="w-full"
-                                    type="email"
+                                    placeholder='Enter email address'
+                                    label='Enter email'
+                                    className='w-full'
+                                    type='email'
                                     field={field}
                                 />
                             )}
                         />
                         <FormField
                             control={form.control}
-                            name="password"
+                            name='password'
                             render={({ field }) => (
                                 <FormCustomInput
                                     requiered
-                                    label="Enter Password"
-                                    placeholder="Enter Password"
-                                    className="w-full"
+                                    label='Enter Password'
+                                    placeholder='Enter Password'
+                                    className='w-full'
                                     field={field}
-                                    type="password"
+                                    type='password'
                                 />
                             )}
                         />
 
-                        <Button type="submit" size="lg" className="mt-5 w-full">
+                        <Button type='submit' size='lg' className='mt-5 w-full' isLoading={isLoading}>
                             Sign In
                         </Button>
                     </form>

@@ -22,7 +22,7 @@ const ExpenseCard = (props: Transaction) => {
     const [updateIsOpen, setUpdateIsOpen] = useState(false);
 
     const { userInfo } = useAppSelector((state) => state.authStore);
-    const { data } = useGetSavingsQuery(userInfo?.id);
+    const { data } = useGetSavingsQuery(userInfo!.id, { skip: !userInfo });
     const [deleteTransaction] = useDeleteTransactionMutation();
     const [updateTransaction] = useUpdateTransactionMutation();
     const [updateSaving] = useUpdateSavingMutation();
@@ -36,6 +36,8 @@ const ExpenseCard = (props: Transaction) => {
     };
 
     const handleDeleteTransaction = () => {
+        if (!userInfo) return;
+
         const selectedSaving = data.savings.filter((saving: Saving) => saving.name === description);
 
         if (selectedSaving.length > 0) {
@@ -46,6 +48,8 @@ const ExpenseCard = (props: Transaction) => {
     };
 
     const handleUpdateRecuringTransaction = () => {
+        if (!userInfo) return;
+
         updateTransaction({ userId: userInfo.id, transactionId: id });
     };
 
