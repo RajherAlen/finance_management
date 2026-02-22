@@ -35,7 +35,7 @@
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "0.261.0",
     "moment": "^2.29.4",
-    "next": "^14.0.3",
+    "next": "14.2.35",
     "react": "^18.2.0",
     "react-charts": "^3.0.0-beta.57",
     "react-content-loader": "^6.2.1",
