@@ -2,10 +2,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import { RootState } from './store';
 
-const BASE_URL = process.env.NODE_ENV === 'production' ? 'https://finance-management-steel.vercel.app/' : 'http://localhost:3000';
-
 const baseQuery = fetchBaseQuery({
-    baseUrl: `${BASE_URL}/api`,
+    baseUrl: '/api',
     prepareHeaders(headers, { getState }) {
         const token = (getState() as RootState).authStore.userToken;
 
