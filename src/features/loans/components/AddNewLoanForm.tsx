@@ -29,6 +29,8 @@ const AddNewLoanForm = ({ additionalAction }: { additionalAction?: () => void })
     });
 
     const onSubmit = (data: z.infer<typeof loanSchema>) => {
+        if (!userInfo) return;
+
         addLoan({
             name: data.name,
             totalAmount: data.totalAmount,

@@ -17,7 +17,7 @@ const Notifications = () => {
     const { userInfo } = useAppSelector((state) => state.authStore);
     const { notifications } = useAppSelector((state) => state.notificationStore);
     const [markAsRead] = useMarkAsReadMutation();
-    const { data: notificationsData } = useGetNotificationsQuery(userInfo?.id);
+    const { data: notificationsData } = useGetNotificationsQuery(userInfo!.id, { skip: !userInfo });
 
     const filteredData =
         notificationsData && notificationsData.notifications.filter((notification: NotificationProps) => !notification.isRead);

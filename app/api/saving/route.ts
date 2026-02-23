@@ -9,8 +9,6 @@ export async function POST(req: Request) {
         return NextResponse.json({ newSaving });
     } catch (error) {
         return NextResponse.json({ error }, { status: 500 });
-    } finally {
-        await prisma.$disconnect();
     }
 }
 
@@ -29,8 +27,6 @@ export async function DELETE(req: Request) {
         return NextResponse.json({ deletedSaving });
     } catch (error) {
         return NextResponse.json({ error }, { status: 500 });
-    } finally {
-        await prisma.$disconnect();
     }
 }
 
@@ -53,8 +49,6 @@ export async function PATCH(req: Request) {
 
         return NextResponse.json({ updatedSaving });
     } catch (error) {
-        return NextResponse.json({ error: error }, { status: 500 });
-    } finally {
-        await prisma.$disconnect();
+        return NextResponse.json({ error: 'An unexpected error occurred' }, { status: 500 });
     }
 }

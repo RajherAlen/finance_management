@@ -9,7 +9,5 @@ export async function POST(req: Request) {
         return NextResponse.json({ newLoan });
     } catch (error) {
         return NextResponse.json({ error }, { status: 500 });
-    } finally {
-        await prisma.$disconnect();
     }
 }

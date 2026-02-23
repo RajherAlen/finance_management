@@ -27,10 +27,10 @@ const Dashboard = () => {
     const { userInfo } = useAppSelector((state) => state.authStore);
     const { notifications } = useAppSelector((state) => state.notificationStore);
 
-    const { data: transactionsData } = useGetThisMonthTransactionsQuery(userInfo?.id);
-    const { data: savingsData } = useGetSavingsQuery(userInfo?.id);
-    const { data: loansData } = useGetLoansQuery(userInfo?.id);
-    const { data: recurringData } = useGetLastMonthRecurringTransactionsQuery(userInfo?.id);
+    const { data: transactionsData } = useGetThisMonthTransactionsQuery(userInfo!.id, { skip: !userInfo });
+    const { data: savingsData } = useGetSavingsQuery(userInfo!.id, { skip: !userInfo });
+    const { data: loansData } = useGetLoansQuery(userInfo!.id, { skip: !userInfo });
+    const { data: recurringData } = useGetLastMonthRecurringTransactionsQuery(userInfo!.id, { skip: !userInfo });
 
     // Helper function to handle recurring transactions
     const handleRecurringTransactions = () => {
@@ -65,15 +65,12 @@ const Dashboard = () => {
     useEffect(() => {
         if (!userInfo) return;
 
-        // Update savings and income
         dispatch(updateSaving(savingsData?.savings));
         dispatch(setTotalIncome(userInfo.income));
 
-        // Handle recurring and loan transactions
         handleRecurringTransactions();
         handleLoanTransactions();
 
-        // Fetch all transactions
         dispatch(getAllTransactions(transactionsData?.transactions));
     }, [userInfo, transactionsData, loansData, savingsData, recurringData]);
 

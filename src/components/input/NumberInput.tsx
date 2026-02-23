@@ -15,11 +15,11 @@ interface NumberInputProps {
 const NumberInput = (props: NumberInputProps) => {
     return (
         <CurrencyInput
+            // {...props}
             id={props.id}
             name="input-name"
             placeholder={props.placeholder}
             defaultValue={0}
-            // decimalsLimit={1}
             prefix={props.prefix}
             suffix={props.suffix}
             className={cn(

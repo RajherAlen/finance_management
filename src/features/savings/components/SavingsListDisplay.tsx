@@ -21,7 +21,7 @@ import SavingGoalCard from './SavingGoalCard';
 const SavingsListDisplay = () => {
     const dispatch = useAppDispatch();
     const { userInfo } = useAppSelector((state) => state.authStore);
-    const { data, isLoading } = useGetSavingsQuery(userInfo?.id);
+    const { data, isLoading } = useGetSavingsQuery(userInfo!.id, { skip: !userInfo });
 
     const [isOpen, setIsOpen] = useState(false);
 

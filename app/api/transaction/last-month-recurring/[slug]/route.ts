@@ -10,11 +10,11 @@ export async function GET(req: Request, props: { params: Promise<{ slug: string 
 
         const startDate = new Date();
         startDate.setMonth(startDate.getMonth() - 1);
-        startDate.setDate(1); // Set to the beginning of last month
+        startDate.setDate(1);
         startDate.setHours(0, 0, 0, 0);
 
         const endDate = new Date();
-        endDate.setDate(0); // Set to the last day of last month
+        endDate.setDate(0); // Last day of previous month
         endDate.setHours(23, 59, 59, 999);
 
         const transactions = await prisma.transaction.findMany({
@@ -24,14 +24,13 @@ export async function GET(req: Request, props: { params: Promise<{ slug: string 
                     gte: startDate,
                     lte: endDate,
                 },
-                recurring: true
+                recurring: true,
             },
         });
 
         return NextResponse.json({ transactions, length: transactions.length });
     } catch (error) {
-        return NextResponse.json({ error: error }, { status: 500 });
-    } finally {
-        await prisma.$disconnect();
+        console.error('GET /transaction/last-month-recurring error:', error);
+        return NextResponse.json({ error: 'Failed to fetch recurring transactions' }, { status: 500 });
     }
 }
